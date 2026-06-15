@@ -1,0 +1,1562 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Madina Mobile Narowal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: rgb(241, 245, 249);
+        font-family: "Inter", -apple-system, sans-serif;
+        box-sizing: border-box;
+      }
+      .app-wrapper {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 16px;
+        box-sizing: border-box;
+      }
+      .main-card {
+        width: 100%;
+        max-width: 600px;
+        background-color: rgb(255, 255, 255);
+        border-radius: 16px;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        padding: 24px;
+        box-sizing: border-box;
+        margin-top: 20px;
+        margin-bottom: 24px;
+      }
+      .centered-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 700;
+        color: rgb(15, 23, 42);
+        margin-top: 8px;
+        margin-bottom: 24px;
+        letter-spacing: -0.5px;
+      }
+      .input-group {
+        margin-bottom: 16px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .input-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: rgb(71, 85, 105);
+        margin-bottom: 6px;
+      }
+      .text-input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1.5px solid rgb(203, 213, 225);
+        border-radius: 8px;
+        box-sizing: border-box;
+        color: rgb(15, 23, 42);
+        background-color: rgb(255, 255, 255);
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      }
+      .text-input:focus {
+        outline: none;
+        border-color: rgb(59, 130, 246);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+      .input-with-button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+      .input-with-button .text-input {
+        padding-right: 48px;
+      }
+      .input-action-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        border: none;
+        background-color: rgb(168, 85, 247);
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.15s ease, transform 0.1s/0.15s ease;
+      }
+      .input-action-btn:hover {
+        background-color: rgb(147, 51, 234);
+      }
+      .input-action-btn:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .animate-spin {
+        animation: spin 1s linear infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
+      .pulse-indicator {
+        animation: pulse 1.5s infinite;
+      }
+      .status-box {
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 16px;
+        border-width: 1px;
+        border-style: solid;
+        transition: all 0.2s ease-in-out;
+        text-align: center;
+      }
+      .status-idle {
+        background-color: rgb(248, 250, 252);
+        border-color: rgb(226, 232, 240);
+        color: rgb(100, 116, 139);
+      }
+      .status-loading {
+        background-color: rgb(239, 246, 255);
+        border-color: rgb(191, 219, 254);
+        color: rgb(29, 78, 216);
+      }
+      .status-success {
+        background-color: rgb(240, 253, 250);
+        border-color: rgb(153, 246, 228);
+        color: rgb(13, 148, 136);
+      }
+      .status-error {
+        background-color: rgb(254, 242, 242);
+        border-color: rgb(254, 202, 202);
+        color: rgb(220, 38, 38);
+      }
+      .action-buttons-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 24px;
+      }
+      @media (max-width: 480px) {
+        .action-buttons-row {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+      }
+      .btn {
+        padding: 12px 6px;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 8px;
+        border: none;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        transition: transform 0.1s ease, filter 0.15s ease;
+        text-align: center;
+        user-select: none;
+      }
+      .btn:active {
+        transform: scale(0.97);
+      }
+      .btn-green {
+        background-color: rgb(34, 197, 94);
+      }
+      .btn-green:hover {
+        filter: brightness(0.93);
+      }
+      .btn-purple {
+        background-color: rgb(168, 85, 247);
+      }
+      .btn-purple:hover {
+        filter: brightness(0.93);
+      }
+      .btn-blue {
+        background-color: rgb(59, 130, 246);
+      }
+      .btn-blue:hover {
+        filter: brightness(0.93);
+      }
+      .btn-gray {
+        background-color: rgb(100, 116, 139);
+      }
+      .btn-gray:hover {
+        filter: brightness(0.93);
+      }
+      .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid rgb(226, 232, 240);
+        margin-bottom: 24px;
+      }
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 14px;
+      }
+      .data-table th {
+        background-color: rgb(241, 245, 249);
+        color: rgb(71, 85, 105);
+        font-weight: 600;
+        padding: 12px;
+        border-bottom: 1px solid rgb(226, 232, 240);
+      }
+      .data-table td {
+        padding: 12px;
+        border-bottom: 1px solid rgb(241, 245, 249);
+        color: rgb(15, 23, 42);
+      }
+      .data-table tbody tr:last-child td {
+        border-bottom: none;
+      }
+      .empty-row {
+        text-align: center;
+        color: rgb(100, 116, 139);
+        padding: 20px !important;
+        font-style: italic;
+      }
+      .summary-card {
+        background-color: rgb(248, 250, 252);
+        border: 1px solid rgb(226, 232, 240);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 24px;
+        box-sizing: border-box;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .summary-row:last-child {
+        margin-bottom: 0;
+      }
+      .summary-label {
+        font-size: 14px;
+        color: rgb(71, 85, 105);
+      }
+      .summary-val {
+        font-size: 15px;
+        font-weight: 600;
+        color: rgb(15, 23, 42);
+      }
+      .summary-divider {
+        height: 1px;
+        background-color: rgb(226, 232, 240);
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+      .grand-total-highlight {
+        background-color: rgb(59, 130, 246);
+        border-radius: 8px;
+        padding: 12px;
+        color: rgb(255, 255, 255);
+      }
+      .text-white {
+        color: rgb(255, 255, 255) !important;
+      }
+      .font-bold {
+        font-weight: 700 !important;
+        font-size: 18px !important;
+      }
+      .payment-section {
+        border: 1px solid rgb(254, 202, 202);
+        background-color: rgb(254, 242, 242);
+        border-radius: 12px;
+        padding: 16px;
+        box-sizing: border-box;
+      }
+      .return-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+      }
+      .return-label {
+        font-size: 15px;
+        font-weight: 700;
+        color: rgb(220, 38, 38);
+      }
+      .return-value {
+        font-size: 20px;
+        font-weight: 800;
+        color: rgb(220, 38, 38);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-wrapper">
+      <div class="main-card">
+        <div class="centered-title">Madina Mobile Narowal</div>
+        
+        <!-- Beautiful Prominent Online Status Loading Overlay / Floating Bar -->
+        <div id="online-loading-bar" style="display: none; background-color: rgb(59, 130, 246); color: white; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; align-items: center; justify-content: center; gap: 8px; font-weight: 600; text-align: center; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25); animation: pulse 1.2s infinite ease-in-out;">
+          <svg class="animate-spin" style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" style="opacity: 0.25;"></circle>
+            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" style="opacity: 0.75;"></path>
+          </svg>
+          <span id="loading-bar-text">Searching Bill online (Bill Fetch Ho Raha Hai)... Please wait</span>
+        </div>
+        
+        <div class="input-group">
+          <label class="input-label" for="ref-input">Reference Number (Scan / Fetch Input)</label>
+          <div class="input-with-button">
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-input" id="ref-input" placeholder="Enter or scan 14-digit bill reference..." maxlength="14" oninput="handleRefInput(this)" onfocus="this.select()" onclick="this.select()">
+            <button id="input-scanner-btn" onclick="toggleScanner()" title="Scan QR Code" type="button" class="input-action-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16V21H16"/><path d="M21 9V10"/><path d="M9 21V20"/><path d="M12 16V18"/><path d="M12 12V13"/><path d="M12 8V9"/><path d="M16 12V13"/><path d="M9 12V13"/><path d="M13 21V20"/><path d="M16 16V18"/><rect width="1" height="1" x="7" y="7"/><rect width="1" height="1" x="16" y="7"/><rect width="1" height="1" x="7" y="16"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="status-area" class="status-box status-idle" style="display: none;"></div>
+
+        <div id="scanner-container" style="display: none; margin-bottom: 20px; border-radius: 12px; overflow: hidden; background-color: rgb(15, 23, 42); border: 2.5px solid rgb(168, 85, 247); padding: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.15);">
+          <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px; padding: 4px 0;">
+            <div style="color: white; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px;">
+              <span class="pulse-indicator" style="width: 10px; height: 10px; background-color: rgb(34, 197, 94); border-radius: 50%; display: inline-block;"></span>
+              <span>Live Scanner Mode Active</span>
+            </div>
+          </div>
+          <div id="reader" style="width: 100%; border-radius: 8px; overflow: hidden; background-color: rgb(0, 0, 0);"></div>
+          <div id="toggle-flash-wrap" style="display: none !important; text-align: center; margin-top: 0; height: 0; width: 0; overflow: hidden; opacity: 0; pointer-events: none;">
+            <button id="toggle-flash-btn" class="btn btn-purple" onclick="toggleFlashlight()" style="display: none !important;">Toggle Flashlight</button>
+          </div>
+        </div>
+
+
+        <div style="margin-bottom: 24px;">
+          <button class="btn btn-gray" onclick="resetCalculatorPage()" style="width: 100%;">Clear & Reset Page</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 10%">Sr No.</th>
+                <th style="width: 40%">Bill Info / Details</th>
+                <th style="width: 15%">Base Amount</th>
+                <th style="width: 15%">Shop Charges</th>
+                <th style="width: 20%">Total</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              <tr>
+                <td colspan="5" class="empty-row">No bill entries captured in this session.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-row">
+            <span class="summary-label">Total Base Bills</span>
+            <span class="summary-val" id="summary-base">PKR 0</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Total Shop Charges</span>
+            <span class="summary-val" id="summary-charges">PKR 0</span>
+          </div>
+          
+          <!-- Dynamic summary Discount row -->
+          <div class="summary-row" id="summary-discount-row" style="display: none;">
+            <span class="summary-label" style="color: rgb(220, 38, 38); font-weight: 600;">Discount Offered</span>
+            <span class="summary-val" id="summary-discount" style="color: rgb(220, 38, 38); font-weight: 700;">PKR 0</span>
+          </div>
+          
+          <div class="summary-divider"></div>
+
+          <!-- Discount checkbox and input field option -->
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 4px 0;">
+            <input type="checkbox" id="discount-checkbox" onchange="toggleDiscountFields()" style="width: 18px; height: 18px; cursor: pointer; accent-color: rgb(168, 85, 247);">
+            <label for="discount-checkbox" style="font-size: 14px; font-weight: 600; color: rgb(71, 85, 105); cursor: pointer; user-select: none;">Discount (Discounts Dijiye)</label>
+          </div>
+
+          <div id="discount-fields-container" style="display: none; margin-bottom: 16px; background-color: rgba(220, 38, 38, 0.05); padding: 12px; border-radius: 8px; border: 1.5px dashed rgb(220, 38, 38);">
+            <div class="input-group" style="margin-bottom: 0;">
+              <label class="input-label" for="discount-amount" style="font-size: 13px; color: rgb(220, 38, 38);">Discount Amount (PKR)</label>
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-input" id="discount-amount" placeholder="Enter discount in PKR..." style="padding: 8px 12px; font-size: 15px;" oninput="updateSummary()" onfocus="this.select()" onclick="this.select()">
+            </div>
+          </div>
+
+          <!-- Send Message checkbox/checkmark options -->
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 4px 0;">
+            <input type="checkbox" id="send-msg-checkbox" onchange="toggleMessageFields()" style="width: 18px; height: 18px; cursor: pointer; accent-color: rgb(168, 85, 247);">
+            <label for="send-msg-checkbox" style="font-size: 14px; font-weight: 600; color: rgb(71, 85, 105); cursor: pointer; user-select: none;">Send Message</label>
+          </div>
+
+          <div id="message-fields-container" style="display: none; margin-bottom: 16px; background-color: rgb(241, 245, 249); padding: 12px; border-radius: 8px; border: 1.5px dashed rgb(203, 213, 225);">
+            <div class="input-group" style="margin-bottom: 10px;">
+              <label class="input-label" for="customer-phone" style="font-size: 13px;">Customer Mobile Number</label>
+              <input type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-input" id="customer-phone" placeholder="e.g. 03001234567" style="padding: 8px 12px; font-size: 15px;" onfocus="this.select()" onclick="this.select()">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
+              <button class="btn" onclick="sendDirectSMS()" style="width: 100%; font-size: 14px; padding: 12px; font-weight: 700; background-color: rgb(59, 130, 246) !important; color: white !important;">Direct Message</button>
+              <button class="btn" onclick="sendWhatsAppMessage()" style="width: 100%; font-size: 14px; padding: 12px; font-weight: 700; background-color: rgb(34, 197, 94) !important; color: white !important;">WhatsApp Message</button>
+            </div>
+          </div>
+
+          <div class="summary-row grand-total-highlight">
+            <span class="summary-label text-white" style="font-size: 16px;">Grand Total Amount</span>
+            <span class="summary-val text-white" style="font-size: 18px;" id="summary-grand">PKR 0</span>
+          </div>
+        </div>
+
+        <div class="payment-section">
+          <div class="input-group" style="margin-bottom: 0;">
+            <label class="input-label" for="paid-amount">Customer Paid Amount</label>
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-input" id="paid-amount" placeholder="Enter cash received in PKR..." oninput="updateCashReturn()" onfocus="this.select()" onclick="this.select()">
+          </div>
+          <div class="return-box">
+            <div class="return-label">Remaining Balance to Return</div>
+            <div class="return-value" id="refund-amount">PKR 0</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="root" style="display: none;"></div>
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script type="text/javascript">
+      let billingItems = [];
+      let html5QrCode = null;
+      let isScannerStarting = false;
+      let isScannerStopping = false;
+      let isFlashOn = false;
+      let cameraTimeoutTimer = null;
+
+      function calculateCharges(amount) {
+        if (amount <= 4000) return 20;
+        if (amount <= 8000) return 30;
+        if (amount <= 12000) return 50;
+        if (amount <= 18000) return 80;
+        if (amount <= 25000) return 120;
+        return Math.round(amount * 0.005);
+      }
+
+      function showStatus(text, type) {
+        const statusEl = document.getElementById("status-area");
+        if (statusEl) {
+          if (type === "idle" || !text) {
+            statusEl.style.display = "none";
+          } else {
+            statusEl.style.display = "block";
+          }
+          statusEl.className = "status-box status-" + type;
+          statusEl.textContent = text;
+        }
+      }
+
+      function showLoaderBar(text) {
+        const bar = document.getElementById("online-loading-bar");
+        const barText = document.getElementById("loading-bar-text");
+        if (bar && barText) {
+          barText.textContent = text || "Searching Bill online (Bill Fetch Ho Raha Hai)... Please wait";
+          bar.style.display = "flex";
+        }
+      }
+
+      function hideLoaderBar() {
+        const bar = document.getElementById("online-loading-bar");
+        if (bar) {
+          bar.style.display = "none";
+        }
+      }
+
+      function addManualBill() {
+        const amountInput = document.getElementById("manual-amount-input");
+        const value = parseFloat(amountInput.value);
+        if (!isNaN(value) && value > 0) {
+          addBillItem(value, "N/A", "Manual Entry", "N/A");
+          amountInput.value = "";
+          showStatus("Manual bill of PKR " + value.toLocaleString() + " successfully cataloged.", "success");
+        } else {
+          showStatus("Please input a valid positive manual bill amount.", "error");
+        }
+      }
+
+      function findCustomerName(obj) {
+        if (!obj || typeof obj !== "object") return null;
+        const keysToTry = [
+          "customername", "customer_name", "consumername", "consumer_name", 
+          "custname", "name", "nameaddress", "name_address", "ownername", "owner_name"
+        ];
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const lowerKey = key.toLowerCase();
+            if (keysToTry.includes(lowerKey)) {
+              const val = String(obj[key]).trim();
+              if (val && val.length > 2 && val !== "null" && val !== "undefined") {
+                return val;
+              }
+            }
+          }
+        }
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const found = findCustomerName(obj[key]);
+            if (found !== null) return found;
+          }
+        }
+        return null;
+      }
+
+      function findDueDate(obj) {
+        if (!obj || typeof obj !== "object") return null;
+        
+        // Exact lowercased keys for due date
+        const keysToTry = [
+          "duedate", "due_date", "lastdate", "last_date", "paybefore", "pay_before", "tilldate", "till_date", "due_dt", "duedt"
+        ];
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const lowerKey = key.toLowerCase();
+            if (keysToTry.includes(lowerKey)) {
+              const val = String(obj[key]).trim();
+              if (val && val.length >= 4 && val !== "null" && val !== "undefined") {
+                return val;
+              }
+            }
+          }
+        }
+        
+        // Case-insensitive keys that contain "date", "due", "last", or "till"
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const lowerKey = key.toLowerCase();
+            if (lowerKey.includes("date") || lowerKey.includes("due") || lowerKey.includes("last") || lowerKey.includes("till")) {
+              const val = String(obj[key]).trim();
+              // Prevent grabbing big fields or pure numbers by checking length and isNaN
+              if (val && val.length >= 6 && val.length <= 20 && val !== "null" && val !== "undefined" && isNaN(Number(val))) {
+                return val;
+              }
+            }
+          }
+        }
+
+        // Value parsing strategy: find date patterns recursively: DD-MM-YYYY, YYYY-MM-DD, DD-MMM-YY(YY)
+        const datePattern = /\b\d{1,2}[-/]\d{1,2}[-/]\d{2,4}\b|\b\d{4}[-/]\d{1,2}[-/]\d{1,2}\b|\b\d{1,2}[-][A-Za-z]{3,4}[-]\d{2,4}\b/;
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const valStr = String(obj[key]).trim();
+            if (datePattern.test(valStr) && valStr.length <= 20) {
+              return valStr;
+            }
+          }
+        }
+        
+        // Dive deeper recursively
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            if (typeof obj[key] === "object") {
+              const found = findDueDate(obj[key]);
+              if (found !== null) return found;
+            }
+          }
+        }
+        return null;
+      }
+
+      function formatMonthBilling(dateStr) {
+        if (!dateStr || dateStr === "N/A") return "N/A";
+        
+        let clean = String(dateStr).trim().toUpperCase();
+        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+        
+        for (let i = 0; i < months.length; i++) {
+          const mName = months[i];
+          if (clean.includes(mName)) {
+            const tokens = clean.split(/[-/\s,]+/);
+            let year = "";
+            
+            // Try to find a 4-digit number
+            for (const t of tokens) {
+              if (/^\d{4}$/.test(t)) {
+                year = t.substring(2);
+                break;
+              }
+            }
+            
+            // If no 4-digit year, look at parts
+            if (!year && tokens.length >= 3) {
+              const lastToken = tokens[tokens.length - 1];
+              if (/^\d{2}$/.test(lastToken)) {
+                year = lastToken;
+              }
+            }
+            
+            // Fallback: search any 2 digit or 4 digit year from end of parts
+            if (!year) {
+              for (let idx = tokens.length - 1; idx >= 0; idx--) {
+                const t = tokens[idx];
+                if (/^\d{2}$/.test(t) && t !== tokens[0]) {
+                  year = t;
+                  break;
+                }
+              }
+            }
+            
+            if (year) {
+              return mName + " " + year;
+            }
+            
+            let simplified = clean.replace(/^\d{1,2}[-/\s]*/, "");
+            simplified = simplified.replace(/[-/]/g, " ");
+            return simplified;
+          }
+        }
+        
+        // Digital date patterns
+        let matchYMD = clean.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
+        if (matchYMD) {
+          const year = matchYMD[1].substring(2);
+          const monthIdx = parseInt(matchYMD[2], 10) - 1;
+          if (monthIdx >= 0 && monthIdx < 12) {
+            return months[monthIdx] + " " + year;
+          }
+        }
+        
+        let matchDMY = clean.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{2,4})$/);
+        if (matchDMY) {
+          const monthIdx = parseInt(matchDMY[2], 10) - 1;
+          let year = matchDMY[3];
+          if (year.length === 4) {
+            year = year.substring(2);
+          }
+          if (monthIdx >= 0 && monthIdx < 12) {
+            return months[monthIdx] + " " + year;
+          }
+        }
+        
+        return dateStr;
+      }
+
+      function addBillItem(baseAmount, reference = "N/A", customerName = "Manual Entry", dueDate = "N/A") {
+        if (reference && reference !== "N/A") {
+          const isAlreadyAdded = billingItems.some(item => item.reference === reference);
+          if (isAlreadyAdded) {
+            showStatus("Error: Reference number " + reference + " already added!", "error");
+            return;
+          }
+        }
+        const charges = calculateCharges(baseAmount);
+        const total = baseAmount + charges;
+        const item = {
+          id: billingItems.length + 1,
+          baseAmount: baseAmount,
+          charges: charges,
+          total: total,
+          reference: reference,
+          customerName: customerName,
+          dueDate: formatMonthBilling(dueDate)
+        };
+        billingItems.push(item);
+        renderTable();
+        updateSummary();
+        const refInput = document.getElementById("ref-input");
+        if (refInput) {
+          refInput.value = "";
+        }
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById("table-body");
+        tbody.innerHTML = "";
+        if (billingItems.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="empty-row">No bill entries captured in this session.</td></tr>';
+          return;
+        }
+        billingItems.forEach((item, index) => {
+          const row = document.createElement("tr");
+          let detailsHtml = "";
+          if (item.customerName === "Manual Entry") {
+            detailsHtml = '<div style="font-weight: 500; color: rgb(100, 116, 139);">Manual Entry</div>';
+          } else {
+            const nameStr = item.customerName && item.customerName !== "N/A" ? item.customerName : "Unknown";
+            const dateStr = item.dueDate && item.dueDate !== "N/A" ? item.dueDate : "N/A";
+            const dateColor = dateStr !== "N/A" ? "color: rgb(220, 38, 38); font-weight: 700;" : "color: rgb(100, 116, 139);";
+            detailsHtml = '<div style="font-size: 13px; line-height: 1.4; text-align: left;">' +
+                            '<div><strong>Name:</strong> ' + nameStr + '</div>' +
+                            '<div><strong>Ref:</strong> <span style="font-family: monospace;">' + item.reference + '</span></div>' +
+                            '<div><strong>Month Billing:</strong> <span style="' + dateColor + '">' + dateStr + '</span></div>' +
+                          '</div>';
+          }
+          row.innerHTML = '<td>' + (index + 1) + '</td>' +
+                          '<td style="text-align: left; padding: 10px;">' + detailsHtml + '</td>' +
+                          '<td>PKR ' + item.baseAmount.toLocaleString() + '</td>' +
+                          '<td>PKR ' + item.charges.toLocaleString() + '</td>' +
+                          '<td style="font-weight: bold; color: rgb(15, 23, 42);">PKR ' + item.total.toLocaleString() + '</td>';
+          tbody.appendChild(row);
+        });
+      }
+
+      function updateSummary() {
+        let totalBase = 0;
+        let totalCharges = 0;
+        let grandTotal = 0;
+        billingItems.forEach(item => {
+          totalBase += item.baseAmount;
+          totalCharges += item.charges;
+          grandTotal += item.total;
+        });
+
+        const discountCheckbox = document.getElementById("discount-checkbox");
+        const discountInput = document.getElementById("discount-amount");
+        const discountRow = document.getElementById("summary-discount-row");
+        let discountValue = 0;
+
+        if (discountCheckbox && discountCheckbox.checked && discountInput) {
+          discountValue = parseFloat(discountInput.value) || 0;
+        }
+
+        if (discountValue > 0) {
+          if (discountRow) discountRow.style.display = "flex";
+          const summaryDiscount = document.getElementById("summary-discount");
+          if (summaryDiscount) summaryDiscount.textContent = "- PKR " + discountValue.toLocaleString();
+        } else {
+          if (discountRow) discountRow.style.display = "none";
+        }
+
+        const finalGrandTotal = Math.max(0, grandTotal - discountValue);
+
+        document.getElementById("summary-base").textContent = "PKR " + totalBase.toLocaleString();
+        document.getElementById("summary-charges").textContent = "PKR " + totalCharges.toLocaleString();
+        document.getElementById("summary-grand").textContent = "PKR " + finalGrandTotal.toLocaleString();
+        updateCashReturn(finalGrandTotal);
+      }
+
+      function updateCashReturn(providedGrandTotal) {
+        let grandTotal = providedGrandTotal;
+        if (grandTotal === undefined) {
+          let sum = 0;
+          billingItems.forEach(item => {
+            sum += item.total;
+          });
+          const discountCheckbox = document.getElementById("discount-checkbox");
+          const discountInput = document.getElementById("discount-amount");
+          let discountValue = 0;
+          if (discountCheckbox && discountCheckbox.checked && discountInput) {
+            discountValue = parseFloat(discountInput.value) || 0;
+          }
+          grandTotal = Math.max(0, sum - discountValue);
+        }
+        const paidInput = document.getElementById("paid-amount");
+        const paidVal = parseFloat(paidInput.value);
+        const refundEl = document.getElementById("refund-amount");
+        if (isNaN(paidVal) || paidVal === 0) {
+          refundEl.textContent = "PKR 0";
+          refundEl.style.color = "rgb(220, 38, 38)";
+          return;
+        }
+        const balance = paidVal - grandTotal;
+        if (balance >= 0) {
+          refundEl.textContent = "PKR " + balance.toLocaleString() + " (Change)";
+          refundEl.style.color = "rgb(34, 197, 94)";
+        } else {
+          refundEl.textContent = "PKR " + Math.abs(balance).toLocaleString() + " (Shortage)";
+          refundEl.style.color = "rgb(220, 38, 38)";
+        }
+      }
+
+      function findBillAmount(obj) {
+        if (!obj || typeof obj !== "object") return null;
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const lowerKey = key.toLowerCase();
+            if (lowerKey === "curramntdue" || lowerKey === "curr_amnt_due") {
+              const val = parseFloat(String(obj[key]).replace(/[^0-9.]/g, ""));
+              if (!isNaN(val) && val > 0) return val;
+            }
+            const found = findBillAmount(obj[key]);
+            if (found !== null) return found;
+          }
+        }
+        for (const key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            const lowerKey = key.toLowerCase();
+            if (lowerKey === "amount" || lowerKey === "due" || lowerKey === "amountdue" || lowerKey === "amount_due") {
+              const val = parseFloat(String(obj[key]).replace(/[^0-9.]/g, ""));
+              if (!isNaN(val) && val > 0) return val;
+            }
+            const found = findBillAmount(obj[key]);
+            if (found !== null) return found;
+          }
+        }
+        return null;
+      }
+
+      async function fetchBillFromAPI(referenceNumber) {
+        // Instantly empty the reference input box so the value doesn't hang in the UI
+        const refInput = document.getElementById("ref-input");
+        if (refInput) {
+          refInput.value = "";
+        }
+
+        const isAlreadyAdded = billingItems.some(item => item.reference === referenceNumber);
+        if (isAlreadyAdded) {
+          showStatus("Error: Reference " + referenceNumber + " is already added! (Yeh Bill pehle se add hai)", "error");
+          return;
+        }
+
+        // Always check internet connection first
+        if (!navigator.onLine) {
+          showStatus("Error: No Internet! Apka Internet band/closed hai. Please connection active karein.", "error");
+          hideLoaderBar();
+          return;
+        }
+
+        showStatus("Fetching bill details from principal API...", "loading");
+        showLoaderBar("Searching Bill online (Bill Fetch Ho Raha Hai)... Please wait");
+
+        const primaryUrl = "https://ccms.pitc.com.pk/api/details/bill?reference=" + referenceNumber;
+        try {
+          if (!navigator.onLine) {
+            throw new Error("NoInternet");
+          }
+          const response = await fetch(primaryUrl);
+          if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+          }
+          const data = await response.json();
+          handleApiResponse(data, referenceNumber);
+        } catch (e) {
+          if (e.message === "NoInternet" || !navigator.onLine) {
+            showStatus("Error: No Internet! Apka Internet band/closed hai. Please connection active karein.", "error");
+            hideLoaderBar();
+            return;
+          }
+          showStatus("Principal API block or CORS restriction. Trying secure backup proxy...", "loading");
+          showLoaderBar("Trying Secure Backup Proxy. Fetching Bill details...");
+          const fallbackUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(primaryUrl);
+          try {
+            if (!navigator.onLine) {
+              throw new Error("NoInternet");
+            }
+            const response = await fetch(fallbackUrl);
+            if (!response.ok) {
+              throw new Error("Proxy response error");
+            }
+            const proxyData = await response.json();
+            if (proxyData && proxyData.contents) {
+              const parsedData = JSON.parse(proxyData.contents);
+              handleApiResponse(parsedData, referenceNumber);
+            } else {
+              throw new Error("Empty contents pack");
+            }
+          } catch (proxyError) {
+            if (proxyError.message === "NoInternet" || !navigator.onLine) {
+              showStatus("Error: No Internet! Apka Internet band/closed hai. Please connection active karein.", "error");
+            } else {
+              showStatus("Billing information could not be retrieved from both access routes.", "error");
+            }
+            hideLoaderBar();
+          }
+        }
+      }
+
+      function handleApiResponse(data, referenceNumber) {
+        hideLoaderBar();
+        if (!data) {
+          showStatus("Empty or unparseable response data received.", "error");
+          return;
+        }
+        let amntDueVal = null;
+        if (data.bill && data.bill.basicInfo && data.bill.basicInfo.currAmntDue) {
+          amntDueVal = parseFloat(String(data.bill.basicInfo.currAmntDue).replace(/[^0-9.]/g, ""));
+        }
+        if (isNaN(amntDueVal) || amntDueVal === null || amntDueVal <= 0) {
+          amntDueVal = findBillAmount(data);
+        }
+        if (amntDueVal !== null && !isNaN(amntDueVal) && amntDueVal > 0) {
+          const custName = findCustomerName(data) || "N/A";
+          const dDate = findDueDate(data) || "N/A";
+          addBillItem(amntDueVal, referenceNumber, custName, dDate);
+          showStatus("Bill fetched successfully for " + custName + ": PKR " + amntDueVal.toLocaleString(), "success");
+        } else {
+          showStatus("Bill response record structure is invalid or not found.", "error");
+        }
+      }
+
+      function triggerApiFetch() {
+        const refNumInput = document.getElementById("ref-input");
+        const refNum = refNumInput.value.replace(/[^0-9]/g, "");
+        if (refNum.length === 14) {
+          fetchBillFromAPI(refNum);
+        } else {
+          showStatus("Please enter or scan a valid 14-digit bill reference number.", "error");
+        }
+      }
+
+      function handleRefInput(input) {
+        const originalVal = input.value;
+        const cleanVal = originalVal.replace(/[^0-9]/g, "");
+        if (originalVal !== cleanVal) {
+          input.value = cleanVal;
+        }
+        if (cleanVal.length === 14) {
+          input.value = ""; // Instantly clear keyboard input to avoid duplication
+          input.blur(); // Close the virtual/physical keyboard
+          fetchBillFromAPI(cleanVal);
+        }
+      }
+
+      function extractReferenceFromEMVCo(txt) {
+        let pos = 0;
+        while ((pos = txt.indexOf("62", pos)) !== -1) {
+          if (pos + 4 <= txt.length) {
+            const lenStr = txt.substring(pos + 2, pos + 4);
+            const len = parseInt(lenStr, 10);
+            if (!isNaN(len) && len > 0 && pos + 4 + len <= txt.length) {
+              const tagValue = txt.substring(pos + 4, pos + 4 + len);
+              const subPos = tagValue.indexOf("0114");
+              if (subPos !== -1 && subPos + 4 + 14 <= tagValue.length) {
+                const ref = tagValue.substring(subPos + 4, subPos + 4 + 14);
+                if (/^\d{14}$/.test(ref)) {
+                  return ref;
+                }
+              }
+            }
+          }
+          pos += 2;
+        }
+        return "";
+      }
+
+      function parse14DigitReference(decodedText) {
+        if (!decodedText) return "";
+        const txt = decodedText.trim();
+        const emvMatch = extractReferenceFromEMVCo(txt);
+        if (emvMatch) return emvMatch;
+
+        const sub14Match = txt.match(/0114(\d{14})/);
+        if (sub14Match) return sub14Match[1];
+
+        const matches = txt.match(/\d{14}/g);
+        if (matches) {
+          for (let m of matches) {
+            const idx = txt.indexOf(m);
+            const prevChar = idx > 0 ? txt[idx - 1] : "";
+            const nextChar = idx + 14 < txt.length ? txt[idx + 14] : "";
+            if (!/[0-9]/.test(prevChar) && !/[0-9]/.test(nextChar)) {
+              return m;
+            }
+          }
+        }
+        if (matches && matches.length > 0) {
+          return matches[0];
+        }
+        const digitsOnly = txt.replace(/[^0-9]/g, "");
+        if (digitsOnly.length >= 14) {
+          return digitsOnly.substring(0, 14);
+        }
+        return digitsOnly;
+      }
+
+      function playBeep() {
+        try {
+          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          const oscillator = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          
+          oscillator.type = "sine";
+          oscillator.frequency.value = 1100; // Crisp high-frequency barcode scanner chirp
+          
+          gainNode.gain.setValueAtTime(0.4, audioCtx.currentTime); 
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.22); // Fast scan fade-out
+          
+          oscillator.start(audioCtx.currentTime);
+          oscillator.stop(audioCtx.currentTime + 0.22);
+        } catch (e) {
+          console.warn("AudioContext beep failed or blocked by autoplay constraints: ", e);
+        }
+      }
+
+      function toggleDiscountFields() {
+        const checkbox = document.getElementById("discount-checkbox");
+        const container = document.getElementById("discount-fields-container");
+        const discInput = document.getElementById("discount-amount");
+        if (checkbox && container) {
+          if (checkbox.checked) {
+            container.style.display = "block";
+            setTimeout(() => {
+              if (discInput) discInput.focus();
+            }, 80);
+          } else {
+            container.style.display = "none";
+            if (discInput) discInput.value = "";
+          }
+        }
+        updateSummary();
+      }
+
+      function toggleMessageFields() {
+        const checkbox = document.getElementById("send-msg-checkbox");
+        const container = document.getElementById("message-fields-container");
+        if (checkbox && container) {
+          if (checkbox.checked) {
+            container.style.display = "block";
+            // Auto focus phone input
+            setTimeout(() => {
+              document.getElementById("customer-phone").focus();
+            }, 80);
+          } else {
+            container.style.display = "none";
+          }
+        }
+      }
+
+      function prepareMessageText(isSms = false) {
+        if (billingItems.length === 0) return "";
+        
+        const discountCheckbox = document.getElementById("discount-checkbox");
+        const discountInput = document.getElementById("discount-amount");
+        let discountValue = 0;
+        if (discountCheckbox && discountCheckbox.checked && discountInput) {
+          discountValue = parseFloat(discountInput.value) || 0;
+        }
+
+        let totalBase = 0;
+        let totalCharges = 0;
+        let grandTotal = 0;
+        billingItems.forEach(item => {
+          totalBase += item.baseAmount;
+          totalCharges += item.charges;
+          grandTotal += item.total;
+        });
+        const finalGrandTotal = Math.max(0, grandTotal - discountValue);
+
+        if (isSms) {
+          // Direct SMS: Clean, No emojis (Emjoy Na Ay), No grand summary list components (grand Summary khatam)
+          let msg = "MADINA MOBILE NAROWAL\n";
+          msg += "OFFICIAL DIGITAL RECEIPT\n";
+          msg += "--------------------------\n";
+          
+          billingItems.forEach((item, index) => {
+            msg += (index + 1) + ". Bill Entries:\n";
+            if (item.customerName && item.customerName !== "Manual Entry" && item.customerName !== "N/A") {
+              msg += "Name: " + item.customerName + "\n";
+            }
+            if (item.reference && item.reference !== "N/A") {
+              msg += "Ref: " + item.reference + "\n";
+            }
+            msg += "Amount: PKR " + item.baseAmount.toLocaleString() + "\n";
+            msg += "Charges: PKR " + item.charges.toLocaleString() + "\n";
+            msg += "Subtotal: PKR " + item.total.toLocaleString() + "\n";
+            msg += "--------------------------\n";
+          });
+
+          if (discountValue > 0) {
+            msg += "Discount: PKR " + discountValue.toLocaleString() + "\n";
+            msg += "--------------------------\n";
+          }
+          msg += "GRAND TOTAL TO PAY: PKR " + finalGrandTotal.toLocaleString() + "\n";
+
+          const paidInput = document.getElementById("paid-amount");
+          if (paidInput) {
+            const paidVal = parseFloat(paidInput.value);
+            if (!isNaN(paidVal) && paidVal > 0) {
+              msg += "Received Cash: PKR " + paidVal.toLocaleString() + "\n";
+              const balance = paidVal - finalGrandTotal;
+              if (balance >= 0) {
+                msg += "Change Returned: PKR " + balance.toLocaleString() + "\n";
+              } else {
+                msg += "Shortage Due: PKR " + Math.abs(balance).toLocaleString() + "\n";
+              }
+            }
+          }
+          msg += "--------------------------\n";
+          msg += "Thank you for choosing Madina Mobile Narowal!";
+          return msg;
+        }
+
+        // WhatsApp Message with extra life/soul (whatsapo message may jan dal do)
+        let msg = "✨ *MADINA MOBILE NAROWAL* ✨\n";
+        msg += "📱 *OFFICIAL DIGITAL INVOICE RECEIPT* 📱\n";
+        msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+        msg += "🟢 *CUSTOMER BILL DETAIL ENTRIES:*\n\n";
+        
+        billingItems.forEach((item, index) => {
+          msg += "📌 *Bill Entry #" + (index + 1) + ":*\n";
+          if (item.customerName && item.customerName !== "Manual Entry" && item.customerName !== "N/A") {
+            msg += "👤 *Name:* " + item.customerName + "\n";
+          }
+          if (item.reference && item.reference !== "N/A") {
+            msg += "🔑 *Ref No:* `" + item.reference + "`\n";
+          }
+          if (item.dueDate && item.dueDate !== "N/A") {
+            msg += "📅 *Month Billing:* " + item.dueDate + "\n";
+          }
+          msg += "💵 *Bill Amount:* PKR " + item.baseAmount.toLocaleString() + "\n";
+          msg += "⚡ *Shop Service Charges:* PKR " + item.charges.toLocaleString() + "\n";
+          msg += "🏷️ *Sub-Total:* PKR " + item.total.toLocaleString() + "\n";
+          msg += "───────────────────\n";
+        });
+
+        msg += "\n📊 *GRAND INVOICE BREAKDOWN:*\n";
+        msg += "💵 *Total Base Amount:* PKR " + totalBase.toLocaleString() + "\n";
+        msg += "🔌 *Total Shop Charges:* PKR " + totalCharges.toLocaleString() + "\n";
+        
+        if (discountValue > 0) {
+          msg += "🎉 *Special Discount:* -PKR " + discountValue.toLocaleString() + "\n";
+        }
+        
+        msg += "⭐ *GRAND TOTAL TO PAY:* *" + "PKR " + finalGrandTotal.toLocaleString() + "*\n\n";
+
+        const paidInput = document.getElementById("paid-amount");
+        if (paidInput) {
+          const paidVal = parseFloat(paidInput.value);
+          if (!isNaN(paidVal) && paidVal > 0) {
+            msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            msg += "📥 *Cash Received:* PKR " + paidVal.toLocaleString() + "\n";
+            const balance = paidVal - finalGrandTotal;
+            if (balance >= 0) {
+              msg += "🟢 *Change Returned back:* PKR " + balance.toLocaleString() + "\n";
+            } else {
+              msg += "🔴 *Remaining Balance due:* PKR " + Math.abs(balance).toLocaleString() + "\n";
+            }
+          }
+        }
+
+        msg += "━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        msg += "🤝 *Madina Mobile Narowal pe tashreed laney ka shukriya!*\n";
+        msg += "🚀 *We look forward to serving you with pride again!*";
+        return msg;
+      }
+
+      function sendDirectSMS() {
+        const phoneInput = document.getElementById("customer-phone");
+        if (!phoneInput) return;
+        
+        const phoneVal = phoneInput.value.replace(/[^0-9+]/g, "").trim();
+        if (!phoneVal || phoneVal.length < 7) {
+          showStatus("Please enter a valid customer phone number.", "error");
+          phoneInput.focus();
+          return;
+        }
+
+        if (billingItems.length === 0) {
+          showStatus("Please add at least one bill entry first.", "error");
+          return;
+        }
+
+        const textOfInvoice = prepareMessageText(true);
+        // Direct SMS schemes: "sms:PHONE_NUMBER?body=TEXT" or "sms:PHONE_NUMBER&body=TEXT" 
+        // We use ?body= which is standard, but fallback is supported.
+        const smsUrl = "sms:" + phoneVal + "?body=" + encodeURIComponent(textOfInvoice);
+        
+        showStatus("Opening native SMS messaging application...", "success");
+        
+        const targetAnchor = document.createElement("a");
+        targetAnchor.href = smsUrl;
+        document.body.appendChild(targetAnchor);
+        targetAnchor.click();
+        document.body.removeChild(targetAnchor);
+      }
+
+      function sendWhatsAppMessage() {
+        const phoneInput = document.getElementById("customer-phone");
+        if (!phoneInput) return;
+        
+        let phoneVal = phoneInput.value.replace(/[^0-9+]/g, "").trim();
+        if (!phoneVal || phoneVal.length < 7) {
+          showStatus("Please enter a valid customer phone number.", "error");
+          phoneInput.focus();
+          return;
+        }
+
+        if (billingItems.length === 0) {
+          showStatus("Please add at least one bill entry first.", "error");
+          return;
+        }
+
+        // Auto convert localized standard numbers (e.g. 0300...) to WhatsApp formatting (92...)
+        if (phoneVal.startsWith("0")) {
+          phoneVal = "92" + phoneVal.substring(1);
+        } else if (!phoneVal.startsWith("92") && !phoneVal.startsWith("+")) {
+          phoneVal = "92" + phoneVal;
+        }
+
+        const textOfInvoice = prepareMessageText(false);
+        const whatsappUrl = "https://api.whatsapp.com/send?phone=" + encodeURIComponent(phoneVal) + "&text=" + encodeURIComponent(textOfInvoice);
+        
+        showStatus("Opening WhatsApp to transmit invoice details...", "success");
+        
+        const targetAnchor = document.createElement("a");
+        targetAnchor.href = whatsappUrl;
+        targetAnchor.target = "_blank";
+        targetAnchor.rel = "noopener noreferrer";
+        document.body.appendChild(targetAnchor);
+        targetAnchor.click();
+        document.body.removeChild(targetAnchor);
+      }
+
+      async function optimizeCameraTracks() {
+        try {
+          const videoElem = document.querySelector('#reader video');
+          if (videoElem && videoElem.srcObject) {
+            const tracks = videoElem.srcObject.getVideoTracks();
+            if (tracks && tracks.length > 0) {
+              const track = tracks[0];
+              const caps = track.getCapabilities ? track.getCapabilities() : {};
+              const consts = {};
+              
+              if (caps.focusMode && caps.focusMode.includes("continuous")) {
+                consts.focusMode = "continuous";
+              }
+              if (caps.zoom) {
+                // Apply slight magnification to lock on tiny QR codes instantly
+                consts.zoom = Math.min(caps.zoom.max, Math.max(1.75, caps.zoom.min || 1.0));
+              }
+              if (Object.keys(consts).length > 0) {
+                await track.applyConstraints(consts).catch(e => console.log("Focus/zoom constraints warn:", e));
+              }
+
+              // Always turn on flashlight/torch automatically when camera begins scanning
+              if (caps.torch) {
+                try {
+                  await track.applyConstraints({
+                    advanced: [{ torch: true }]
+                  });
+                  isFlashOn = true;
+                  console.log("Torch/flashlight automatically enabled.");
+                } catch (torchErr) {
+                  console.warn("Auto torch application failed, scheduling retry...", torchErr);
+                  setTimeout(async () => {
+                    try {
+                      await track.applyConstraints({ advanced: [{ torch: true }] });
+                      isFlashOn = true;
+                    } catch (nestedRetryErr) {
+                      console.warn("Scheduled torch retry also omitted:", nestedRetryErr);
+                    }
+                  }, 400);
+                }
+              }
+            }
+          }
+        } catch (zoomError) {
+          console.log("Hardware camera optimization omitted:", zoomError);
+        }
+      }
+
+      async function openScanner() {
+        // Enforce transition lock reset after 5 seconds to prevent browser deadlock
+        if (isScannerStarting || isScannerStopping) {
+          console.warn("Scanner is in transition state, open scanner checked");
+          if (window.scannerStateLockTime && (Date.now() - window.scannerStateLockTime > 5000)) {
+            isScannerStarting = false;
+            isScannerStopping = false;
+            console.log("Forced locked scanner states release.");
+          } else {
+            if (!window.scannerStateLockTime) {
+              window.scannerStateLockTime = Date.now();
+            }
+            return;
+          }
+        }
+        window.scannerStateLockTime = Date.now();
+
+        const scannerContainer = document.getElementById("scanner-container");
+        if (scannerContainer && scannerContainer.style.display !== "none") {
+          return;
+        }
+
+        const scannerDiv = document.getElementById("scanner-container");
+        scannerDiv.style.display = "block";
+        showStatus("Activating high-speed environment camera...", "loading");
+        
+        if (!html5QrCode) {
+          html5QrCode = new Html5Qrcode("reader");
+        }
+        
+        // Optimize configuration with high framerate, generous view area for extreme scanning speed
+        const config = { 
+          fps: 45, // Elevated FPS request for super snappiness
+          qrbox: (viewfinderWidth, viewfinderHeight) => {
+            const size = Math.min(viewfinderWidth, viewfinderHeight, 350) * 0.95;
+            return { width: Math.floor(size), height: Math.floor(size) };
+          },
+          aspectRatio: 1.0
+        };
+
+        const handleSuccess = async (decodedText, decodedResult) => {
+          const cleanNumber = parse14DigitReference(decodedText);
+          if (cleanNumber.length === 14) {
+            // Check if already added first
+            const isAlreadyAdded = billingItems.some(item => item.reference === cleanNumber);
+            if (isAlreadyAdded) {
+              showStatus("Error: Reference " + cleanNumber + " already added! (Yeh Bill pehle se add hai)", "error");
+              playBeep(); // Beep to signal scan detection
+              return;
+            }
+
+            playBeep(); // Audio indicator feedback
+            document.getElementById("ref-input").value = cleanNumber;
+            showStatus("Scanned 14-digit reference number: " + cleanNumber, "success");
+            
+            // Execute stop in a safe timeout callback to resolve active frame loop cycles
+            setTimeout(async () => {
+              await stopScanner();
+              fetchBillFromAPI(cleanNumber);
+            }, 60);
+          } else {
+            const cleanDigits = decodedText.replace(/[^0-9]/g, "");
+            if (cleanDigits.length > 0) {
+              showStatus("Scanned digits: " + cleanDigits + " (" + cleanDigits.length + " digits). Needs 14-digit Reference! (14 digit ka Reference chahiye)", "error");
+            } else {
+              showStatus("Detected QR text: " + (decodedText.length > 30 ? decodedText.substring(0, 30) + "..." : decodedText) + ". Needs 14-digit Reference!", "error");
+            }
+          }
+        };
+
+        const handleError = (errorMessage) => {
+          // Silent frame analysis failure handler to prevent console noise
+        };
+
+        try {
+          isScannerStarting = true;
+          await html5QrCode.start(
+            { facingMode: "environment" },
+            config,
+            handleSuccess,
+            handleError
+          );
+
+          showStatus("High-Performance QR Scanner online and active.", "success");
+          document.getElementById("toggle-flash-wrap").style.display = "block";
+          
+          await optimizeCameraTracks();
+
+          // Set active watchdog to auto-close camera after 45 seconds to prevent browser lockups/heating
+          if (cameraTimeoutTimer) clearTimeout(cameraTimeoutTimer);
+          cameraTimeoutTimer = setTimeout(async () => {
+            if (html5QrCode && html5QrCode.isRunning()) {
+              await stopScanner();
+              showStatus("Camera auto-paused after 45 seconds of search to prevent battery heating. Press QR button to restart!", "error");
+            }
+          }, 45000);
+
+          const inputBtn = document.getElementById("input-scanner-btn");
+          if (inputBtn) {
+            inputBtn.style.backgroundColor = "rgb(220, 38, 38)"; // Red feedback while active
+            inputBtn.title = "Close Camera Scanner";
+          }
+        } catch (err) {
+          console.warn("Direct environment constraints failed, falling back to camera enumeration...", err);
+          try {
+            const devices = await Html5Qrcode.getCameras();
+            if (devices && devices.length > 0) {
+              const anyCameraId = devices[devices.length - 1].id;
+              await html5QrCode.start(
+                anyCameraId,
+                config,
+                handleSuccess,
+                handleError
+              );
+
+              showStatus("High-Performance QR Scanner online.", "success");
+              document.getElementById("toggle-flash-wrap").style.display = "block";
+              
+              await optimizeCameraTracks();
+
+              // Setup watchdog for fallback camera
+              if (cameraTimeoutTimer) clearTimeout(cameraTimeoutTimer);
+              cameraTimeoutTimer = setTimeout(async () => {
+                if (html5QrCode && html5QrCode.isRunning()) {
+                  await stopScanner();
+                  showStatus("Camera auto-paused after 45 seconds of search to prevent battery heating. Press QR button to restart!", "error");
+                }
+              }, 45000);
+              
+              const inputBtn = document.getElementById("input-scanner-btn");
+              if (inputBtn) {
+                inputBtn.style.backgroundColor = "rgb(220, 38, 38)";
+              }
+            } else {
+              throw new Error("No video input devices found");
+            }
+          } catch (errFallback) {
+            showStatus("Camera connection failure: " + errFallback.message, "error");
+            document.getElementById("toggle-flash-wrap").style.display = "none";
+            document.getElementById("scanner-container").style.display = "none";
+          }
+        } finally {
+          isScannerStarting = false;
+        }
+      }
+
+      async function stopScanner() {
+        if (isScannerStopping) return;
+        isScannerStopping = true;
+
+        if (cameraTimeoutTimer) {
+          clearTimeout(cameraTimeoutTimer);
+          cameraTimeoutTimer = null;
+        }
+
+        // Unconditional UI hide for immediate responsive action
+        document.getElementById("scanner-container").style.display = "none";
+        document.getElementById("toggle-flash-wrap").style.display = "none";
+        
+        // Wait a brief block period if starting is ongoing
+        let waitLimit = 0;
+        while (isScannerStarting && waitLimit < 15) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+          waitLimit++;
+        }
+
+        // Physically terminate video tracks instantly so indicator light/locks clear immediately
+        try {
+          const videoElement = document.querySelector('#reader video');
+          if (videoElement && videoElement.srcObject) {
+            const stream = videoElement.srcObject;
+            const tracks = stream.getTracks();
+            if (tracks && tracks.length > 0) {
+              tracks.forEach(track => {
+                try { track.stop(); } catch(e) {}
+              });
+            }
+          }
+        } catch (e) {
+          console.warn("Stream track manual termination: ", e);
+        }
+
+        // Gracefully execute Html5QrCode stop sequence
+        if (html5QrCode) {
+          try {
+            if (html5QrCode.isRunning()) {
+              await html5QrCode.stop();
+            }
+          } catch (err) {
+            console.warn("Library stop failed or was already stopped, enforcing DOM cleanup:", err);
+            try {
+              const readerDiv = document.getElementById("reader");
+              if (readerDiv) {
+                readerDiv.innerHTML = "";
+              }
+              html5QrCode = null; // Enforce recreation on next boot to purge bad configurations
+            } catch (cleanupErr) {
+              console.warn("DOM node clean failed:", cleanupErr);
+            }
+          }
+        }
+
+        isFlashOn = false;
+        const flashBtn = document.getElementById("toggle-flash-btn");
+        if (flashBtn) {
+          flashBtn.textContent = "Toggle Flashlight";
+        }
+        
+        const inputBtn = document.getElementById("input-scanner-btn");
+        if (inputBtn) {
+          inputBtn.style.backgroundColor = "rgb(168, 85, 247)"; // Restore original color
+          inputBtn.title = "Scan QR Code";
+        }
+
+        isScannerStopping = false;
+      }
+
+      async function toggleScanner() {
+        const scannerContainer = document.getElementById("scanner-container");
+        const isOpen = scannerContainer && scannerContainer.style.display !== "none";
+        
+        if (isOpen) {
+          await stopScanner();
+          showStatus("Camera scanner stopped.", "success");
+        } else {
+          await openScanner();
+        }
+      }
+
+      async function toggleFlashlight() {
+        const videoElem = document.querySelector('div[id="reader"] video');
+        if (videoElem && videoElem.srcObject) {
+          const track = videoElem.srcObject.getVideoTracks()[0];
+          if (track) {
+            try {
+              const capabilities = track.getCapabilities ? track.getCapabilities() : {};
+              if (capabilities.torch) {
+                isFlashOn = !isFlashOn;
+                await track.applyConstraints({
+                  advanced: [{ torch: isFlashOn }]
+                });
+                document.getElementById("toggle-flash-btn").textContent = isFlashOn ? "Flashlight: On" : "Flashlight: Off";
+              } else {
+                showStatus("Flashlight not supported on this specific video device.", "error");
+              }
+            } catch (err) {
+              showStatus("Could not apply flashlight settings: " + err.message, "error");
+            }
+          }
+        }
+      }
+
+      async function resetCalculatorPage() {
+        await stopScanner();
+        billingItems = [];
+        
+        // Reset inputs and checkboxes
+        document.getElementById("ref-input").value = "";
+        document.getElementById("paid-amount").value = "";
+        
+        const discBox = document.getElementById("discount-checkbox");
+        if (discBox) discBox.checked = false;
+        const discContainer = document.getElementById("discount-fields-container");
+        if (discContainer) discContainer.style.display = "none";
+        const discAmt = document.getElementById("discount-amount");
+        if (discAmt) discAmt.value = "";
+
+        const msgBox = document.getElementById("send-msg-checkbox");
+        if (msgBox) msgBox.checked = false;
+        const msgContainer = document.getElementById("message-fields-container");
+        if (msgContainer) msgContainer.style.display = "none";
+        const phoneInput = document.getElementById("customer-phone");
+        if (phoneInput) phoneInput.value = "";
+
+        renderTable();
+        updateSummary();
+        showStatus("Form cleared and reset.", "idle");
+      }
+    </script>
+    <script>
+      // Active cleanup: Unregister any existing service worker since PWA is disabled
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+          for (const registration of registrations) {
+            registration.unregister();
+            console.log("[PWA] Service Worker unregistered successfully.");
+          }
+        }).catch((err) => {
+          console.error("[PWA] Error removing service worker:", err);
+        });
+      }
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
