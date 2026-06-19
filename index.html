@@ -3,297 +3,103 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Madina Mobile Narowal</title>
+    <title>Madina Mobile Narowal - Fast POS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
       body {
-        margin: 0;
-        padding: 0;
+        margin: 0; padding: 0;
         background-color: rgb(241, 245, 249);
         font-family: "Inter", -apple-system, sans-serif;
         box-sizing: border-box;
       }
       .app-wrapper {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 16px;
-        box-sizing: border-box;
+        min-height: 100vh; display: flex; flex-direction: column;
+        align-items: center; justify-content: flex-start;
+        padding: 16px; box-sizing: border-box;
       }
       .main-card {
-        width: 100%;
-        max-width: 600px;
-        background-color: rgb(255, 255, 255);
-        border-radius: 16px;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-        padding: 24px;
-        box-sizing: border-box;
-        margin-top: 20px;
-        margin-bottom: 24px;
+        width: 100%; max-width: 600px; background-color: rgb(255, 255, 255);
+        border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        padding: 24px; box-sizing: border-box; margin-top: 20px; margin-bottom: 24px;
       }
       .centered-title {
-        text-align: center;
-        font-size: 28px;
-        font-weight: 700;
-        color: rgb(15, 23, 42);
-        margin-top: 8px;
-        margin-bottom: 24px;
-        letter-spacing: -0.5px;
+        text-align: center; font-size: 28px; font-weight: 700;
+        color: rgb(15, 23, 42); margin-top: 8px; margin-bottom: 24px;
       }
-      .input-group {
-        margin-bottom: 16px;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .input-label {
-        display: block;
-        font-size: 14px;
-        font-weight: 600;
-        color: rgb(71, 85, 105);
-        margin-bottom: 6px;
-      }
+      .input-group { margin-bottom: 16px; width: 100%; box-sizing: border-box; }
+      .input-label { display: block; font-size: 14px; font-weight: 600; color: rgb(71, 85, 105); margin-bottom: 6px; }
       .text-input {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        border: 1.5px solid rgb(203, 213, 225);
-        border-radius: 8px;
-        box-sizing: border-box;
-        color: rgb(15, 23, 42);
-        background-color: rgb(255, 255, 255);
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        width: 100%; padding: 12px; font-size: 16px;
+        border: 1.5px solid rgb(203, 213, 225); border-radius: 8px; box-sizing: border-box;
       }
-      .text-input:focus {
-        outline: none;
-        border-color: rgb(59, 130, 246);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-      }
-      .input-with-button {
-        position: relative;
-        display: flex;
-        align-items: center;
-        width: 100%;
-      }
-      .input-with-button .text-input {
-        padding-right: 48px;
-      }
+      .text-input:focus { outline: none; border-color: rgb(59, 130, 246); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+      .input-with-button { position: relative; display: flex; align-items: center; width: 100%; }
+      .input-with-button .text-input { padding-right: 48px; }
       .input-action-btn {
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 36px;
-        height: 36px;
-        border-radius: 6px;
-        border: none;
-        background-color: rgb(168, 85, 247);
-        color: white;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background-color 0.15s ease, transform 0.1s/0.15s ease;
+        position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
+        width: 36px; height: 36px; border-radius: 6px; border: none;
+        background-color: rgb(168, 85, 247); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
       }
-      .input-action-btn:hover {
-        background-color: rgb(147, 51, 234);
-      }
-      .input-action-btn:active {
-        transform: translateY(-50%) scale(0.95);
-      }
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      .animate-spin {
-        animation: spin 1s linear infinite;
-      }
-      @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-      }
-      .pulse-indicator {
-        animation: pulse 1.5s infinite;
-      }
-      .status-box {
-        padding: 12px 16px;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 16px;
-        border-width: 1px;
-        border-style: solid;
-        transition: all 0.2s ease-in-out;
-        text-align: center;
-      }
-      .status-idle {
-        background-color: rgb(248, 250, 252);
-        border-color: rgb(226, 232, 240);
-        color: rgb(100, 116, 139);
-      }
-      .status-loading {
-        background-color: rgb(239, 246, 255);
-        border-color: rgb(191, 219, 254);
-        color: rgb(29, 78, 216);
-      }
-      .status-success {
-        background-color: rgb(240, 253, 250);
-        border-color: rgb(153, 246, 228);
-        color: rgb(13, 148, 136);
-      }
-      .status-error {
-        background-color: rgb(254, 242, 242);
-        border-color: rgb(254, 202, 202);
-        color: rgb(220, 38, 38);
-      }
-      .btn {
-        padding: 12px 6px;
-        font-size: 13px;
-        font-weight: 600;
-        border-radius: 8px;
-        border: none;
-        color: rgb(255, 255, 255);
-        cursor: pointer;
-        transition: transform 0.1s ease, filter 0.15s ease;
-        text-align: center;
-        user-select: none;
-      }
-      .btn:active {
-        transform: scale(0.97);
-      }
-      .btn-green { background-color: rgb(34, 197, 94); }
-      .btn-purple { background-color: rgb(168, 85, 247); }
-      .btn-blue { background-color: rgb(59, 130, 246); }
+      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+      .status-box { padding: 12px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; margin-bottom: 16px; text-align: center; }
+      .status-idle { display: none; }
+      .status-loading { background-color: rgb(239, 246, 255); border: 1px solid rgb(191, 219, 254); color: rgb(29, 78, 216); }
+      .status-success { background-color: rgb(240, 253, 250); border: 1px solid rgb(153, 246, 228); color: rgb(13, 148, 136); }
+      .status-error { background-color: rgb(254, 242, 242); border: 1px solid rgb(254, 202, 202); color: rgb(220, 38, 38); }
+      
+      .btn { padding: 12px 6px; font-size: 13px; font-weight: 600; border-radius: 8px; border: none; color: white; cursor: pointer; width: 100%; }
       .btn-gray { background-color: rgb(100, 116, 139); }
-      .table-wrapper {
-        width: 100%;
-        overflow-x: auto;
-        border-radius: 8px;
-        border: 1px solid rgb(226, 232, 240);
-        margin-bottom: 24px;
-      }
-      .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-        font-size: 14px;
-      }
-      .data-table th {
-        background-color: rgb(241, 245, 249);
-        color: rgb(71, 85, 105);
-        font-weight: 600;
-        padding: 12px;
-        border-bottom: 1px solid rgb(226, 232, 240);
-      }
-      .data-table td {
-        padding: 12px;
-        border-bottom: 1px solid rgb(241, 245, 249);
-        color: rgb(15, 23, 42);
-      }
-      .empty-row {
-        text-align: center;
-        color: rgb(100, 116, 139);
-        padding: 20px !important;
-        font-style: italic;
-      }
-      .summary-card {
-        background-color: rgb(248, 250, 252);
-        border: 1px solid rgb(226, 232, 240);
-        border-radius: 12px;
-        padding: 16px;
-        margin-bottom: 24px;
-        box-sizing: border-box;
-      }
-      .summary-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-      .summary-label {
-        font-size: 14px;
-        color: rgb(71, 85, 105);
-      }
-      .summary-val {
-        font-size: 15px;
-        font-weight: 600;
-        color: rgb(15, 23, 42);
-      }
-      .summary-divider {
-        height: 1px;
-        background-color: rgb(226, 232, 240);
-        margin-top: 10px;
-        margin-bottom: 10px;
-      }
-      .grand-total-highlight {
-        background-color: rgb(59, 130, 246);
-        border-radius: 8px;
-        padding: 12px;
-        color: rgb(255, 255, 255);
-      }
-      .text-white { color: rgb(255, 255, 255) !important; }
-      .payment-section {
-        border: 1px solid rgb(254, 202, 202);
-        background-color: rgb(254, 242, 242);
-        border-radius: 12px;
-        padding: 16px;
-        box-sizing: border-box;
-      }
-      .return-box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 12px;
-      }
+      .btn-purple { background-color: rgb(168, 85, 247); }
+      
+      .table-wrapper { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid rgb(226, 232, 240); margin-bottom: 24px; }
+      .data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+      .data-table th { background-color: rgb(241, 245, 249); color: rgb(71, 85, 105); font-weight: 600; padding: 12px; border-bottom: 1px solid rgb(226, 232, 240); }
+      .data-table td { padding: 12px; border-bottom: 1px solid rgb(241, 245, 249); color: rgb(15, 23, 42); }
+      .empty-row { text-align: center; color: rgb(100, 116, 139); padding: 20px; font-style: italic; }
+      
+      .summary-card { background-color: rgb(248, 250, 252); border: 1px solid rgb(226, 232, 240); border-radius: 12px; padding: 16px; margin-bottom: 24px; }
+      .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+      .summary-label { font-size: 14px; color: rgb(71, 85, 105); }
+      .summary-val { font-size: 15px; font-weight: 600; color: rgb(15, 23, 42); }
+      .grand-total-highlight { background-color: rgb(59, 130, 246); border-radius: 8px; padding: 12px; color: white; }
+      .text-white { color: white !important; }
+      .payment-section { border: 1px solid rgb(254, 202, 202); background-color: rgb(254, 242, 242); border-radius: 12px; padding: 16px; }
+      .return-box { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
       .return-label { font-size: 15px; font-weight: 700; color: rgb(220, 38, 38); }
       .return-value { font-size: 20px; font-weight: 800; color: rgb(220, 38, 38); }
 
-      /* --- New Fullscreen Scanner Styles --- */
+      /* --- UPDATED FULLSCREEN SCANNER & LASER --- */
+      #scanner-container { display: none; }
       #scanner-container.fullscreen-mode {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        z-index: 9999 !important;
-        background-color: #000 !important;
-        margin: 0 !important;
-        border: none !important;
-        border-radius: 0 !important;
-        display: flex;
-        flex-direction: column;
+        position: fixed !important; top: 0 !important; left: 0 !important;
+        width: 100vw !important; height: 100vh !important;
+        z-index: 9999 !important; background-color: #000 !important;
+        margin: 0 !important; display: flex; flex-direction: column;
       }
-      #scanner-container.fullscreen-mode #reader {
-        flex: 1;
-        width: 100% !important;
-        height: 100% !important;
-        border-radius: 0;
-      }
-      #scanner-container.fullscreen-mode #reader video {
-        object-fit: cover !important; 
-      }
+      #scanner-container.fullscreen-mode #reader { flex: 1; width: 100% !important; height: 100% !important; }
+      #scanner-container.fullscreen-mode #reader video { object-fit: cover !important; }
+      
       .scanner-header-custom {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        display: flex;
-        justify-content: space-between;
-        z-index: 10000;
+        position: absolute; top: 30px; left: 20px; right: 20px;
+        display: flex; justify-content: space-between; z-index: 10000;
       }
       .close-scanner-btn {
-        background: rgba(220, 38, 38, 0.9);
-        color: white;
-        border: none;
-        padding: 10px 16px;
-        border-radius: 8px;
-        font-weight: bold;
-        font-size: 14px;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        background: rgba(220, 38, 38, 0.9); color: white; border: none; padding: 10px 20px;
+        border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      }
+      
+      /* LASER SCANNING ANIMATION */
+      #scanner-laser {
+        position: absolute; left: 10%; width: 80%; height: 3px;
+        background: #22c55e; box-shadow: 0 0 20px 5px rgba(34, 197, 94, 0.8);
+        z-index: 10001; animation: laserScan 1.5s infinite alternate ease-in-out;
+        display: none; border-radius: 50%;
+      }
+      @keyframes laserScan {
+        0% { top: 25%; }
+        100% { top: 75%; }
       }
     </style>
   </head>
@@ -302,112 +108,51 @@
       <div class="main-card">
         <div class="centered-title">Madina Mobile Narowal</div>
         
-        <div id="online-loading-bar" style="display: none; background-color: rgb(59, 130, 246); color: white; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; align-items: center; justify-content: center; gap: 8px; font-weight: 600; text-align: center; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25); animation: pulse 1.2s infinite ease-in-out;">
-          <svg class="animate-spin" style="width: 20px; height: 20px;" fill="none" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" style="opacity: 0.25;"></circle>
-            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" style="opacity: 0.75;"></path>
-          </svg>
-          <span id="loading-bar-text">Searching Bill online (Bill Fetch Ho Raha Hai)... Please wait</span>
+        <div id="online-loading-bar" style="display: none; background-color: rgb(59, 130, 246); color: white; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; text-align: center; font-weight: 600; animation: pulse 1.2s infinite ease-in-out;">
+          Searching Bill online... Please wait
         </div>
         
         <div class="input-group">
-          <label class="input-label" for="ref-input">Reference Number (Scan / Fetch Input)</label>
+          <label class="input-label" for="ref-input">Reference Number (Scan / Enter)</label>
           <div class="input-with-button">
-            <input type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-input" id="ref-input" placeholder="Enter or scan 14-digit bill reference..." maxlength="14" oninput="handleRefInput(this)" onfocus="this.select()" onclick="this.select()">
+            <input type="tel" class="text-input" id="ref-input" placeholder="Enter or scan 14-digit bill..." maxlength="14" oninput="handleRefInput(this)" onfocus="this.select()">
             <button id="input-scanner-btn" onclick="toggleScanner()" title="Scan QR Code" type="button" class="input-action-btn">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16V21H16"/><path d="M21 9V10"/><path d="M9 21V20"/><path d="M12 16V18"/><path d="M12 12V13"/><path d="M12 8V9"/><path d="M16 12V13"/><path d="M9 12V13"/><path d="M13 21V20"/><path d="M16 16V18"/><rect width="1" height="1" x="7" y="7"/><rect width="1" height="1" x="16" y="7"/><rect width="1" height="1" x="7" y="16"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16V21H16"/><path d="M21 9V10"/><path d="M9 21V20"/><path d="M12 16V18"/><path d="M12 12V13"/><path d="M12 8V9"/><path d="M16 12V13"/><path d="M9 12V13"/><path d="M13 21V20"/><path d="M16 16V18"/><rect width="1" height="1" x="7" y="7"/><rect width="1" height="1" x="16" y="7"/><rect width="1" height="1" x="7" y="16"/></svg>
             </button>
           </div>
         </div>
 
-        <div id="status-area" class="status-box status-idle" style="display: none;"></div>
+        <div id="status-area" class="status-box status-idle"></div>
 
-        <div id="scanner-container" style="display: none; margin-bottom: 20px; border-radius: 12px; overflow: hidden; background-color: rgb(15, 23, 42); border: 2.5px solid rgb(168, 85, 247); padding: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.15);">
+        <div id="scanner-container">
           <div class="scanner-header-custom" id="fs-scanner-header" style="display: none;">
-             <button class="btn btn-purple" id="fs-toggle-flash-btn" onclick="toggleFlashlight()" style="box-shadow: 0 4px 6px rgba(0,0,0,0.3);">Flashlight: Off</button>
+             <button class="btn btn-purple" id="fs-toggle-flash-btn" onclick="toggleFlashlight()" style="width: auto; padding: 10px 16px;">Flashlight: Off</button>
              <button class="close-scanner-btn" onclick="stopScanner()">✖ Close</button>
           </div>
-          
-          <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 12px; padding: 4px 0;" id="inline-scanner-text">
-            <div style="color: white; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px;">
-              <span class="pulse-indicator" style="width: 10px; height: 10px; background-color: rgb(34, 197, 94); border-radius: 50%; display: inline-block;"></span>
-              <span>Live Scanner Mode Active</span>
-            </div>
-          </div>
-          <div id="reader" style="width: 100%; border-radius: 8px; overflow: hidden; background-color: rgb(0, 0, 0);"></div>
-          <div id="toggle-flash-wrap" style="display: none !important;"></div>
+          <div id="scanner-laser"></div>
+          <div id="reader"></div>
         </div>
 
         <div style="margin-bottom: 24px;">
-          <button class="btn btn-gray" onclick="resetCalculatorPage()" style="width: 100%;">Clear & Reset Page</button>
+          <button class="btn btn-gray" onclick="resetCalculatorPage()">Clear & Reset Page</button>
         </div>
 
         <div class="table-wrapper">
           <table class="data-table">
             <thead>
-              <tr>
-                <th style="width: 10%">Sr No.</th>
-                <th style="width: 40%">Bill Info / Details</th>
-                <th style="width: 15%">Base Amount</th>
-                <th style="width: 15%">Shop Charges</th>
-                <th style="width: 20%">Total</th>
-              </tr>
+              <tr><th>Sr No.</th><th>Bill Details</th><th>Amount</th><th>Charges</th><th>Total</th></tr>
             </thead>
             <tbody id="table-body">
-              <tr>
-                <td colspan="5" class="empty-row">No bill entries captured in this session.</td>
-              </tr>
+              <tr><td colspan="5" class="empty-row">No bill entries yet.</td></tr>
             </tbody>
           </table>
         </div>
 
         <div class="summary-card">
-          <div class="summary-row">
-            <span class="summary-label">Total Base Bills</span>
-            <span class="summary-val" id="summary-base">PKR 0</span>
-          </div>
-          <div class="summary-row">
-            <span class="summary-label">Total Shop Charges</span>
-            <span class="summary-val" id="summary-charges">PKR 0</span>
-          </div>
-          
-          <div class="summary-row" id="summary-discount-row" style="display: none;">
-            <span class="summary-label" style="color: rgb(220, 38, 38); font-weight: 600;">Discount Offered</span>
-            <span class="summary-val" id="summary-discount" style="color: rgb(220, 38, 38); font-weight: 700;">PKR 0</span>
-          </div>
-          
-          <div class="summary-divider"></div>
-
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 4px 0;">
-            <input type="checkbox" id="discount-checkbox" onchange="toggleDiscountFields()" style="width: 18px; height: 18px; cursor: pointer; accent-color: rgb(168, 85, 247);">
-            <label for="discount-checkbox" style="font-size: 14px; font-weight: 600; color: rgb(71, 85, 105); cursor: pointer; user-select: none;">Discount (Discounts Dijiye)</label>
-          </div>
-
-          <div id="discount-fields-container" style="display: none; margin-bottom: 16px; background-color: rgba(220, 38, 38, 0.05); padding: 12px; border-radius: 8px; border: 1.5px dashed rgb(220, 38, 38);">
-            <div class="input-group" style="margin-bottom: 0;">
-              <label class="input-label" for="discount-amount" style="font-size: 13px; color: rgb(220, 38, 38);">Discount Amount (PKR)</label>
-              <input type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-input" id="discount-amount" placeholder="Enter discount in PKR..." style="padding: 8px 12px; font-size: 15px;" oninput="updateSummary()" onfocus="this.select()" onclick="this.select()">
-            </div>
-          </div>
-
-          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 4px 0;">
-            <input type="checkbox" id="send-msg-checkbox" onchange="toggleMessageFields()" style="width: 18px; height: 18px; cursor: pointer; accent-color: rgb(168, 85, 247);">
-            <label for="send-msg-checkbox" style="font-size: 14px; font-weight: 600; color: rgb(71, 85, 105); cursor: pointer; user-select: none;">Send Message</label>
-          </div>
-
-          <div id="message-fields-container" style="display: none; margin-bottom: 16px; background-color: rgb(241, 245, 249); padding: 12px; border-radius: 8px; border: 1.5px dashed rgb(203, 213, 225);">
-            <div class="input-group" style="margin-bottom: 10px;">
-              <label class="input-label" for="customer-phone" style="font-size: 13px;">Customer Mobile Number</label>
-              <input type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-input" id="customer-phone" placeholder="e.g. 03001234567" style="padding: 8px 12px; font-size: 15px;" onfocus="this.select()" onclick="this.select()">
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
-              <button class="btn" onclick="sendDirectSMS()" style="width: 100%; font-size: 14px; padding: 12px; font-weight: 700; background-color: rgb(59, 130, 246) !important; color: white !important;">Direct Message</button>
-              <button class="btn" onclick="sendWhatsAppMessage()" style="width: 100%; font-size: 14px; padding: 12px; font-weight: 700; background-color: rgb(34, 197, 94) !important; color: white !important;">WhatsApp Message</button>
-            </div>
-          </div>
-
+          <div class="summary-row"><span class="summary-label">Total Bills</span><span class="summary-val" id="summary-base">PKR 0</span></div>
+          <div class="summary-row"><span class="summary-label">Total Charges</span><span class="summary-val" id="summary-charges">PKR 0</span></div>
           <div class="summary-row grand-total-highlight">
-            <span class="summary-label text-white" style="font-size: 16px;">Grand Total Amount</span>
+            <span class="summary-label text-white" style="font-size: 16px;">Grand Total</span>
             <span class="summary-val text-white" style="font-size: 18px;" id="summary-grand">PKR 0</span>
           </div>
         </div>
@@ -415,14 +160,13 @@
         <div class="payment-section">
           <div class="input-group" style="margin-bottom: 0;">
             <label class="input-label" for="paid-amount">Customer Paid Amount</label>
-            <input type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-input" id="paid-amount" placeholder="Enter cash received in PKR..." oninput="updateCashReturn()" onfocus="this.select()" onclick="this.select()">
+            <input type="tel" class="text-input" id="paid-amount" placeholder="Enter cash received..." oninput="updateCashReturn()">
           </div>
           <div class="return-box">
-            <div class="return-label">Remaining Balance to Return</div>
+            <div class="return-label">Return Balance</div>
             <div class="return-value" id="refund-amount">PKR 0</div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -430,421 +174,118 @@
     <script type="text/javascript">
       let billingItems = [];
       let html5QrCode = null;
-      let isScannerStarting = false;
       let isScannerStopping = false;
       let isFlashOn = false;
-      let cameraTimeoutTimer = null;
+      let audioCtx = null;
 
+      // 1. Instant Audio Initialization (Square wave for loud POS Beep)
+      function initAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+      }
+
+      function playBeep() {
+        if (!audioCtx) return;
+        try {
+          const oscillator = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          oscillator.type = "square"; // Loud aggressive scanner sound
+          oscillator.frequency.value = 1500;
+          gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+          oscillator.start(audioCtx.currentTime);
+          oscillator.stop(audioCtx.currentTime + 0.15);
+        } catch(e) { console.log(e); }
+      }
+
+      // Rest of utility functions
       function calculateCharges(amount) {
-        if (amount <= 4000) return 20;
-        if (amount <= 8000) return 30;
-        if (amount <= 12000) return 50;
-        if (amount <= 18000) return 80;
-        if (amount <= 25000) return 120;
-        return Math.round(amount * 0.005);
+        if (amount <= 4000) return 20; if (amount <= 8000) return 30;
+        if (amount <= 12000) return 50; if (amount <= 18000) return 80;
+        if (amount <= 25000) return 120; return Math.round(amount * 0.005);
       }
 
       function showStatus(text, type) {
         const statusEl = document.getElementById("status-area");
-        if (statusEl) {
-          if (type === "idle" || !text) {
-            statusEl.style.display = "none";
-          } else {
-            statusEl.style.display = "block";
-          }
-          statusEl.className = "status-box status-" + type;
-          statusEl.textContent = text;
-        }
+        if (!text) { statusEl.style.display = "none"; return; }
+        statusEl.style.display = "block";
+        statusEl.className = "status-box status-" + type;
+        statusEl.textContent = text;
       }
 
-      function showLoaderBar(text) {
-        const bar = document.getElementById("online-loading-bar");
-        const barText = document.getElementById("loading-bar-text");
-        if (bar && barText) {
-          barText.textContent = text || "Searching Bill online (Bill Fetch Ho Raha Hai)... Please wait";
-          bar.style.display = "flex";
-        }
-      }
-
-      function hideLoaderBar() {
-        const bar = document.getElementById("online-loading-bar");
-        if (bar) {
-          bar.style.display = "none";
-        }
-      }
-
-      function playBeep() {
-        try {
-          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-          }
-          const oscillator = audioCtx.createOscillator();
-          const gainNode = audioCtx.createGain();
-          
-          oscillator.connect(gainNode);
-          gainNode.connect(audioCtx.destination);
-          
-          oscillator.type = "sine";
-          oscillator.frequency.value = 1100; // Crisp high-frequency barcode scanner chirp
-          
-          // Made the beep louder for clear feedback
-          gainNode.gain.setValueAtTime(1, audioCtx.currentTime); 
-          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.22); 
-          
-          oscillator.start(audioCtx.currentTime);
-          oscillator.stop(audioCtx.currentTime + 0.22);
-        } catch (e) {
-          console.warn("AudioContext beep failed: ", e);
-        }
-      }
-
-      function findCustomerName(obj) {
-        if (!obj || typeof obj !== "object") return null;
-        const keysToTry = ["customername", "customer_name", "consumername", "consumer_name", "custname", "name", "nameaddress", "name_address", "ownername", "owner_name"];
-        for (const key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            const lowerKey = key.toLowerCase();
-            if (keysToTry.includes(lowerKey)) {
-              const val = String(obj[key]).trim();
-              if (val && val.length > 2 && val !== "null" && val !== "undefined") return val;
-            }
-          }
-        }
-        for (const key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            const found = findCustomerName(obj[key]);
-            if (found !== null) return found;
-          }
-        }
-        return null;
-      }
-
-      function findDueDate(obj) {
-        if (!obj || typeof obj !== "object") return null;
-        const keysToTry = ["duedate", "due_date", "lastdate", "last_date", "paybefore", "pay_before", "tilldate", "till_date", "due_dt", "duedt"];
-        for (const key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            const lowerKey = key.toLowerCase();
-            if (keysToTry.includes(lowerKey)) {
-              const val = String(obj[key]).trim();
-              if (val && val.length >= 4 && val !== "null" && val !== "undefined") return val;
-            }
-          }
-        }
-        const datePattern = /\b\d{1,2}[-/]\d{1,2}[-/]\d{2,4}\b|\b\d{4}[-/]\d{1,2}[-/]\d{1,2}\b|\b\d{1,2}[-][A-Za-z]{3,4}[-]\d{2,4}\b/;
-        for (const key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            const valStr = String(obj[key]).trim();
-            if (datePattern.test(valStr) && valStr.length <= 20) return valStr;
-          }
-        }
-        for (const key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            if (typeof obj[key] === "object") {
-              const found = findDueDate(obj[key]);
-              if (found !== null) return found;
-            }
-          }
-        }
-        return null;
-      }
-
-      function formatMonthBilling(dateStr) {
-        if (!dateStr || dateStr === "N/A") return "N/A";
-        let clean = String(dateStr).trim().toUpperCase();
-        const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-        for (let i = 0; i < months.length; i++) {
-          const mName = months[i];
-          if (clean.includes(mName)) {
-            const tokens = clean.split(/[-/\s,]+/);
-            let year = "";
-            for (const t of tokens) { if (/^\d{4}$/.test(t)) { year = t.substring(2); break; } }
-            if (!year && tokens.length >= 3) {
-              const lastToken = tokens[tokens.length - 1];
-              if (/^\d{2}$/.test(lastToken)) year = lastToken;
-            }
-            if (!year) {
-              for (let idx = tokens.length - 1; idx >= 0; idx--) {
-                const t = tokens[idx];
-                if (/^\d{2}$/.test(t) && t !== tokens[0]) { year = t; break; }
-              }
-            }
-            if (year) return mName + " " + year;
-            let simplified = clean.replace(/^\d{1,2}[-/\s]*/, "");
-            return simplified.replace(/[-/]/g, " ");
-          }
-        }
-        return dateStr;
-      }
-
-      function addBillItem(baseAmount, reference = "N/A", customerName = "Manual Entry", dueDate = "N/A") {
-        if (reference && reference !== "N/A") {
-          const isAlreadyAdded = billingItems.some(item => item.reference === reference);
-          if (isAlreadyAdded) {
-            showStatus("Error: Reference number " + reference + " already added!", "error");
-            return;
-          }
-        }
+      function addBillItem(baseAmount, reference) {
         const charges = calculateCharges(baseAmount);
-        const total = baseAmount + charges;
-        billingItems.push({ id: billingItems.length + 1, baseAmount, charges, total, reference, customerName, dueDate: formatMonthBilling(dueDate) });
-        renderTable();
-        updateSummary();
-        const refInput = document.getElementById("ref-input");
-        if (refInput) refInput.value = "";
+        billingItems.push({ id: billingItems.length + 1, baseAmount, charges, total: baseAmount + charges, reference });
+        renderTable(); updateSummary();
       }
 
       function renderTable() {
         const tbody = document.getElementById("table-body");
         tbody.innerHTML = "";
         if (billingItems.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="empty-row">No bill entries captured in this session.</td></tr>';
-          return;
+          tbody.innerHTML = '<tr><td colspan="5" class="empty-row">No bill entries yet.</td></tr>'; return;
         }
         billingItems.forEach((item, index) => {
-          const row = document.createElement("tr");
-          let detailsHtml = "";
-          if (item.customerName === "Manual Entry") {
-            detailsHtml = '<div style="font-weight: 500; color: rgb(100, 116, 139);">Manual Entry</div>';
-          } else {
-            const nameStr = item.customerName !== "N/A" ? item.customerName : "Unknown";
-            const dateStr = item.dueDate !== "N/A" ? item.dueDate : "N/A";
-            const dateColor = dateStr !== "N/A" ? "color: rgb(220, 38, 38); font-weight: 700;" : "color: rgb(100, 116, 139);";
-            detailsHtml = '<div style="font-size: 13px; line-height: 1.4; text-align: left;">' +
-                            '<div><strong>Name:</strong> ' + nameStr + '</div>' +
-                            '<div><strong>Ref:</strong> <span style="font-family: monospace;">' + item.reference + '</span></div>' +
-                            '<div><strong>Month Billing:</strong> <span style="' + dateColor + '">' + dateStr + '</span></div>' +
-                          '</div>';
-          }
-          row.innerHTML = '<td>' + (index + 1) + '</td>' +
-                          '<td style="text-align: left; padding: 10px;">' + detailsHtml + '</td>' +
-                          '<td>PKR ' + item.baseAmount.toLocaleString() + '</td>' +
-                          '<td>PKR ' + item.charges.toLocaleString() + '</td>' +
-                          '<td style="font-weight: bold; color: rgb(15, 23, 42);">PKR ' + item.total.toLocaleString() + '</td>';
-          tbody.appendChild(row);
+          tbody.innerHTML += `<tr><td>${index + 1}</td><td>Ref: ${item.reference}</td><td>PKR ${item.baseAmount}</td><td>PKR ${item.charges}</td><td style="font-weight:bold;">PKR ${item.total}</td></tr>`;
         });
       }
 
       function updateSummary() {
         let totalBase = 0, totalCharges = 0, grandTotal = 0;
         billingItems.forEach(item => { totalBase += item.baseAmount; totalCharges += item.charges; grandTotal += item.total; });
-
-        const discountCheckbox = document.getElementById("discount-checkbox");
-        const discountInput = document.getElementById("discount-amount");
-        let discountValue = (discountCheckbox && discountCheckbox.checked && discountInput) ? (parseFloat(discountInput.value) || 0) : 0;
-
-        const discountRow = document.getElementById("summary-discount-row");
-        if (discountValue > 0) {
-          if (discountRow) discountRow.style.display = "flex";
-          document.getElementById("summary-discount").textContent = "- PKR " + discountValue.toLocaleString();
-        } else {
-          if (discountRow) discountRow.style.display = "none";
-        }
-
-        const finalGrandTotal = Math.max(0, grandTotal - discountValue);
         document.getElementById("summary-base").textContent = "PKR " + totalBase.toLocaleString();
         document.getElementById("summary-charges").textContent = "PKR " + totalCharges.toLocaleString();
-        document.getElementById("summary-grand").textContent = "PKR " + finalGrandTotal.toLocaleString();
-        updateCashReturn(finalGrandTotal);
+        document.getElementById("summary-grand").textContent = "PKR " + grandTotal.toLocaleString();
+        updateCashReturn(grandTotal);
       }
 
-      function updateCashReturn(providedGrandTotal) {
-        let grandTotal = providedGrandTotal;
-        if (grandTotal === undefined) {
-          let sum = 0;
-          billingItems.forEach(item => sum += item.total);
-          const discBox = document.getElementById("discount-checkbox");
-          let discountValue = (discBox && discBox.checked) ? (parseFloat(document.getElementById("discount-amount").value) || 0) : 0;
-          grandTotal = Math.max(0, sum - discountValue);
-        }
+      function updateCashReturn(grandTotal) {
+        if(grandTotal === undefined) grandTotal = billingItems.reduce((acc, item) => acc + item.total, 0);
         const paidVal = parseFloat(document.getElementById("paid-amount").value);
         const refundEl = document.getElementById("refund-amount");
-        if (isNaN(paidVal) || paidVal === 0) {
-          refundEl.textContent = "PKR 0"; refundEl.style.color = "rgb(220, 38, 38)"; return;
-        }
+        if (isNaN(paidVal) || paidVal === 0) { refundEl.textContent = "PKR 0"; refundEl.style.color = "rgb(220, 38, 38)"; return; }
         const balance = paidVal - grandTotal;
-        if (balance >= 0) {
-          refundEl.textContent = "PKR " + balance.toLocaleString() + " (Change)"; refundEl.style.color = "rgb(34, 197, 94)";
-        } else {
-          refundEl.textContent = "PKR " + Math.abs(balance).toLocaleString() + " (Shortage)"; refundEl.style.color = "rgb(220, 38, 38)";
-        }
+        refundEl.textContent = balance >= 0 ? `PKR ${balance.toLocaleString()} (Change)` : `PKR ${Math.abs(balance).toLocaleString()} (Shortage)`;
+        refundEl.style.color = balance >= 0 ? "rgb(34, 197, 94)" : "rgb(220, 38, 38)";
       }
 
-      function findBillAmount(obj) {
-        if (!obj || typeof obj !== "object") return null;
-        for (const key in obj) {
-          if (Object.prototype.hasOwnProperty.call(obj, key)) {
-            const lowerKey = key.toLowerCase();
-            if (lowerKey === "curramntdue" || lowerKey === "curr_amnt_due" || lowerKey === "amount" || lowerKey === "due" || lowerKey === "amountdue") {
-              const val = parseFloat(String(obj[key]).replace(/[^0-9.]/g, ""));
-              if (!isNaN(val) && val > 0) return val;
-            }
-            const found = findBillAmount(obj[key]);
-            if (found !== null) return found;
-          }
-        }
-        return null;
-      }
-
+      // API Call
       async function fetchBillFromAPI(referenceNumber) {
-        const refInput = document.getElementById("ref-input");
-        if (refInput) refInput.value = "";
-
         if (billingItems.some(item => item.reference === referenceNumber)) {
-          showStatus("Error: Reference " + referenceNumber + " is already added! (Yeh Bill pehle se add hai)", "error");
-          return;
+          showStatus("Yeh Bill pehle se add hai!", "error"); return;
         }
-        if (!navigator.onLine) {
-          showStatus("Error: No Internet! Apka Internet band/closed hai. Please connection active karein.", "error"); return;
-        }
-
-        showStatus("Fetching bill details from API...", "loading");
-        showLoaderBar("Searching Bill online (Bill Fetch Ho Raha Hai)... Please wait");
-        const primaryUrl = "https://ccms.pitc.com.pk/api/details/bill?reference=" + referenceNumber;
-        
+        document.getElementById("online-loading-bar").style.display = "block";
         try {
-          const response = await fetch(primaryUrl);
-          if (!response.ok) throw new Error("HTTP " + response.status);
-          const data = await response.json();
-          handleApiResponse(data, referenceNumber);
+          const res = await fetch("https://ccms.pitc.com.pk/api/details/bill?reference=" + referenceNumber);
+          const data = await res.json();
+          document.getElementById("online-loading-bar").style.display = "none";
+          let amnt = null;
+          if (data.bill && data.bill.basicInfo && data.bill.basicInfo.currAmntDue) amnt = parseFloat(String(data.bill.basicInfo.currAmntDue).replace(/[^0-9.]/g, ""));
+          if (amnt > 0) {
+            addBillItem(amnt, referenceNumber);
+            showStatus("Bill fetched: PKR " + amnt, "success");
+          } else throw new Error();
         } catch (e) {
-          showStatus("Trying Secure Backup Proxy...", "loading");
-          const fallbackUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(primaryUrl);
-          try {
-            const response = await fetch(fallbackUrl);
-            const proxyData = await response.json();
-            if (proxyData && proxyData.contents) {
-              handleApiResponse(JSON.parse(proxyData.contents), referenceNumber);
-            } else throw new Error("Empty contents pack");
-          } catch (proxyError) {
-            showStatus("Billing information could not be retrieved. Server down or invalid reference.", "error");
-            hideLoaderBar();
-          }
-        }
-      }
-
-      function handleApiResponse(data, referenceNumber) {
-        hideLoaderBar();
-        if (!data) { showStatus("Empty or unparseable response data received.", "error"); return; }
-        
-        let amntDueVal = (data.bill && data.bill.basicInfo && data.bill.basicInfo.currAmntDue) ? 
-                         parseFloat(String(data.bill.basicInfo.currAmntDue).replace(/[^0-9.]/g, "")) : findBillAmount(data);
-                         
-        if (amntDueVal !== null && !isNaN(amntDueVal) && amntDueVal > 0) {
-          const custName = findCustomerName(data) || "N/A";
-          const dDate = findDueDate(data) || "N/A";
-          addBillItem(amntDueVal, referenceNumber, custName, dDate);
-          showStatus("Bill fetched successfully for " + custName + ": PKR " + amntDueVal.toLocaleString(), "success");
-        } else {
-          showStatus("Bill response record structure is invalid or not found.", "error");
+          document.getElementById("online-loading-bar").style.display = "none";
+          showStatus("API issue. Ap manual entry kar saktay hain.", "error");
         }
       }
 
       function handleRefInput(input) {
         const cleanVal = input.value.replace(/[^0-9]/g, "");
         if (input.value !== cleanVal) input.value = cleanVal;
-        if (cleanVal.length === 14) {
-          input.value = ""; input.blur(); fetchBillFromAPI(cleanVal);
-        }
+        if (cleanVal.length === 14) { input.value = ""; input.blur(); fetchBillFromAPI(cleanVal); }
       }
 
-      function parse14DigitReference(decodedText) {
-        if (!decodedText) return "";
-        const txt = decodedText.trim();
-        let pos = 0;
-        while ((pos = txt.indexOf("62", pos)) !== -1) {
-          if (pos + 4 <= txt.length) {
-            const len = parseInt(txt.substring(pos + 2, pos + 4), 10);
-            if (!isNaN(len) && len > 0 && pos + 4 + len <= txt.length) {
-              const tagValue = txt.substring(pos + 4, pos + 4 + len);
-              const subPos = tagValue.indexOf("0114");
-              if (subPos !== -1 && subPos + 4 + 14 <= tagValue.length) {
-                const ref = tagValue.substring(subPos + 4, subPos + 4 + 14);
-                if (/^\d{14}$/.test(ref)) return ref;
-              }
-            }
-          }
-          pos += 2;
-        }
-        const sub14Match = txt.match(/0114(\d{14})/);
-        if (sub14Match) return sub14Match[1];
-        
-        const matches = txt.match(/\d{14}/g);
-        if (matches) {
-          for (let m of matches) {
-            const idx = txt.indexOf(m);
-            if (!/[0-9]/.test(idx > 0 ? txt[idx - 1] : "") && !/[0-9]/.test(idx + 14 < txt.length ? txt[idx + 14] : "")) return m;
-          }
-          return matches[0];
-        }
-        const digitsOnly = txt.replace(/[^0-9]/g, "");
-        return digitsOnly.length >= 14 ? digitsOnly.substring(0, 14) : digitsOnly;
+      function parse14DigitReference(txt) {
+        if (!txt) return "";
+        const m = txt.match(/\d{14}/);
+        return m ? m[0] : txt.replace(/[^0-9]/g, "").substring(0, 14);
       }
 
-      function toggleDiscountFields() {
-        const checkbox = document.getElementById("discount-checkbox");
-        const container = document.getElementById("discount-fields-container");
-        if (checkbox && container) {
-          container.style.display = checkbox.checked ? "block" : "none";
-          if (checkbox.checked) setTimeout(() => document.getElementById("discount-amount").focus(), 80);
-          else document.getElementById("discount-amount").value = "";
-        }
-        updateSummary();
-      }
-
-      function toggleMessageFields() {
-        const checkbox = document.getElementById("send-msg-checkbox");
-        const container = document.getElementById("message-fields-container");
-        if (checkbox && container) {
-          container.style.display = checkbox.checked ? "block" : "none";
-          if (checkbox.checked) setTimeout(() => document.getElementById("customer-phone").focus(), 80);
-        }
-      }
-
-      function prepareMessageText(isSms = false) {
-        if (billingItems.length === 0) return "";
-        const discountInput = document.getElementById("discount-amount");
-        let discountValue = (document.getElementById("discount-checkbox").checked && discountInput) ? (parseFloat(discountInput.value) || 0) : 0;
-        let grandTotal = billingItems.reduce((acc, item) => acc + item.total, 0);
-        const finalGrandTotal = Math.max(0, grandTotal - discountValue);
-
-        if (isSms) {
-          let msg = "MADINA MOBILE NAROWAL\nOFFICIAL RECEIPT\n--------------------------\n";
-          billingItems.forEach((item, index) => {
-            msg += `${index + 1}. Ref: ${item.reference !== "N/A" ? item.reference : "Manual"}\nAmount: PKR ${item.baseAmount}\nCharges: PKR ${item.charges}\nSubtotal: PKR ${item.total}\n--------------------------\n`;
-          });
-          if (discountValue > 0) msg += `Discount: PKR ${discountValue}\n--------------------------\n`;
-          msg += `GRAND TOTAL: PKR ${finalGrandTotal}\n`;
-          return msg;
-        }
-
-        let msg = "✨ *MADINA MOBILE NAROWAL* ✨\n📱 *OFFICIAL INVOICE* 📱\n━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
-        billingItems.forEach((item, index) => {
-          msg += `📌 *Entry #${index + 1}:*\n`;
-          if (item.customerName !== "N/A") msg += `👤 *Name:* ${item.customerName}\n`;
-          if (item.reference !== "N/A") msg += `🔑 *Ref No:* \`${item.reference}\`\n`;
-          if (item.dueDate !== "N/A") msg += `📅 *Month:* ${item.dueDate}\n`;
-          msg += `💵 *Amount:* PKR ${item.baseAmount}\n⚡ *Charges:* PKR ${item.charges}\n🏷️ *Sub-Total:* PKR ${item.total}\n───────────────────\n`;
-        });
-        if (discountValue > 0) msg += `🎉 *Discount:* -PKR ${discountValue}\n`;
-        msg += `\n⭐ *GRAND TOTAL TO PAY:* *PKR ${finalGrandTotal}*\n━━━━━━━━━━━━━━━━━━━━━━━━\n🤝 *Shukriya!*`;
-        return msg;
-      }
-
-      function sendDirectSMS() {
-        const phoneVal = document.getElementById("customer-phone").value.replace(/[^0-9+]/g, "").trim();
-        if (phoneVal.length < 7 || billingItems.length === 0) return showStatus("Invalid phone or empty bill.", "error");
-        window.location.href = `sms:${phoneVal}?body=${encodeURIComponent(prepareMessageText(true))}`;
-      }
-
-      function sendWhatsAppMessage() {
-        let phoneVal = document.getElementById("customer-phone").value.replace(/[^0-9+]/g, "").trim();
-        if (phoneVal.length < 7 || billingItems.length === 0) return showStatus("Invalid phone or empty bill.", "error");
-        if (phoneVal.startsWith("0")) phoneVal = "92" + phoneVal.substring(1);
-        window.open(`https://api.whatsapp.com/send?phone=${encodeURIComponent(phoneVal)}&text=${encodeURIComponent(prepareMessageText(false))}`, '_blank');
-      }
-
+      // 2. High-Performance Camera Optimization
       async function optimizeCameraTracks() {
         try {
           const videoElem = document.querySelector('#reader video');
@@ -852,103 +293,74 @@
             const track = videoElem.srcObject.getVideoTracks()[0];
             const caps = track.getCapabilities ? track.getCapabilities() : {};
             const consts = {};
-            if (caps.focusMode && caps.focusMode.includes("continuous")) consts.focusMode = "continuous";
-            
-            // Enhanced 2.5x Auto-Zoom
+            // Apply Heavy Zoom for small QR
             if (caps.zoom) consts.zoom = Math.min(caps.zoom.max, Math.max(2.5, caps.zoom.min || 1.0));
-            
-            if (Object.keys(consts).length > 0) await track.applyConstraints(consts).catch(e=>console.log(e));
-
-            if (caps.torch) {
-              try {
-                await track.applyConstraints({ advanced: [{ torch: true }] });
-                isFlashOn = true;
-                document.getElementById("fs-toggle-flash-btn").textContent = "Flashlight: On";
-              } catch (e) { console.warn("Torch fail", e); }
-            }
+            if (Object.keys(consts).length > 0) await track.applyConstraints(consts).catch(()=>{});
           }
-        } catch (e) { console.log(e); }
+        } catch(e) {}
       }
 
       async function openScanner() {
-        if (isScannerStarting || isScannerStopping) return;
+        initAudio(); // Initialize audio immediately on click
         const scannerDiv = document.getElementById("scanner-container");
-        if (scannerDiv.style.display === "block") return;
-
-        // Activate Fullscreen
-        scannerDiv.style.display = "block";
+        scannerDiv.style.display = "flex";
         scannerDiv.classList.add("fullscreen-mode");
         document.getElementById("fs-scanner-header").style.display = "flex";
-        document.getElementById("inline-scanner-text").style.display = "none";
-        
-        showStatus("Activating Full-Screen Scanner...", "loading");
+        document.getElementById("scanner-laser").style.display = "block"; // Start laser
+
         if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
-        
-        // Rectangular focus & 60 FPS
-        const config = { 
-          fps: 60,
-          qrbox: (vw, vh) => {
-            const width = Math.min(vw * 0.90, 800);
-            const height = Math.min(vh * 0.40, 300);
-            return { width: Math.floor(width), height: Math.floor(height) };
-          },
-          aspectRatio: window.innerHeight / window.innerWidth
+
+        // Request HD video so small QR has enough pixels to be read easily
+        const config = {
+          fps: 15, // Reduced from 60 to 15 to allow faster startup & crisp focus frames
+          qrbox: { width: 280, height: 160 },
+          videoConstraints: {
+            facingMode: "environment",
+            width: { ideal: 1920 }, // High-Res forces small QRs to become readable
+            height: { ideal: 1080 }
+          }
         };
 
-        const handleSuccess = async (decodedText) => {
+        const onScanSuccess = async (decodedText) => {
           const cleanNumber = parse14DigitReference(decodedText);
           if (cleanNumber.length === 14) {
+            playBeep(); // Instant Beep
             if (billingItems.some(item => item.reference === cleanNumber)) {
-              playBeep(); showStatus("Error: Reference " + cleanNumber + " already added!", "error"); return;
+              showStatus("Already Scanned!", "error"); return;
             }
-            playBeep(); // Trigger Beep sound
+            await stopScanner();
             document.getElementById("ref-input").value = cleanNumber;
-            showStatus("Scanned: " + cleanNumber, "success");
-            setTimeout(async () => { await stopScanner(); fetchBillFromAPI(cleanNumber); }, 60);
-          } else {
-            showStatus("Needs 14-digit Reference!", "error");
+            fetchBillFromAPI(cleanNumber);
           }
         };
 
         try {
-          isScannerStarting = true;
-          await html5QrCode.start({ facingMode: "environment" }, config, handleSuccess, () => {});
-          await optimizeCameraTracks();
-          
-          if (cameraTimeoutTimer) clearTimeout(cameraTimeoutTimer);
-          cameraTimeoutTimer = setTimeout(async () => { if (html5QrCode && html5QrCode.isRunning()) await stopScanner(); }, 45000);
+          await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, ()=>{});
+          setTimeout(optimizeCameraTracks, 500); // Apply hardware zoom slightly after video start
         } catch (err) {
-          showStatus("Camera failure: " + err.message, "error");
-          await stopScanner();
-        } finally {
-          isScannerStarting = false;
+          showStatus("Camera start failed.", "error"); await stopScanner();
         }
       }
 
+      // 3. Clean Stop Logic (Removes any leftover text/styles)
       async function stopScanner() {
         if (isScannerStopping) return;
         isScannerStopping = true;
-        if (cameraTimeoutTimer) clearTimeout(cameraTimeoutTimer);
         
         const scannerDiv = document.getElementById("scanner-container");
-        if (scannerDiv) {
-          scannerDiv.style.display = "none";
-          scannerDiv.classList.remove("fullscreen-mode"); // Exit fullscreen
-        }
+        scannerDiv.style.display = "none";
+        scannerDiv.classList.remove("fullscreen-mode");
         document.getElementById("fs-scanner-header").style.display = "none";
-        document.getElementById("inline-scanner-text").style.display = "flex";
-
+        document.getElementById("scanner-laser").style.display = "none"; // Stop laser
+        
         try {
-          const videoElement = document.querySelector('#reader video');
-          if (videoElement && videoElement.srcObject) {
-            videoElement.srcObject.getTracks().forEach(track => track.stop());
-          }
-        } catch (e) {}
+          const videoElem = document.querySelector('#reader video');
+          if (videoElem && videoElem.srcObject) videoElem.srcObject.getTracks().forEach(t => t.stop());
+        } catch(e) {}
 
         if (html5QrCode && html5QrCode.isRunning()) {
-          try { await html5QrCode.stop(); } catch(e) { html5QrCode = null; }
+          try { await html5QrCode.stop(); } catch(e) {}
         }
-        
         isFlashOn = false;
         document.getElementById("fs-toggle-flash-btn").textContent = "Flashlight: Off";
         isScannerStopping = false;
@@ -956,7 +368,7 @@
 
       async function toggleScanner() {
         const scannerContainer = document.getElementById("scanner-container");
-        if (scannerContainer && scannerContainer.style.display !== "none") await stopScanner();
+        if (scannerContainer.style.display === "flex") await stopScanner();
         else await openScanner();
       }
 
@@ -972,23 +384,12 @@
         }
       }
 
-      async function resetCalculatorPage() {
-        await stopScanner();
+      function resetCalculatorPage() {
+        stopScanner();
         billingItems = [];
         document.getElementById("ref-input").value = "";
         document.getElementById("paid-amount").value = "";
-        
-        const discBox = document.getElementById("discount-checkbox");
-        if (discBox) discBox.checked = false;
-        document.getElementById("discount-fields-container").style.display = "none";
-        document.getElementById("discount-amount").value = "";
-
-        const msgBox = document.getElementById("send-msg-checkbox");
-        if (msgBox) msgBox.checked = false;
-        document.getElementById("message-fields-container").style.display = "none";
-        document.getElementById("customer-phone").value = "";
-
-        renderTable(); updateSummary();
+        renderTable(); updateSummary(); showStatus("", "idle");
       }
     </script>
   </body>
