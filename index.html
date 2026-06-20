@@ -3,17 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Madina Mobile Narowal - Fast POS</title>
+    <title>Madina Mobile - Fast POS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-      /* ----- GLOBAL RESET & ANIMATED BACKGROUND ----- */
       body {
         margin: 0; padding: 0;
         min-height: 100vh;
         font-family: "Inter", -apple-system, sans-serif;
-        box-sizing: border-box;
         background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
         background-size: 400% 400%;
         animation: gradientBG 18s ease infinite;
@@ -29,12 +27,7 @@
         100% { background-position: 0% 50%; }
       }
 
-      /* ----- GLASSMORPHISM CARD (TRANSPARENT) ----- */
-      .app-wrapper {
-        width: 100%;
-        max-width: 600px;
-        margin: 10px auto;
-      }
+      .app-wrapper { width: 100%; max-width: 600px; margin: 10px auto; }
 
       .main-card {
         width: 100%;
@@ -46,7 +39,6 @@
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
         padding: 24px;
         box-sizing: border-box;
-        transition: all 0.3s ease;
         animation: cardPulse 4s infinite alternate ease-in-out;
       }
 
@@ -55,14 +47,12 @@
         100% { box-shadow: 0 25px 60px -5px rgba(168, 85, 247, 0.25); border-color: rgba(168, 85, 247, 0.3); }
       }
 
-      /* ----- TEXT & INPUTS (LIGHT THEME FOR TRANSPARENCY) ----- */
       .centered-title {
         text-align: center;
         font-size: 26px;
         font-weight: 700;
         color: #ffffff;
         text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        margin-top: 4px;
         margin-bottom: 24px;
         letter-spacing: 0.5px;
       }
@@ -119,14 +109,12 @@
         align-items: center;
         justify-content: center;
         box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-        transition: 0.2s;
         animation: btnGlow 2s infinite alternate;
       }
       @keyframes btnGlow {
         0% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4); }
         100% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.8); }
       }
-      .input-action-btn:hover { transform: translateY(-50%) scale(1.05); }
 
       .status-box {
         padding: 12px 16px;
@@ -157,9 +145,7 @@
       .btn-gray { background: rgba(100, 116, 139, 0.6); border: 1px solid rgba(255,255,255,0.1); }
       .btn-gray:hover { background: rgba(100, 116, 139, 0.9); }
       .btn-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); border: 1px solid rgba(255,255,255,0.2); }
-      .btn-purple:hover { transform: scale(1.02); }
 
-      /* ----- TABLE (TRANSPARENT) ----- */
       .table-wrapper {
         width: 100%;
         overflow-x: auto;
@@ -184,7 +170,6 @@
       }
       .empty-row { text-align: center; color: rgba(255,255,255,0.3); padding: 20px; font-style: italic; }
 
-      /* ----- SUMMARY CARDS ----- */
       .summary-card {
         background: rgba(0, 0, 0, 0.25);
         backdrop-filter: blur(10px);
@@ -206,10 +191,18 @@
         border-radius: 12px;
         padding: 12px;
         border: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 4px;
       }
       .text-white { color: white !important; }
+      
+      .discount-box {
+        background: rgba(220, 38, 38, 0.1);
+        border: 1px solid rgba(220, 38, 38, 0.2);
+        border-radius: 12px;
+        padding: 12px;
+        margin-top: 8px;
+      }
 
-      /* ----- PAYMENT SECTION ----- */
       .payment-section {
         border: 1px solid rgba(220, 38, 38, 0.3);
         background: rgba(220, 38, 38, 0.08);
@@ -226,7 +219,7 @@
       .return-label { font-size: 15px; font-weight: 700; color: #fca5a5; }
       .return-value { font-size: 20px; font-weight: 800; color: #f87171; }
 
-      /* ----- FULLSCREEN SCANNER WITH ZOOM CONTROLS (IMPROVED) ----- */
+      /* SCANNER */
       #scanner-container { display: none; }
       #scanner-container.fullscreen-mode {
         position: fixed !important; top: 0 !important; left: 0 !important;
@@ -272,17 +265,16 @@
         padding: 8px 14px;
         border-radius: 10px;
         font-weight: 600;
-        font-size: 14px;
+        font-size: 13px;
         cursor: pointer;
-        backdrop-filter: blur(5px);
         transition: 0.2s;
-        min-width: 60px;
+        min-width: 50px;
       }
       .scanner-header-custom button:active { transform: scale(0.95); }
-      .scanner-header-custom .zoom-indicator {
+      .zoom-indicator {
         color: #a78bfa;
         font-weight: 700;
-        font-size: 14px;
+        font-size: 13px;
         padding: 6px 12px;
         background: rgba(0,0,0,0.4);
         border-radius: 8px;
@@ -291,7 +283,6 @@
       }
       .close-scanner-btn { background: rgba(220, 38, 38, 0.8) !important; border-color: rgba(220, 38, 38, 0.5) !important; }
 
-      /* ----- IMPROVED LASER ANIMATION ----- */
       #scanner-laser {
         position: absolute;
         left: 10%;
@@ -310,10 +301,9 @@
         100% { top: 80%; opacity: 0.8; }
       }
 
-      /* ----- RESPONSIVE TWEAKS ----- */
       @media (max-width: 480px) {
         .main-card { padding: 16px; }
-        .scanner-header-custom button { padding: 6px 10px; font-size: 12px; min-width: 45px; }
+        .scanner-header-custom button { padding: 6px 10px; font-size: 12px; min-width: 40px; }
       }
     </style>
   </head>
@@ -338,14 +328,14 @@
 
         <div id="status-area" class="status-box status-idle"></div>
 
-        <!-- SCANNER CONTAINER -->
+        <!-- SCANNER -->
         <div id="scanner-container">
           <div class="scanner-header-custom" id="fs-scanner-header" style="display: none;">
             <button onclick="adjustZoom(0.5)">🔍 +</button>
             <button onclick="adjustZoom(-0.5)">🔍 -</button>
-            <span class="zoom-indicator" id="zoom-level-display">Zoom: 4.0x</span>
+            <span class="zoom-indicator" id="zoom-level-display">Auto-Zoom: 2.5x</span>
             <button id="fs-toggle-flash-btn" onclick="toggleFlashlight()">💡 Off</button>
-            <button class="close-scanner-btn" onclick="stopScanner()">✖ Close</button>
+            <button class="close-scanner-btn" onclick="stopScanner()">✖</button>
           </div>
           <div id="scanner-laser"></div>
           <div id="reader"></div>
@@ -369,8 +359,17 @@
         <div class="summary-card">
           <div class="summary-row"><span class="summary-label">Total Bills</span><span class="summary-val" id="summary-base">PKR 0</span></div>
           <div class="summary-row"><span class="summary-label">Total Charges</span><span class="summary-val" id="summary-charges">PKR 0</span></div>
-          <div class="summary-row grand-total-highlight">
-            <span class="summary-label text-white" style="font-size: 16px;">Grand Total</span>
+          
+          <!-- نیا Gift / Discount فیلڈ -->
+          <div class="discount-box">
+            <div class="summary-row" style="margin-bottom: 0;">
+              <span class="summary-label" style="color: #fca5a5;">🎁 Discount / Gift (-)</span>
+              <input type="tel" id="discount-input" placeholder="0" oninput="updateSummary()" style="width: 100px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 10px; color: white; font-weight: 600; text-align: right; font-size: 15px;">
+            </div>
+          </div>
+
+          <div class="summary-row grand-total-highlight" style="margin-top: 12px;">
+            <span class="summary-label text-white" style="font-size: 16px;">Grand Total (After Gift)</span>
             <span class="summary-val text-white" style="font-size: 18px;" id="summary-grand">PKR 0</span>
           </div>
         </div>
@@ -395,7 +394,7 @@
       let isScannerStopping = false;
       let isFlashOn = false;
       let audioCtx = null;
-      let currentZoom = 4.0; // Default high zoom for small QR codes
+      let currentZoom = 2.5; // Default auto-zoom set to 2.5x for small QR
 
       // Audio
       function initAudio() {
@@ -433,6 +432,11 @@
         statusEl.textContent = text;
       }
 
+      function getDiscount() {
+        const val = parseFloat(document.getElementById("discount-input").value);
+        return isNaN(val) ? 0 : val;
+      }
+
       function addBillItem(baseAmount, reference) {
         const charges = calculateCharges(baseAmount);
         billingItems.push({ id: billingItems.length + 1, baseAmount, charges, total: baseAmount + charges, reference });
@@ -453,14 +457,22 @@
       function updateSummary() {
         let totalBase = 0, totalCharges = 0, grandTotal = 0;
         billingItems.forEach(item => { totalBase += item.baseAmount; totalCharges += item.charges; grandTotal += item.total; });
+        
+        const discount = getDiscount();
+        const finalGrand = Math.max(0, grandTotal - discount); // Discount kam karega
+
         document.getElementById("summary-base").textContent = "PKR " + totalBase.toLocaleString();
         document.getElementById("summary-charges").textContent = "PKR " + totalCharges.toLocaleString();
-        document.getElementById("summary-grand").textContent = "PKR " + grandTotal.toLocaleString();
-        updateCashReturn(grandTotal);
+        document.getElementById("summary-grand").textContent = "PKR " + finalGrand.toLocaleString();
+        
+        updateCashReturn(finalGrand);
       }
 
       function updateCashReturn(grandTotal) {
-        if(grandTotal === undefined) grandTotal = billingItems.reduce((acc, item) => acc + item.total, 0);
+        if(grandTotal === undefined) {
+          let total = billingItems.reduce((acc, item) => acc + item.total, 0);
+          grandTotal = Math.max(0, total - getDiscount());
+        }
         const paidVal = parseFloat(document.getElementById("paid-amount").value);
         const refundEl = document.getElementById("refund-amount");
         if (isNaN(paidVal) || paidVal === 0) { refundEl.textContent = "PKR 0"; refundEl.style.color = "#f87171"; return; }
@@ -503,12 +515,11 @@
         return m ? m[0] : txt.replace(/[^0-9]/g, "").substring(0, 14);
       }
 
-      // ----- ZOOM CONTROL (THE FIX FOR SMALL QR) -----
+      // ----- ZOOM CONTROL (Automatic + Manual) -----
       async function adjustZoom(delta) {
         const videoElem = document.querySelector('#reader video');
         if (!videoElem || !videoElem.srcObject) {
-          // If scanner not active, just update the display value for next start
-          currentZoom = Math.max(1.0, Math.min(10.0, currentZoom + delta));
+          currentZoom = Math.max(1.0, Math.min(8.0, currentZoom + delta));
           document.getElementById('zoom-level-display').textContent = `Zoom: ${currentZoom.toFixed(1)}x`;
           return;
         }
@@ -522,12 +533,11 @@
             await track.applyConstraints({ advanced: [{ zoom: currentZoom }] });
             document.getElementById('zoom-level-display').textContent = `Zoom: ${currentZoom.toFixed(1)}x`;
           } else {
-            showStatus("Camera doesn't support zoom.", "error");
+            showStatus("Zoom not supported.", "error");
           }
         }
       }
 
-      // Apply initial zoom when camera starts
       async function applyInitialZoom() {
         const videoElem = document.querySelector('#reader video');
         if (videoElem && videoElem.srcObject) {
@@ -545,7 +555,7 @@
         }
       }
 
-      // ----- SCANNER ENGINE -----
+      // ----- SCANNER ENGINE (FIXED: Lower res to prevent hang, continuous focus) -----
       async function openScanner() {
         initAudio();
         const scannerDiv = document.getElementById("scanner-container");
@@ -557,12 +567,13 @@
         if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
 
         const config = {
-          fps: 12,
+          fps: 10, // کم FPS سے CPU بوجھ کم
           qrbox: { width: 240, height: 160 },
           videoConstraints: {
             facingMode: "environment",
-            width: { ideal: 3840 },
-            height: { ideal: 2160 }
+            width: { ideal: 1280 }, // HD ریزولوشن (ہینگ نہیں ہوگا)
+            height: { ideal: 720 },
+            focusMode: "continuous" // خودکار فوکس آن
           }
         };
 
@@ -581,8 +592,7 @@
 
         try {
           await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, ()=>{});
-          // Apply zoom after camera is live
-          setTimeout(() => { applyInitialZoom(); }, 600);
+          setTimeout(() => { applyInitialZoom(); }, 500);
         } catch (err) {
           showStatus("Camera start failed.", "error");
           await stopScanner();
@@ -634,10 +644,10 @@
         billingItems = [];
         document.getElementById("ref-input").value = "";
         document.getElementById("paid-amount").value = "";
+        document.getElementById("discount-input").value = "";
         renderTable(); updateSummary(); showStatus("", "idle");
       }
 
-      // Page load init
       window.onload = function() {
         renderTable();
         updateSummary();
