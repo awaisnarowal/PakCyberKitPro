@@ -2,145 +2,363 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Madina Mobile Narowal - Fast POS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+      /* ----- GLOBAL RESET & ANIMATED BACKGROUND ----- */
       body {
         margin: 0; padding: 0;
-        background-color: rgb(241, 245, 249);
+        min-height: 100vh;
         font-family: "Inter", -apple-system, sans-serif;
         box-sizing: border-box;
+        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+        background-size: 400% 400%;
+        animation: gradientBG 18s ease infinite;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
       }
-      .app-wrapper {
-        min-height: 100vh; display: flex; flex-direction: column;
-        align-items: center; justify-content: flex-start;
-        padding: 16px; box-sizing: border-box;
-      }
-      .main-card {
-        width: 100%; max-width: 600px; background-color: rgb(255, 255, 255);
-        border-radius: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-        padding: 24px; box-sizing: border-box; margin-top: 20px; margin-bottom: 24px;
-      }
-      .centered-title {
-        text-align: center; font-size: 28px; font-weight: 700;
-        color: rgb(15, 23, 42); margin-top: 8px; margin-bottom: 24px;
-      }
-      .input-group { margin-bottom: 16px; width: 100%; box-sizing: border-box; }
-      .input-label { display: block; font-size: 14px; font-weight: 600; color: rgb(71, 85, 105); margin-bottom: 6px; }
-      .text-input {
-        width: 100%; padding: 12px; font-size: 16px;
-        border: 1.5px solid rgb(203, 213, 225); border-radius: 8px; box-sizing: border-box;
-      }
-      .text-input:focus { outline: none; border-color: rgb(59, 130, 246); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
-      .input-with-button { position: relative; display: flex; align-items: center; width: 100%; }
-      .input-with-button .text-input { padding-right: 48px; }
-      .input-action-btn {
-        position: absolute; right: 5px; top: 50%; transform: translateY(-50%);
-        width: 36px; height: 36px; border-radius: 6px; border: none;
-        background-color: rgb(168, 85, 247); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
-      }
-      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-      .status-box { padding: 12px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; margin-bottom: 16px; text-align: center; }
-      .status-idle { display: none; }
-      .status-loading { background-color: rgb(239, 246, 255); border: 1px solid rgb(191, 219, 254); color: rgb(29, 78, 216); }
-      .status-success { background-color: rgb(240, 253, 250); border: 1px solid rgb(153, 246, 228); color: rgb(13, 148, 136); }
-      .status-error { background-color: rgb(254, 242, 242); border: 1px solid rgb(254, 202, 202); color: rgb(220, 38, 38); }
-      
-      .btn { padding: 12px 6px; font-size: 13px; font-weight: 600; border-radius: 8px; border: none; color: white; cursor: pointer; width: 100%; }
-      .btn-gray { background-color: rgb(100, 116, 139); }
-      .btn-purple { background-color: rgb(168, 85, 247); }
-      
-      .table-wrapper { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid rgb(226, 232, 240); margin-bottom: 24px; }
-      .data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-      .data-table th { background-color: rgb(241, 245, 249); color: rgb(71, 85, 105); font-weight: 600; padding: 12px; border-bottom: 1px solid rgb(226, 232, 240); }
-      .data-table td { padding: 12px; border-bottom: 1px solid rgb(241, 245, 249); color: rgb(15, 23, 42); }
-      .empty-row { text-align: center; color: rgb(100, 116, 139); padding: 20px; font-style: italic; }
-      
-      .summary-card { background-color: rgb(248, 250, 252); border: 1px solid rgb(226, 232, 240); border-radius: 12px; padding: 16px; margin-bottom: 24px; }
-      .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-      .summary-label { font-size: 14px; color: rgb(71, 85, 105); }
-      .summary-val { font-size: 15px; font-weight: 600; color: rgb(15, 23, 42); }
-      .grand-total-highlight { background-color: rgb(59, 130, 246); border-radius: 8px; padding: 12px; color: white; }
-      .text-white { color: white !important; }
-      .payment-section { border: 1px solid rgb(254, 202, 202); background-color: rgb(254, 242, 242); border-radius: 12px; padding: 16px; }
-      .return-box { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
-      .return-label { font-size: 15px; font-weight: 700; color: rgb(220, 38, 38); }
-      .return-value { font-size: 20px; font-weight: 800; color: rgb(220, 38, 38); }
 
-      /* --- UPDATED FULLSCREEN SCANNER & LASER --- */
+      @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      /* ----- GLASSMORPHISM CARD (TRANSPARENT) ----- */
+      .app-wrapper {
+        width: 100%;
+        max-width: 600px;
+        margin: 10px auto;
+      }
+
+      .main-card {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 32px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+        padding: 24px;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        animation: cardPulse 4s infinite alternate ease-in-out;
+      }
+
+      @keyframes cardPulse {
+        0% { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); border-color: rgba(255,255,255,0.05); }
+        100% { box-shadow: 0 25px 60px -5px rgba(168, 85, 247, 0.25); border-color: rgba(168, 85, 247, 0.3); }
+      }
+
+      /* ----- TEXT & INPUTS (LIGHT THEME FOR TRANSPARENCY) ----- */
+      .centered-title {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 700;
+        color: #ffffff;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        margin-top: 4px;
+        margin-bottom: 24px;
+        letter-spacing: 0.5px;
+      }
+
+      .input-label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 6px;
+        letter-spacing: 0.3px;
+      }
+
+      .text-input {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        color: #ffffff;
+        box-sizing: border-box;
+        transition: all 0.2s;
+      }
+      .text-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+      .text-input:focus {
+        outline: none;
+        border-color: rgb(168, 85, 247);
+        background: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
+      }
+
+      .input-with-button {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+      .input-with-button .text-input { padding-right: 52px; }
+
+      .input-action-btn {
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        transition: 0.2s;
+        animation: btnGlow 2s infinite alternate;
+      }
+      @keyframes btnGlow {
+        0% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4); }
+        100% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.8); }
+      }
+      .input-action-btn:hover { transform: translateY(-50%) scale(1.05); }
+
+      .status-box {
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 16px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+      }
+      .status-idle { display: none; }
+      .status-loading { background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #93c5fd; }
+      .status-success { background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); color: #86efac; }
+      .status-error { background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.4); color: #fca5a5; }
+
+      .btn {
+        padding: 12px 6px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 12px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        width: 100%;
+        transition: 0.2s;
+        backdrop-filter: blur(5px);
+      }
+      .btn-gray { background: rgba(100, 116, 139, 0.6); border: 1px solid rgba(255,255,255,0.1); }
+      .btn-gray:hover { background: rgba(100, 116, 139, 0.9); }
+      .btn-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); border: 1px solid rgba(255,255,255,0.2); }
+      .btn-purple:hover { transform: scale(1.02); }
+
+      /* ----- TABLE (TRANSPARENT) ----- */
+      .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(5px);
+        margin-bottom: 24px;
+      }
+      .data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+      .data-table th {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 600;
+        padding: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .data-table td {
+        padding: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        color: #e2e8f0;
+      }
+      .empty-row { text-align: center; color: rgba(255,255,255,0.3); padding: 20px; font-style: italic; }
+
+      /* ----- SUMMARY CARDS ----- */
+      .summary-card {
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 24px;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .summary-label { font-size: 14px; color: rgba(255, 255, 255, 0.7); }
+      .summary-val { font-size: 15px; font-weight: 600; color: #f1f5f9; }
+      .grand-total-highlight {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(168, 85, 247, 0.3));
+        border-radius: 12px;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .text-white { color: white !important; }
+
+      /* ----- PAYMENT SECTION ----- */
+      .payment-section {
+        border: 1px solid rgba(220, 38, 38, 0.3);
+        background: rgba(220, 38, 38, 0.08);
+        backdrop-filter: blur(5px);
+        border-radius: 16px;
+        padding: 16px;
+      }
+      .return-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 12px;
+      }
+      .return-label { font-size: 15px; font-weight: 700; color: #fca5a5; }
+      .return-value { font-size: 20px; font-weight: 800; color: #f87171; }
+
+      /* ----- FULLSCREEN SCANNER WITH ZOOM CONTROLS (IMPROVED) ----- */
       #scanner-container { display: none; }
       #scanner-container.fullscreen-mode {
         position: fixed !important; top: 0 !important; left: 0 !important;
         width: 100vw !important; height: 100vh !important;
-        z-index: 9999 !important; background-color: #000 !important;
-        margin: 0 !important; display: flex; flex-direction: column;
+        z-index: 9999 !important;
+        background: rgba(0, 0, 0, 0.95) !important;
+        backdrop-filter: blur(10px);
+        margin: 0 !important;
+        display: flex;
+        flex-direction: column;
       }
-      #scanner-container.fullscreen-mode #reader { flex: 1; width: 100% !important; height: 100% !important; }
-      #scanner-container.fullscreen-mode #reader video { object-fit: cover !important; }
-      
+      #scanner-container.fullscreen-mode #reader {
+        flex: 1;
+        width: 100% !important;
+        height: 100% !important;
+      }
+      #scanner-container.fullscreen-mode #reader video {
+        object-fit: cover !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+
       .scanner-header-custom {
-        position: absolute; top: 30px; left: 20px; right: 20px;
-        display: flex; justify-content: space-between; z-index: 10000;
+        position: absolute;
+        top: 20px;
+        left: 16px;
+        right: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        z-index: 10000;
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(10px);
+        padding: 12px;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.1);
       }
-      .close-scanner-btn {
-        background: rgba(220, 38, 38, 0.9); color: white; border: none; padding: 10px 20px;
-        border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      .scanner-header-custom button {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.2);
+        padding: 8px 14px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        backdrop-filter: blur(5px);
+        transition: 0.2s;
+        min-width: 60px;
       }
-      
-      /* LASER SCANNING ANIMATION */
+      .scanner-header-custom button:active { transform: scale(0.95); }
+      .scanner-header-custom .zoom-indicator {
+        color: #a78bfa;
+        font-weight: 700;
+        font-size: 14px;
+        padding: 6px 12px;
+        background: rgba(0,0,0,0.4);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+      }
+      .close-scanner-btn { background: rgba(220, 38, 38, 0.8) !important; border-color: rgba(220, 38, 38, 0.5) !important; }
+
+      /* ----- IMPROVED LASER ANIMATION ----- */
       #scanner-laser {
-        position: absolute; left: 10%; width: 80%; height: 3px;
-        background: #22c55e; box-shadow: 0 0 20px 5px rgba(34, 197, 94, 0.8);
-        z-index: 10001; animation: laserScan 1.5s infinite alternate ease-in-out;
-        display: none; border-radius: 50%;
+        position: absolute;
+        left: 10%;
+        width: 80%;
+        height: 3px;
+        background: #22c55e;
+        box-shadow: 0 0 30px 8px rgba(34, 197, 94, 0.9);
+        z-index: 10001;
+        animation: laserScan 1.8s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        display: none;
+        border-radius: 50%;
+        filter: drop-shadow(0 0 15px #22c55e);
       }
       @keyframes laserScan {
-        0% { top: 25%; }
-        100% { top: 75%; }
+        0% { top: 20%; opacity: 1; }
+        100% { top: 80%; opacity: 0.8; }
+      }
+
+      /* ----- RESPONSIVE TWEAKS ----- */
+      @media (max-width: 480px) {
+        .main-card { padding: 16px; }
+        .scanner-header-custom button { padding: 6px 10px; font-size: 12px; min-width: 45px; }
       }
     </style>
   </head>
   <body>
     <div class="app-wrapper">
       <div class="main-card">
-        <div class="centered-title">Madina Mobile Narowal</div>
-        
-        <div id="online-loading-bar" style="display: none; background-color: rgb(59, 130, 246); color: white; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; text-align: center; font-weight: 600; animation: pulse 1.2s infinite ease-in-out;">
-          Searching Bill online... Please wait
+        <div class="centered-title">✨ Madina Mobile</div>
+
+        <div id="online-loading-bar" style="display: none; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; text-align: center; font-weight: 600; animation: pulse 1.2s infinite;">
+          Searching Bill online...
         </div>
-        
+
         <div class="input-group">
           <label class="input-label" for="ref-input">Reference Number (Scan / Enter)</label>
           <div class="input-with-button">
             <input type="tel" class="text-input" id="ref-input" placeholder="Enter or scan 14-digit bill..." maxlength="14" oninput="handleRefInput(this)" onfocus="this.select()">
             <button id="input-scanner-btn" onclick="toggleScanner()" title="Scan QR Code" type="button" class="input-action-btn">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16V21H16"/><path d="M21 9V10"/><path d="M9 21V20"/><path d="M12 16V18"/><path d="M12 12V13"/><path d="M12 8V9"/><path d="M16 12V13"/><path d="M9 12V13"/><path d="M13 21V20"/><path d="M16 16V18"/><rect width="1" height="1" x="7" y="7"/><rect width="1" height="1" x="16" y="7"/><rect width="1" height="1" x="7" y="16"/></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16V21H16"/><path d="M21 9V10"/><path d="M9 21V20"/><path d="M12 16V18"/><path d="M12 12V13"/><path d="M12 8V9"/><path d="M16 12V13"/><path d="M9 12V13"/><path d="M13 21V20"/><path d="M16 16V18"/><rect width="1" height="1" x="7" y="7"/><rect width="1" height="1" x="16" y="7"/><rect width="1" height="1" x="7" y="16"/></svg>
             </button>
           </div>
         </div>
 
         <div id="status-area" class="status-box status-idle"></div>
 
+        <!-- SCANNER CONTAINER -->
         <div id="scanner-container">
           <div class="scanner-header-custom" id="fs-scanner-header" style="display: none;">
-             <button class="btn btn-purple" id="fs-toggle-flash-btn" onclick="toggleFlashlight()" style="width: auto; padding: 10px 16px;">Flashlight: Off</button>
-             <button class="close-scanner-btn" onclick="stopScanner()">✖ Close</button>
+            <button onclick="adjustZoom(0.5)">🔍 +</button>
+            <button onclick="adjustZoom(-0.5)">🔍 -</button>
+            <span class="zoom-indicator" id="zoom-level-display">Zoom: 4.0x</span>
+            <button id="fs-toggle-flash-btn" onclick="toggleFlashlight()">💡 Off</button>
+            <button class="close-scanner-btn" onclick="stopScanner()">✖ Close</button>
           </div>
           <div id="scanner-laser"></div>
           <div id="reader"></div>
         </div>
 
         <div style="margin-bottom: 24px;">
-          <button class="btn btn-gray" onclick="resetCalculatorPage()">Clear & Reset Page</button>
+          <button class="btn btn-gray" onclick="resetCalculatorPage()">🔄 Clear & Reset</button>
         </div>
 
         <div class="table-wrapper">
           <table class="data-table">
             <thead>
-              <tr><th>Sr No.</th><th>Bill Details</th><th>Amount</th><th>Charges</th><th>Total</th></tr>
+              <tr><th>Sr</th><th>Details</th><th>Amount</th><th>Charges</th><th>Total</th></tr>
             </thead>
             <tbody id="table-body">
               <tr><td colspan="5" class="empty-row">No bill entries yet.</td></tr>
@@ -177,30 +395,30 @@
       let isScannerStopping = false;
       let isFlashOn = false;
       let audioCtx = null;
+      let currentZoom = 4.0; // Default high zoom for small QR codes
 
-      // 1. Instant Audio Initialization (Square wave for loud POS Beep)
+      // Audio
       function initAudio() {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
       }
-
       function playBeep() {
         if (!audioCtx) return;
         try {
-          const oscillator = audioCtx.createOscillator();
-          const gainNode = audioCtx.createGain();
-          oscillator.connect(gainNode);
-          gainNode.connect(audioCtx.destination);
-          oscillator.type = "square"; // Loud aggressive scanner sound
-          oscillator.frequency.value = 1500;
-          gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-          oscillator.start(audioCtx.currentTime);
-          oscillator.stop(audioCtx.currentTime + 0.15);
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.type = "square";
+          osc.frequency.value = 1800;
+          gain.gain.setValueAtTime(1, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+          osc.start(audioCtx.currentTime);
+          osc.stop(audioCtx.currentTime + 0.12);
         } catch(e) { console.log(e); }
       }
 
-      // Rest of utility functions
+      // Core Logic
       function calculateCharges(amount) {
         if (amount <= 4000) return 20; if (amount <= 8000) return 30;
         if (amount <= 12000) return 50; if (amount <= 18000) return 80;
@@ -228,7 +446,7 @@
           tbody.innerHTML = '<tr><td colspan="5" class="empty-row">No bill entries yet.</td></tr>'; return;
         }
         billingItems.forEach((item, index) => {
-          tbody.innerHTML += `<tr><td>${index + 1}</td><td>Ref: ${item.reference}</td><td>PKR ${item.baseAmount}</td><td>PKR ${item.charges}</td><td style="font-weight:bold;">PKR ${item.total}</td></tr>`;
+          tbody.innerHTML += `<tr><td>${index + 1}</td><td>Ref: ${item.reference}</td><td>PKR ${item.baseAmount}</td><td>PKR ${item.charges}</td><td style="font-weight:bold; color:#a78bfa;">PKR ${item.total}</td></tr>`;
         });
       }
 
@@ -245,10 +463,10 @@
         if(grandTotal === undefined) grandTotal = billingItems.reduce((acc, item) => acc + item.total, 0);
         const paidVal = parseFloat(document.getElementById("paid-amount").value);
         const refundEl = document.getElementById("refund-amount");
-        if (isNaN(paidVal) || paidVal === 0) { refundEl.textContent = "PKR 0"; refundEl.style.color = "rgb(220, 38, 38)"; return; }
+        if (isNaN(paidVal) || paidVal === 0) { refundEl.textContent = "PKR 0"; refundEl.style.color = "#f87171"; return; }
         const balance = paidVal - grandTotal;
-        refundEl.textContent = balance >= 0 ? `PKR ${balance.toLocaleString()} (Change)` : `PKR ${Math.abs(balance).toLocaleString()} (Shortage)`;
-        refundEl.style.color = balance >= 0 ? "rgb(34, 197, 94)" : "rgb(220, 38, 38)";
+        refundEl.textContent = balance >= 0 ? `PKR ${balance.toLocaleString()} (Change)` : `PKR ${Math.abs(balance).toLocaleString()} (Short)`;
+        refundEl.style.color = balance >= 0 ? "#4ade80" : "#f87171";
       }
 
       // API Call
@@ -269,7 +487,7 @@
           } else throw new Error();
         } catch (e) {
           document.getElementById("online-loading-bar").style.display = "none";
-          showStatus("API issue. Ap manual entry kar saktay hain.", "error");
+          showStatus("API issue. Manual entry allowed.", "error");
         }
       }
 
@@ -285,46 +503,73 @@
         return m ? m[0] : txt.replace(/[^0-9]/g, "").substring(0, 14);
       }
 
-      // 2. High-Performance Camera Optimization
-      async function optimizeCameraTracks() {
-        try {
-          const videoElem = document.querySelector('#reader video');
-          if (videoElem && videoElem.srcObject) {
-            const track = videoElem.srcObject.getVideoTracks()[0];
-            const caps = track.getCapabilities ? track.getCapabilities() : {};
-            const consts = {};
-            // Apply Heavy Zoom for small QR
-            if (caps.zoom) consts.zoom = Math.min(caps.zoom.max, Math.max(2.5, caps.zoom.min || 1.0));
-            if (Object.keys(consts).length > 0) await track.applyConstraints(consts).catch(()=>{});
+      // ----- ZOOM CONTROL (THE FIX FOR SMALL QR) -----
+      async function adjustZoom(delta) {
+        const videoElem = document.querySelector('#reader video');
+        if (!videoElem || !videoElem.srcObject) {
+          // If scanner not active, just update the display value for next start
+          currentZoom = Math.max(1.0, Math.min(10.0, currentZoom + delta));
+          document.getElementById('zoom-level-display').textContent = `Zoom: ${currentZoom.toFixed(1)}x`;
+          return;
+        }
+        const track = videoElem.srcObject.getVideoTracks()[0];
+        if (track && track.getCapabilities) {
+          const caps = track.getCapabilities();
+          if (caps.zoom) {
+            let newZoom = Math.round((currentZoom + delta) * 10) / 10;
+            newZoom = Math.min(caps.zoom.max, Math.max(caps.zoom.min, newZoom));
+            currentZoom = newZoom;
+            await track.applyConstraints({ advanced: [{ zoom: currentZoom }] });
+            document.getElementById('zoom-level-display').textContent = `Zoom: ${currentZoom.toFixed(1)}x`;
+          } else {
+            showStatus("Camera doesn't support zoom.", "error");
           }
-        } catch(e) {}
+        }
       }
 
+      // Apply initial zoom when camera starts
+      async function applyInitialZoom() {
+        const videoElem = document.querySelector('#reader video');
+        if (videoElem && videoElem.srcObject) {
+          const track = videoElem.srcObject.getVideoTracks()[0];
+          if (track && track.getCapabilities) {
+            const caps = track.getCapabilities();
+            if (caps.zoom) {
+              let initZoom = Math.min(caps.zoom.max, Math.max(caps.zoom.min, currentZoom));
+              try {
+                await track.applyConstraints({ advanced: [{ zoom: initZoom }] });
+                document.getElementById('zoom-level-display').textContent = `Zoom: ${initZoom.toFixed(1)}x`;
+              } catch(e) { console.log(e); }
+            }
+          }
+        }
+      }
+
+      // ----- SCANNER ENGINE -----
       async function openScanner() {
-        initAudio(); // Initialize audio immediately on click
+        initAudio();
         const scannerDiv = document.getElementById("scanner-container");
         scannerDiv.style.display = "flex";
         scannerDiv.classList.add("fullscreen-mode");
         document.getElementById("fs-scanner-header").style.display = "flex";
-        document.getElementById("scanner-laser").style.display = "block"; // Start laser
+        document.getElementById("scanner-laser").style.display = "block";
 
         if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
 
-        // Request HD video so small QR has enough pixels to be read easily
         const config = {
-          fps: 15, // Reduced from 60 to 15 to allow faster startup & crisp focus frames
-          qrbox: { width: 280, height: 160 },
+          fps: 12,
+          qrbox: { width: 240, height: 160 },
           videoConstraints: {
             facingMode: "environment",
-            width: { ideal: 1920 }, // High-Res forces small QRs to become readable
-            height: { ideal: 1080 }
+            width: { ideal: 3840 },
+            height: { ideal: 2160 }
           }
         };
 
         const onScanSuccess = async (decodedText) => {
           const cleanNumber = parse14DigitReference(decodedText);
           if (cleanNumber.length === 14) {
-            playBeep(); // Instant Beep
+            playBeep();
             if (billingItems.some(item => item.reference === cleanNumber)) {
               showStatus("Already Scanned!", "error"); return;
             }
@@ -336,23 +581,23 @@
 
         try {
           await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, ()=>{});
-          setTimeout(optimizeCameraTracks, 500); // Apply hardware zoom slightly after video start
+          // Apply zoom after camera is live
+          setTimeout(() => { applyInitialZoom(); }, 600);
         } catch (err) {
-          showStatus("Camera start failed.", "error"); await stopScanner();
+          showStatus("Camera start failed.", "error");
+          await stopScanner();
         }
       }
 
-      // 3. Clean Stop Logic (Removes any leftover text/styles)
       async function stopScanner() {
         if (isScannerStopping) return;
         isScannerStopping = true;
-        
         const scannerDiv = document.getElementById("scanner-container");
         scannerDiv.style.display = "none";
         scannerDiv.classList.remove("fullscreen-mode");
         document.getElementById("fs-scanner-header").style.display = "none";
-        document.getElementById("scanner-laser").style.display = "none"; // Stop laser
-        
+        document.getElementById("scanner-laser").style.display = "none";
+
         try {
           const videoElem = document.querySelector('#reader video');
           if (videoElem && videoElem.srcObject) videoElem.srcObject.getTracks().forEach(t => t.stop());
@@ -362,7 +607,7 @@
           try { await html5QrCode.stop(); } catch(e) {}
         }
         isFlashOn = false;
-        document.getElementById("fs-toggle-flash-btn").textContent = "Flashlight: Off";
+        document.getElementById("fs-toggle-flash-btn").textContent = "💡 Off";
         isScannerStopping = false;
       }
 
@@ -379,7 +624,7 @@
           if (track && track.getCapabilities && track.getCapabilities().torch) {
             isFlashOn = !isFlashOn;
             await track.applyConstraints({ advanced: [{ torch: isFlashOn }] });
-            document.getElementById("fs-toggle-flash-btn").textContent = isFlashOn ? "Flashlight: On" : "Flashlight: Off";
+            document.getElementById("fs-toggle-flash-btn").textContent = isFlashOn ? "💡 On" : "💡 Off";
           }
         }
       }
@@ -391,6 +636,12 @@
         document.getElementById("paid-amount").value = "";
         renderTable(); updateSummary(); showStatus("", "idle");
       }
+
+      // Page load init
+      window.onload = function() {
+        renderTable();
+        updateSummary();
+      };
     </script>
   </body>
 </html>
