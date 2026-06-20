@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Madina Mobile - Fast POS</title>
+    <title>Madina Mobile - POS</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+      /* ----- MAIN APP STYLE (Glassmorphism) ----- */
+      * { box-sizing: border-box; }
       body {
         margin: 0; padding: 0;
         min-height: 100vh;
@@ -20,7 +22,6 @@
         justify-content: center;
         padding: 16px;
       }
-
       @keyframes gradientBG {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
@@ -28,7 +29,6 @@
       }
 
       .app-wrapper { width: 100%; max-width: 600px; margin: 10px auto; }
-
       .main-card {
         width: 100%;
         background: rgba(255, 255, 255, 0.07);
@@ -41,7 +41,6 @@
         box-sizing: border-box;
         animation: cardPulse 4s infinite alternate ease-in-out;
       }
-
       @keyframes cardPulse {
         0% { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); border-color: rgba(255,255,255,0.05); }
         100% { box-shadow: 0 25px 60px -5px rgba(168, 85, 247, 0.25); border-color: rgba(168, 85, 247, 0.3); }
@@ -56,7 +55,6 @@
         margin-bottom: 24px;
         letter-spacing: 0.5px;
       }
-
       .input-label {
         display: block;
         font-size: 13px;
@@ -65,7 +63,6 @@
         margin-bottom: 6px;
         letter-spacing: 0.3px;
       }
-
       .text-input {
         width: 100%;
         padding: 12px 16px;
@@ -84,7 +81,6 @@
         background: rgba(255, 255, 255, 0.15);
         box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
       }
-
       .input-with-button {
         position: relative;
         display: flex;
@@ -92,7 +88,6 @@
         width: 100%;
       }
       .input-with-button .text-input { padding-right: 52px; }
-
       .input-action-btn {
         position: absolute;
         right: 6px;
@@ -100,7 +95,7 @@
         transform: translateY(-50%);
         width: 42px;
         height: 42px;
-        border-radius: 10px;
+        border-radius: 12px;
         border: none;
         background: linear-gradient(135deg, #8b5cf6, #6d28d9);
         color: white;
@@ -144,8 +139,7 @@
       }
       .btn-gray { background: rgba(100, 116, 139, 0.6); border: 1px solid rgba(255,255,255,0.1); }
       .btn-gray:hover { background: rgba(100, 116, 139, 0.9); }
-      .btn-purple { background: linear-gradient(135deg, #8b5cf6, #6d28d9); border: 1px solid rgba(255,255,255,0.2); }
-
+      
       .table-wrapper {
         width: 100%;
         overflow-x: auto;
@@ -194,7 +188,6 @@
         margin-top: 4px;
       }
       .text-white { color: white !important; }
-      
       .discount-box {
         background: rgba(220, 38, 38, 0.1);
         border: 1px solid rgba(220, 38, 38, 0.2);
@@ -202,7 +195,6 @@
         padding: 12px;
         margin-top: 8px;
       }
-
       .payment-section {
         border: 1px solid rgba(220, 38, 38, 0.3);
         background: rgba(220, 38, 38, 0.08);
@@ -219,22 +211,30 @@
       .return-label { font-size: 15px; font-weight: 700; color: #fca5a5; }
       .return-value { font-size: 20px; font-weight: 800; color: #f87171; }
 
-      /* SCANNER */
+      /* ============================================
+         QR SCANNER - inDrive STYLE (Minimal & Clean)
+         ============================================ */
       #scanner-container { display: none; }
       #scanner-container.fullscreen-mode {
-        position: fixed !important; top: 0 !important; left: 0 !important;
-        width: 100vw !important; height: 100vh !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
         z-index: 9999 !important;
-        background: rgba(0, 0, 0, 0.95) !important;
-        backdrop-filter: blur(10px);
+        background: #000000 !important; /* Solid Black like inDrive */
         margin: 0 !important;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
       }
+
+      /* Hide default HTML5QRCode border */
       #scanner-container.fullscreen-mode #reader {
-        flex: 1;
         width: 100% !important;
         height: 100% !important;
+        background: #000;
       }
       #scanner-container.fullscreen-mode #reader video {
         object-fit: cover !important;
@@ -242,68 +242,163 @@
         height: 100% !important;
       }
 
-      .scanner-header-custom {
+      /* ---- Top Header (Minimal) ---- */
+      .scanner-header-inDrive {
         position: absolute;
-        top: 20px;
-        left: 16px;
-        right: 16px;
+        top: 40px;
+        left: 24px;
+        right: 24px;
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 8px;
+        justify-content: space-between;
+        align-items: center;
         z-index: 10000;
-        background: rgba(0,0,0,0.5);
-        backdrop-filter: blur(10px);
-        padding: 12px;
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.1);
+        pointer-events: none;
       }
-      .scanner-header-custom button {
-        background: rgba(255, 255, 255, 0.1);
+      .scanner-header-inDrive span {
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+        pointer-events: auto;
+      }
+      .scanner-header-inDrive button {
+        pointer-events: auto;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
         color: white;
-        border: 1px solid rgba(255,255,255,0.2);
-        padding: 8px 14px;
-        border-radius: 10px;
+        padding: 8px 18px;
+        border-radius: 30px;
+        font-size: 14px;
         font-weight: 600;
-        font-size: 13px;
         cursor: pointer;
         transition: 0.2s;
-        min-width: 50px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       }
-      .scanner-header-custom button:active { transform: scale(0.95); }
-      .zoom-indicator {
-        color: #a78bfa;
-        font-weight: 700;
-        font-size: 13px;
-        padding: 6px 12px;
-        background: rgba(0,0,0,0.4);
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-      }
-      .close-scanner-btn { background: rgba(220, 38, 38, 0.8) !important; border-color: rgba(220, 38, 38, 0.5) !important; }
-
-      #scanner-laser {
+      .scanner-header-inDrive button:active { transform: scale(0.95); }
+      
+      /* ---- Scanner Frame (Modern Square with Corners) ---- */
+      .scanner-frame-overlay {
         position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none;
+        z-index: 10001;
+      }
+      .scanner-box {
+        width: 280px;
+        height: 280px;
+        position: relative;
+        border-radius: 28px;
+        box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.65); /* Dim outside */
+        border: 2px solid rgba(255, 255, 255, 0.5);
+      }
+      /* Corner brackets */
+      .scanner-box::before {
+        content: '';
+        position: absolute;
+        top: -4px; left: -4px;
+        width: 40px; height: 40px;
+        border-top: 6px solid #22c55e;
+        border-left: 6px solid #22c55e;
+        border-radius: 12px 0 0 0;
+        filter: drop-shadow(0 0 12px #22c55e);
+      }
+      .scanner-box::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; right: -4px;
+        width: 40px; height: 40px;
+        border-bottom: 6px solid #22c55e;
+        border-right: 6px solid #22c55e;
+        border-radius: 0 0 12px 0;
+        filter: drop-shadow(0 0 12px #22c55e);
+      }
+      /* Additional corners for top-right & bottom-left */
+      .scanner-box .corner-tr {
+        position: absolute;
+        top: -4px; right: -4px;
+        width: 40px; height: 40px;
+        border-top: 6px solid #22c55e;
+        border-right: 6px solid #22c55e;
+        border-radius: 0 12px 0 0;
+        filter: drop-shadow(0 0 12px #22c55e);
+      }
+      .scanner-box .corner-bl {
+        position: absolute;
+        bottom: -4px; left: -4px;
+        width: 40px; height: 40px;
+        border-bottom: 6px solid #22c55e;
+        border-left: 6px solid #22c55e;
+        border-radius: 0 0 0 12px;
+        filter: drop-shadow(0 0 12px #22c55e);
+      }
+
+      /* Laser line inside the box */
+      .scanner-laser-inDrive {
+        position: absolute;
+        top: 10%;
         left: 10%;
         width: 80%;
         height: 3px;
         background: #22c55e;
-        box-shadow: 0 0 30px 8px rgba(34, 197, 94, 0.9);
-        z-index: 10001;
-        animation: laserScan 1.8s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
-        display: none;
+        box-shadow: 0 0 30px 8px rgba(34, 197, 94, 0.8);
         border-radius: 50%;
-        filter: drop-shadow(0 0 15px #22c55e);
+        animation: laserScanInDrive 2s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        pointer-events: none;
+        z-index: 10002;
       }
-      @keyframes laserScan {
-        0% { top: 20%; opacity: 1; }
-        100% { top: 80%; opacity: 0.8; }
+      @keyframes laserScanInDrive {
+        0% { top: 12%; opacity: 1; }
+        100% { top: 88%; opacity: 0.6; }
       }
 
+      /* ---- Bottom Action Button (like "INSTALL" in inDrive) ---- */
+      .scanner-bottom-btn {
+        position: absolute;
+        bottom: 60px;
+        left: 24px;
+        right: 24px;
+        z-index: 10000;
+        pointer-events: none;
+      }
+      .scanner-bottom-btn button {
+        pointer-events: auto;
+        width: 100%;
+        padding: 16px;
+        background: #0066FF; /* inDrive blue style */
+        border: none;
+        border-radius: 40px;
+        color: white;
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        box-shadow: 0 8px 30px rgba(0, 102, 255, 0.4);
+        transition: 0.2s;
+      }
+      .scanner-bottom-btn button:active { transform: scale(0.96); }
+      .scanner-bottom-btn .flash-toggle {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: none;
+        margin-top: 12px;
+        padding: 12px;
+        font-size: 14px;
+        color: #ddd;
+        border-radius: 30px;
+      }
+
+      /* Hide zoom buttons, we force 50% via code */
+      .zoom-hide { display: none; }
+
       @media (max-width: 480px) {
+        .scanner-box { width: 240px; height: 240px; }
         .main-card { padding: 16px; }
-        .scanner-header-custom button { padding: 6px 10px; font-size: 12px; min-width: 40px; }
       }
     </style>
   </head>
@@ -313,14 +408,14 @@
         <div class="centered-title">✨ Madina Mobile</div>
 
         <div id="online-loading-bar" style="display: none; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; text-align: center; font-weight: 600; animation: pulse 1.2s infinite;">
-          Searching Bill online...
+          Searching Bill...
         </div>
 
         <div class="input-group">
-          <label class="input-label" for="ref-input">Reference Number (Scan / Enter)</label>
+          <label class="input-label" for="ref-input">Reference Number</label>
           <div class="input-with-button">
-            <input type="tel" class="text-input" id="ref-input" placeholder="Enter or scan 14-digit bill..." maxlength="14" oninput="handleRefInput(this)" onfocus="this.select()">
-            <button id="input-scanner-btn" onclick="toggleScanner()" title="Scan QR Code" type="button" class="input-action-btn">
+            <input type="tel" class="text-input" id="ref-input" placeholder="Enter or scan 14-digit..." maxlength="14" oninput="handleRefInput(this)" onfocus="this.select()">
+            <button id="input-scanner-btn" onclick="toggleScanner()" title="Scan QR" type="button" class="input-action-btn">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16V21H16"/><path d="M21 9V10"/><path d="M9 21V20"/><path d="M12 16V18"/><path d="M12 12V13"/><path d="M12 8V9"/><path d="M16 12V13"/><path d="M9 12V13"/><path d="M13 21V20"/><path d="M16 16V18"/><rect width="1" height="1" x="7" y="7"/><rect width="1" height="1" x="16" y="7"/><rect width="1" height="1" x="7" y="16"/></svg>
             </button>
           </div>
@@ -328,17 +423,33 @@
 
         <div id="status-area" class="status-box status-idle"></div>
 
-        <!-- SCANNER -->
+        <!-- SCANNER (inDrive Style) -->
         <div id="scanner-container">
-          <div class="scanner-header-custom" id="fs-scanner-header" style="display: none;">
-            <button onclick="adjustZoom(0.5)">🔍 +</button>
-            <button onclick="adjustZoom(-0.5)">🔍 -</button>
-            <span class="zoom-indicator" id="zoom-level-display">Auto-Zoom: 2.5x</span>
-            <button id="fs-toggle-flash-btn" onclick="toggleFlashlight()">💡 Off</button>
-            <button class="close-scanner-btn" onclick="stopScanner()">✖</button>
+          <!-- Top Header -->
+          <div class="scanner-header-inDrive">
+            <span>📷 Scan Bill</span>
+            <button onclick="stopScanner()">✕ Close</button>
           </div>
-          <div id="scanner-laser"></div>
-          <div id="reader"></div>
+
+          <!-- Laser Animation -->
+          <div class="scanner-laser-inDrive" id="scanner-laser-inDrive"></div>
+
+          <!-- Scanner Frame (Visual Overlay) -->
+          <div class="scanner-frame-overlay">
+            <div class="scanner-box">
+              <div class="corner-tr"></div>
+              <div class="corner-bl"></div>
+            </div>
+          </div>
+
+          <!-- Bottom Buttons -->
+          <div class="scanner-bottom-btn">
+            <button onclick="stopScanner()">✔ Done Scanning</button>
+            <button class="flash-toggle" id="fs-toggle-flash-btn" onclick="toggleFlashlight()">💡 Flash: On</button>
+          </div>
+
+          <!-- Hidden reader div -->
+          <div id="reader" style="width:100%; height:100%;"></div>
         </div>
 
         <div style="margin-bottom: 24px;">
@@ -347,11 +458,9 @@
 
         <div class="table-wrapper">
           <table class="data-table">
-            <thead>
-              <tr><th>Sr</th><th>Details</th><th>Amount</th><th>Charges</th><th>Total</th></tr>
-            </thead>
+            <thead><tr><th>Sr</th><th>Details</th><th>Amount</th><th>Charges</th><th>Total</th></tr></thead>
             <tbody id="table-body">
-              <tr><td colspan="5" class="empty-row">No bill entries yet.</td></tr>
+              <tr><td colspan="5" class="empty-row">No entries yet.</td></tr>
             </tbody>
           </table>
         </div>
@@ -359,25 +468,22 @@
         <div class="summary-card">
           <div class="summary-row"><span class="summary-label">Total Bills</span><span class="summary-val" id="summary-base">PKR 0</span></div>
           <div class="summary-row"><span class="summary-label">Total Charges</span><span class="summary-val" id="summary-charges">PKR 0</span></div>
-          
-          <!-- نیا Gift / Discount فیلڈ -->
           <div class="discount-box">
             <div class="summary-row" style="margin-bottom: 0;">
-              <span class="summary-label" style="color: #fca5a5;">🎁 Discount / Gift (-)</span>
+              <span class="summary-label" style="color: #fca5a5;">🎁 Gift / Discount (-)</span>
               <input type="tel" id="discount-input" placeholder="0" oninput="updateSummary()" style="width: 100px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 10px; color: white; font-weight: 600; text-align: right; font-size: 15px;">
             </div>
           </div>
-
           <div class="summary-row grand-total-highlight" style="margin-top: 12px;">
-            <span class="summary-label text-white" style="font-size: 16px;">Grand Total (After Gift)</span>
+            <span class="summary-label text-white" style="font-size: 16px;">Grand Total</span>
             <span class="summary-val text-white" style="font-size: 18px;" id="summary-grand">PKR 0</span>
           </div>
         </div>
 
         <div class="payment-section">
           <div class="input-group" style="margin-bottom: 0;">
-            <label class="input-label" for="paid-amount">Customer Paid Amount</label>
-            <input type="tel" class="text-input" id="paid-amount" placeholder="Enter cash received..." oninput="updateCashReturn()">
+            <label class="input-label" for="paid-amount">Customer Paid</label>
+            <input type="tel" class="text-input" id="paid-amount" placeholder="Enter cash..." oninput="updateCashReturn()">
           </div>
           <div class="return-box">
             <div class="return-label">Return Balance</div>
@@ -392,9 +498,9 @@
       let billingItems = [];
       let html5QrCode = null;
       let isScannerStopping = false;
-      let isFlashOn = false;
+      let isFlashOn = true; // Default ON
       let audioCtx = null;
-      let currentZoom = 2.5; // Default auto-zoom set to 2.5x for small QR
+      const FIXED_ZOOM = 2.0; // 50% of typical max (4.0)
 
       // Audio
       function initAudio() {
@@ -447,7 +553,7 @@
         const tbody = document.getElementById("table-body");
         tbody.innerHTML = "";
         if (billingItems.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="empty-row">No bill entries yet.</td></tr>'; return;
+          tbody.innerHTML = '<tr><td colspan="5" class="empty-row">No entries yet.</td></tr>'; return;
         }
         billingItems.forEach((item, index) => {
           tbody.innerHTML += `<tr><td>${index + 1}</td><td>Ref: ${item.reference}</td><td>PKR ${item.baseAmount}</td><td>PKR ${item.charges}</td><td style="font-weight:bold; color:#a78bfa;">PKR ${item.total}</td></tr>`;
@@ -457,14 +563,11 @@
       function updateSummary() {
         let totalBase = 0, totalCharges = 0, grandTotal = 0;
         billingItems.forEach(item => { totalBase += item.baseAmount; totalCharges += item.charges; grandTotal += item.total; });
-        
         const discount = getDiscount();
-        const finalGrand = Math.max(0, grandTotal - discount); // Discount kam karega
-
+        const finalGrand = Math.max(0, grandTotal - discount);
         document.getElementById("summary-base").textContent = "PKR " + totalBase.toLocaleString();
         document.getElementById("summary-charges").textContent = "PKR " + totalCharges.toLocaleString();
         document.getElementById("summary-grand").textContent = "PKR " + finalGrand.toLocaleString();
-        
         updateCashReturn(finalGrand);
       }
 
@@ -481,10 +584,10 @@
         refundEl.style.color = balance >= 0 ? "#4ade80" : "#f87171";
       }
 
-      // API Call
+      // API
       async function fetchBillFromAPI(referenceNumber) {
         if (billingItems.some(item => item.reference === referenceNumber)) {
-          showStatus("Yeh Bill pehle se add hai!", "error"); return;
+          showStatus("Already added!", "error"); return;
         }
         document.getElementById("online-loading-bar").style.display = "block";
         try {
@@ -495,7 +598,7 @@
           if (data.bill && data.bill.basicInfo && data.bill.basicInfo.currAmntDue) amnt = parseFloat(String(data.bill.basicInfo.currAmntDue).replace(/[^0-9.]/g, ""));
           if (amnt > 0) {
             addBillItem(amnt, referenceNumber);
-            showStatus("Bill fetched: PKR " + amnt, "success");
+            showStatus("Fetched: PKR " + amnt, "success");
           } else throw new Error();
         } catch (e) {
           document.getElementById("online-loading-bar").style.display = "none";
@@ -515,65 +618,52 @@
         return m ? m[0] : txt.replace(/[^0-9]/g, "").substring(0, 14);
       }
 
-      // ----- ZOOM CONTROL (Automatic + Manual) -----
-      async function adjustZoom(delta) {
+      // ----- SCANNER ENGINE (inDrive UI + Auto Flash + 50% Zoom) -----
+      async function applyFixedZoomAndFlash() {
         const videoElem = document.querySelector('#reader video');
-        if (!videoElem || !videoElem.srcObject) {
-          currentZoom = Math.max(1.0, Math.min(8.0, currentZoom + delta));
-          document.getElementById('zoom-level-display').textContent = `Zoom: ${currentZoom.toFixed(1)}x`;
-          return;
-        }
+        if (!videoElem || !videoElem.srcObject) return;
+        
         const track = videoElem.srcObject.getVideoTracks()[0];
-        if (track && track.getCapabilities) {
+        if (!track) return;
+
+        // 1. Apply Fixed Zoom 2.0x (50%)
+        try {
           const caps = track.getCapabilities();
           if (caps.zoom) {
-            let newZoom = Math.round((currentZoom + delta) * 10) / 10;
-            newZoom = Math.min(caps.zoom.max, Math.max(caps.zoom.min, newZoom));
-            currentZoom = newZoom;
-            await track.applyConstraints({ advanced: [{ zoom: currentZoom }] });
-            document.getElementById('zoom-level-display').textContent = `Zoom: ${currentZoom.toFixed(1)}x`;
-          } else {
-            showStatus("Zoom not supported.", "error");
+            let targetZoom = Math.min(caps.zoom.max, Math.max(caps.zoom.min, FIXED_ZOOM));
+            await track.applyConstraints({ advanced: [{ zoom: targetZoom }] });
+            console.log("Zoom set to 2.0x (50%)");
           }
-        }
+        } catch(e) { console.log("Zoom failed", e); }
+
+        // 2. Force Flash ON
+        try {
+          if (track.getCapabilities && track.getCapabilities().torch) {
+            await track.applyConstraints({ advanced: [{ torch: true }] });
+            isFlashOn = true;
+            document.getElementById("fs-toggle-flash-btn").innerHTML = "💡 Flash: On";
+            console.log("Flash forced ON");
+          }
+        } catch(e) { console.log("Flash failed", e); }
       }
 
-      async function applyInitialZoom() {
-        const videoElem = document.querySelector('#reader video');
-        if (videoElem && videoElem.srcObject) {
-          const track = videoElem.srcObject.getVideoTracks()[0];
-          if (track && track.getCapabilities) {
-            const caps = track.getCapabilities();
-            if (caps.zoom) {
-              let initZoom = Math.min(caps.zoom.max, Math.max(caps.zoom.min, currentZoom));
-              try {
-                await track.applyConstraints({ advanced: [{ zoom: initZoom }] });
-                document.getElementById('zoom-level-display').textContent = `Zoom: ${initZoom.toFixed(1)}x`;
-              } catch(e) { console.log(e); }
-            }
-          }
-        }
-      }
-
-      // ----- SCANNER ENGINE (FIXED: Lower res to prevent hang, continuous focus) -----
       async function openScanner() {
         initAudio();
         const scannerDiv = document.getElementById("scanner-container");
         scannerDiv.style.display = "flex";
         scannerDiv.classList.add("fullscreen-mode");
-        document.getElementById("fs-scanner-header").style.display = "flex";
-        document.getElementById("scanner-laser").style.display = "block";
+        document.getElementById("scanner-laser-inDrive").style.display = "block";
 
         if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
 
         const config = {
-          fps: 10, // کم FPS سے CPU بوجھ کم
-          qrbox: { width: 240, height: 160 },
+          fps: 10,
+          qrbox: { width: 260, height: 260 },
           videoConstraints: {
             facingMode: "environment",
-            width: { ideal: 1280 }, // HD ریزولوشن (ہینگ نہیں ہوگا)
+            width: { ideal: 1280 },
             height: { ideal: 720 },
-            focusMode: "continuous" // خودکار فوکس آن
+            focusMode: "continuous"
           }
         };
 
@@ -592,9 +682,18 @@
 
         try {
           await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, ()=>{});
-          setTimeout(() => { applyInitialZoom(); }, 500);
+          // Apply Zoom & Flash after camera warms up
+          setTimeout(() => { applyFixedZoomAndFlash(); }, 600);
+          // Keep retrying flash/zoom every 2 seconds in case it drops
+          const interval = setInterval(() => {
+            if (document.getElementById("scanner-container").style.display !== "flex") {
+              clearInterval(interval);
+              return;
+            }
+            applyFixedZoomAndFlash();
+          }, 3000);
         } catch (err) {
-          showStatus("Camera start failed.", "error");
+          showStatus("Camera failed.", "error");
           await stopScanner();
         }
       }
@@ -605,8 +704,7 @@
         const scannerDiv = document.getElementById("scanner-container");
         scannerDiv.style.display = "none";
         scannerDiv.classList.remove("fullscreen-mode");
-        document.getElementById("fs-scanner-header").style.display = "none";
-        document.getElementById("scanner-laser").style.display = "none";
+        document.getElementById("scanner-laser-inDrive").style.display = "none";
 
         try {
           const videoElem = document.querySelector('#reader video');
@@ -617,7 +715,7 @@
           try { await html5QrCode.stop(); } catch(e) {}
         }
         isFlashOn = false;
-        document.getElementById("fs-toggle-flash-btn").textContent = "💡 Off";
+        document.getElementById("fs-toggle-flash-btn").innerHTML = "💡 Flash: Off";
         isScannerStopping = false;
       }
 
@@ -634,7 +732,7 @@
           if (track && track.getCapabilities && track.getCapabilities().torch) {
             isFlashOn = !isFlashOn;
             await track.applyConstraints({ advanced: [{ torch: isFlashOn }] });
-            document.getElementById("fs-toggle-flash-btn").textContent = isFlashOn ? "💡 On" : "💡 Off";
+            document.getElementById("fs-toggle-flash-btn").innerHTML = isFlashOn ? "💡 Flash: On" : "💡 Flash: Off";
           }
         }
       }
