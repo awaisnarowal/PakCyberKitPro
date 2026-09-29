@@ -1,695 +1,2700 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Madina Mobile - POS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-      * { box-sizing: border-box; }
-      body {
-        margin: 0; padding: 0;
-        min-height: 100vh;
-        font-family: "Inter", -apple-system, sans-serif;
-        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
-        background-size: 400% 400%;
-        animation: gradientBG 18s ease infinite;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
-      }
-      @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0757c9">
+<title>Madina Mobile Center Narowal</title>
 
-      .app-wrapper { width: 100%; max-width: 600px; margin: 10px auto; }
-      .main-card {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.07);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 32px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-        padding: 24px;
-        box-sizing: border-box;
-        animation: cardPulse 4s infinite alternate ease-in-out;
-      }
-      @keyframes cardPulse {
-        0% { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); border-color: rgba(255,255,255,0.05); }
-        100% { box-shadow: 0 25px 60px -5px rgba(168, 85, 247, 0.25); border-color: rgba(168, 85, 247, 0.3); }
-      }
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Segoe UI,Arial,sans-serif;
+}
 
-      .centered-title {
-        text-align: center;
-        font-size: 26px;
-        font-weight: 700;
-        color: #ffffff;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        margin-bottom: 24px;
-        letter-spacing: 0.5px;
-      }
-      .input-label {
-        display: block;
-        font-size: 13px;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 6px;
-        letter-spacing: 0.3px;
-      }
-      .text-input {
-        width: 100%;
-        padding: 12px 16px;
-        font-size: 16px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1.5px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
-        color: #ffffff;
-        box-sizing: border-box;
-        transition: all 0.2s;
-      }
-      .text-input::placeholder { color: rgba(255, 255, 255, 0.4); }
-      .text-input:focus {
-        outline: none;
-        border-color: rgb(168, 85, 247);
-        background: rgba(255, 255, 255, 0.15);
-        box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
-      }
-      .input-with-button {
-        position: relative;
-        display: flex;
-        align-items: center;
-        width: 100%;
-      }
-      .input-with-button .text-input { padding-right: 52px; }
-      .input-action-btn {
-        position: absolute;
-        right: 6px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-        border: none;
-        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-        color: white;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-        animation: btnGlow 2s infinite alternate;
-      }
-      @keyframes btnGlow {
-        0% { box-shadow: 0 0 5px rgba(168, 85, 247, 0.4); }
-        100% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.8); }
-      }
+:root{
+    --blue:#0757c9;
+    --blue2:#123b87;
+    --green:#16a34a;
+    --yellow:#f59e0b;
+    --red:#dc2626;
+    --purple:#7c3aed;
+    --bg:#eef3f9;
+    --text:#172033;
+    --muted:#667085;
+    --white:#fff;
+}
 
-      .status-box {
-        padding: 12px 16px;
-        border-radius: 12px;
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 16px;
-        text-align: center;
-        backdrop-filter: blur(10px);
-      }
-      .status-idle { display: none; }
-      .status-loading { background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #93c5fd; }
-      .status-success { background: rgba(34, 197, 94, 0.2); border: 1px solid rgba(34, 197, 94, 0.4); color: #86efac; }
-      .status-error { background: rgba(220, 38, 38, 0.2); border: 1px solid rgba(220, 38, 38, 0.4); color: #fca5a5; }
+body{
+    background:
+        radial-gradient(circle at 10% 10%,#dbeafe 0,transparent 30%),
+        radial-gradient(circle at 90% 20%,#e0e7ff 0,transparent 28%),
+        var(--bg);
+    color:var(--text);
+    min-height:100vh;
+}
 
-      .btn {
-        padding: 12px 6px;
-        font-size: 14px;
-        font-weight: 600;
-        border-radius: 12px;
-        border: none;
-        color: white;
-        cursor: pointer;
-        width: 100%;
-        transition: 0.2s;
-        backdrop-filter: blur(5px);
-      }
-      .btn-gray { background: rgba(100, 116, 139, 0.6); border: 1px solid rgba(255,255,255,0.1); }
-      .btn-gray:hover { background: rgba(100, 116, 139, 0.9); }
-      
-      .table-wrapper {
-        width: 100%;
-        overflow-x: auto;
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(0, 0, 0, 0.2);
-        backdrop-filter: blur(5px);
-        margin-bottom: 24px;
-      }
-      .data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-      .data-table th {
-        background: rgba(255, 255, 255, 0.05);
-        color: rgba(255, 255, 255, 0.7);
-        font-weight: 600;
-        padding: 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      }
-      .data-table td {
-        padding: 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        color: #e2e8f0;
-      }
-      .empty-row { text-align: center; color: rgba(255,255,255,0.3); padding: 20px; font-style: italic; }
+/* HEADER */
 
-      .summary-card {
-        background: rgba(0, 0, 0, 0.25);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 16px;
-        padding: 16px;
-        margin-bottom: 24px;
-      }
-      .summary-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-      .summary-label { font-size: 14px; color: rgba(255, 255, 255, 0.7); }
-      .summary-val { font-size: 15px; font-weight: 600; color: #f1f5f9; }
-      .grand-total-highlight {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(168, 85, 247, 0.3));
-        border-radius: 12px;
-        padding: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        margin-top: 4px;
-      }
-      .text-white { color: white !important; }
-      .discount-box {
-        background: rgba(220, 38, 38, 0.1);
-        border: 1px solid rgba(220, 38, 38, 0.2);
-        border-radius: 12px;
-        padding: 12px;
-        margin-top: 8px;
-      }
-      .payment-section {
-        border: 1px solid rgba(220, 38, 38, 0.3);
-        background: rgba(220, 38, 38, 0.08);
-        backdrop-filter: blur(5px);
-        border-radius: 16px;
-        padding: 16px;
-      }
-      .return-box {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 12px;
-      }
-      .return-label { font-size: 15px; font-weight: 700; color: #fca5a5; }
-      .return-value { font-size: 20px; font-weight: 800; color: #f87171; }
+header{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(135deg,#0757c9,#123b87,#0b2454);
+    color:white;
+    padding:23px 17px;
+    box-shadow:0 7px 25px #0003;
+}
 
-      /* ============================================
-         EXTREMELY SIMPLE QR SCANNER (4x Zoom, Low Res)
-         ============================================ */
-      #scanner-container { display: none; }
-      #scanner-container.fullscreen-mode {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        z-index: 9999 !important;
-        background: #000000 !important;
-        margin: 0 !important;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
+header:before,
+header:after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    background:#ffffff12;
+    animation:float 7s infinite ease-in-out;
+}
 
-      #scanner-container.fullscreen-mode #reader {
-        width: 100% !important;
-        height: 100% !important;
-        background: #000;
-      }
-      #scanner-container.fullscreen-mode #reader video {
-        object-fit: cover !important;
-        width: 100% !important;
-        height: 100% !important;
-      }
+header:before{
+    width:180px;
+    height:180px;
+    right:-60px;
+    top:-80px;
+}
 
-      /* ---- Top Minimal Bar ---- */
-      .scanner-top-bar {
-        position: absolute;
-        top: 40px;
-        left: 24px;
-        right: 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 10000;
-        pointer-events: none;
-      }
-      .scanner-top-bar button {
-        pointer-events: auto;
-        background: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: white;
-        padding: 10px 16px;
-        border-radius: 30px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: 0.2s;
-        min-width: 60px;
-        text-align: center;
-      }
-      .scanner-top-bar button:active { transform: scale(0.92); }
+header:after{
+    width:100px;
+    height:100px;
+    left:-40px;
+    bottom:-50px;
+    animation-delay:1.5s;
+}
 
-      /* ---- Scanner Frame (Simple Square) ---- */
-      .scanner-frame-overlay {
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        pointer-events: none;
-        z-index: 10001;
-      }
-      .scanner-box {
-        width: 200px;
-        height: 200px;
-        position: relative;
-        border-radius: 20px;
-        box-shadow: 0 0 0 4000px rgba(0, 0, 0, 0.7);
-        border: 2px solid rgba(255, 255, 255, 0.4);
-      }
-      /* Simple Corners */
-      .scanner-box::before {
-        content: '';
-        position: absolute;
-        top: -4px; left: -4px;
-        width: 30px; height: 30px;
-        border-top: 5px solid #22c55e;
-        border-left: 5px solid #22c55e;
-        border-radius: 8px 0 0 0;
-      }
-      .scanner-box::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; right: -4px;
-        width: 30px; height: 30px;
-        border-bottom: 5px solid #22c55e;
-        border-right: 5px solid #22c55e;
-        border-radius: 0 0 8px 0;
-      }
-      .scanner-box .corner-tr {
-        position: absolute;
-        top: -4px; right: -4px;
-        width: 30px; height: 30px;
-        border-top: 5px solid #22c55e;
-        border-right: 5px solid #22c55e;
-        border-radius: 0 8px 0 0;
-      }
-      .scanner-box .corner-bl {
-        position: absolute;
-        bottom: -4px; left: -4px;
-        width: 30px; height: 30px;
-        border-bottom: 5px solid #22c55e;
-        border-left: 5px solid #22c55e;
-        border-radius: 0 0 0 8px;
-      }
+.header-content{
+    position:relative;
+    z-index:2;
+}
 
-      /* Laser */
-      .scanner-laser-simple {
-        position: absolute;
-        top: 10%;
-        left: 10%;
-        width: 80%;
-        height: 2px;
-        background: #22c55e;
-        box-shadow: 0 0 25px 6px rgba(34, 197, 94, 0.7);
-        border-radius: 50%;
-        animation: laserMove 2s infinite alternate ease-in-out;
-        pointer-events: none;
-        z-index: 10002;
-      }
-      @keyframes laserMove {
-        0% { top: 12%; opacity: 1; }
-        100% { top: 88%; opacity: 0.5; }
-      }
+.header-title{
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:.2px;
+}
 
-      @media (max-width: 480px) {
-        .scanner-box { width: 180px; height: 180px; }
-        .main-card { padding: 16px; }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="app-wrapper">
-      <div class="main-card">
-        <div class="centered-title">✨ Madina Mobile</div>
+.header-sub{
+    opacity:.88;
+    margin-top:5px;
+    font-size:13px;
+}
 
-        <div id="online-loading-bar" style="display: none; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59,130,246,0.4); color: #93c5fd; border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; text-align: center; font-weight: 600; animation: pulse 1.2s infinite;">
-          Searching Bill...
+.header-shop{
+    margin-top:12px;
+    display:inline-flex;
+    background:#ffffff18;
+    border:1px solid #ffffff30;
+    padding:7px 11px;
+    border-radius:20px;
+    font-size:12px;
+    backdrop-filter:blur(5px);
+}
+
+/* CONTAINER */
+
+.container{
+    max-width:920px;
+    margin:auto;
+    padding:15px;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:15px;
+}
+
+.stat{
+    background:#fff;
+    border:1px solid #ffffff;
+    border-radius:17px;
+    padding:15px 8px;
+    text-align:center;
+    box-shadow:0 6px 18px #00000012;
+    animation:slideUp .5s ease both;
+    transition:.25s;
+}
+
+.stat:hover{
+    transform:translateY(-3px);
+}
+
+.stat:nth-child(2){
+    animation-delay:.08s;
+}
+
+.stat:nth-child(3){
+    animation-delay:.16s;
+}
+
+.stat b{
+    display:block;
+    font-size:23px;
+    color:var(--blue);
+}
+
+.stat span{
+    font-size:11px;
+    color:var(--muted);
+}
+
+/* CARDS */
+
+.card{
+    background:#ffffffed;
+    border:1px solid #ffffff;
+    border-radius:19px;
+    padding:17px;
+    margin-bottom:15px;
+    box-shadow:0 7px 22px #00000012;
+    animation:slideUp .45s ease both;
+}
+
+.card h2{
+    font-size:18px;
+    margin-bottom:15px;
+}
+
+/* INPUTS */
+
+label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    margin:11px 0 6px;
+}
+
+input,select,textarea{
+    width:100%;
+    border:1px solid #d7deea;
+    border-radius:12px;
+    padding:12px;
+    font-size:15px;
+    outline:none;
+    background:white;
+    color:var(--text);
+    transition:.25s;
+}
+
+input:hover,
+select:hover,
+textarea:hover{
+    border-color:#9db7e9;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 4px #0757c91a;
+    transform:translateY(-1px);
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+/* BUTTONS */
+
+.btn{
+    border:0;
+    border-radius:12px;
+    padding:12px 15px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
+    position:relative;
+    overflow:hidden;
+}
+
+.btn:active{
+    transform:scale(.96);
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 15px #0002;
+}
+
+.btn-primary{
+    background:linear-gradient(135deg,#0757c9,#174ea6);
+    color:white;
+}
+
+.btn-success{
+    background:linear-gradient(135deg,#16a34a,#087f38);
+    color:white;
+}
+
+.btn-secondary{
+    background:#e8eef7;
+    color:#172033;
+}
+
+.btn-warning{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+    color:white;
+}
+
+.btn-danger{
+    background:linear-gradient(135deg,#ef4444,#b91c1c);
+    color:white;
+}
+
+.buttons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:15px;
+}
+
+/* CHILD */
+
+.child-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin-top:15px;
+    margin-bottom:8px;
+}
+
+.child-head h3{
+    font-size:15px;
+}
+
+.child-row{
+    display:flex;
+    gap:7px;
+    margin-bottom:8px;
+    animation:pop .25s ease;
+}
+
+.child-row input{
+    flex:1;
+}
+
+.remove-child{
+    width:45px;
+    border:0;
+    border-radius:10px;
+    background:#fee4e2;
+    color:#d92d20;
+    font-size:18px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.remove-child:hover{
+    background:#fecaca;
+    transform:scale(1.05);
+}
+
+/* SEARCH */
+
+.search{
+    position:relative;
+}
+
+.search input{
+    padding-left:42px;
+}
+
+.search-icon{
+    position:absolute;
+    left:14px;
+    top:11px;
+    font-size:18px;
+}
+
+/* CUSTOMER */
+
+.customer{
+    border:1px solid #e1e6ee;
+    border-radius:16px;
+    padding:14px;
+    margin-top:10px;
+    background:white;
+    animation:pop .3s ease;
+    transition:.25s;
+}
+
+.customer:hover{
+    box-shadow:0 8px 22px #00000012;
+    transform:translateY(-2px);
+}
+
+.customer-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:10px;
+}
+
+.customer-name{
+    font-size:17px;
+    font-weight:800;
+}
+
+.main-number{
+    margin-top:5px;
+    font-weight:650;
+    font-size:13px;
+}
+
+.package{
+    background:#e7f0ff;
+    color:#0757c9;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:800;
+    white-space:nowrap;
+}
+
+/* NETWORK */
+
+.network-badge{
+    display:inline-block;
+    margin-top:7px;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:800;
+}
+
+.network-Jazz{
+    background:#ffe4e4;
+    color:#d00000;
+}
+
+.network-Zong{
+    background:#dcfce7;
+    color:#008f39;
+}
+
+.network-Telenor{
+    background:#dbeafe;
+    color:#0067c5;
+}
+
+.network-Ufone{
+    background:#ede9fe;
+    color:#673ab7;
+}
+
+/* EXPIRY */
+
+.expiry-box{
+    margin-top:14px;
+    padding:11px;
+    background:#f8fafc;
+    border-radius:12px;
+    border:1px solid #edf0f5;
+}
+
+.expiry-info{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+.expiry-date{
+    font-weight:800;
+}
+
+.expiry-status{
+    font-weight:800;
+}
+
+.expiry-track{
+    height:9px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.expiry-line{
+    height:100%;
+    width:0%;
+    border-radius:20px;
+    transition:
+        width 1s linear,
+        background 1s linear;
+}
+
+/* CHILD LIST */
+
+.child-list{
+    margin-top:12px;
+    display:grid;
+    gap:7px;
+}
+
+.child-item{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:#f5f7fa;
+    padding:8px;
+    border-radius:10px;
+}
+
+.child-number{
+    flex:1;
+    font-size:13px;
+    font-weight:600;
+}
+
+.reminder-btn{
+    border:0;
+    background:#25d366;
+    color:white;
+    border-radius:9px;
+    padding:7px 9px;
+    font-size:12px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.reminder-btn:hover{
+    transform:scale(1.04);
+    box-shadow:0 4px 10px #25d36655;
+}
+
+.main-reminder{
+    margin-top:10px;
+    width:100%;
+}
+
+/* ACTIONS */
+
+.customer-actions{
+    display:flex;
+    gap:7px;
+    margin-top:12px;
+}
+
+.customer-actions button{
+    flex:1;
+    padding:9px;
+    border:0;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:700;
+    transition:.2s;
+}
+
+.customer-actions button:hover{
+    transform:translateY(-2px);
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    color:#667085;
+    padding:30px 10px;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:#0008;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+    z-index:100;
+    animation:fade .2s ease;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:500px;
+    max-height:90vh;
+    overflow:auto;
+    border-radius:20px;
+    padding:18px;
+    animation:modalIn .25s ease;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.close{
+    border:0;
+    background:#eee;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.package-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:8px;
+}
+
+.package-item input{
+    flex:1;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    padding:20px;
+    font-size:12px;
+    color:#667085;
+}
+
+/* HIDDEN */
+
+.hidden{
+    display:none!important;
+}
+
+/* ANIMATIONS */
+
+@keyframes slideUp{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes pop{
+    from{
+        opacity:0;
+        transform:scale(.97);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes fade{
+    from{opacity:0}
+    to{opacity:1}
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:scale(.94) translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:scale(1) translateY(0);
+    }
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(15px);
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .stats{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .stat b{
+        font-size:18px;
+    }
+
+    .row{
+        grid-template-columns:1fr;
+    }
+
+    .customer-top{
+        flex-direction:row;
+    }
+
+    .buttons{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-content">
+
+        <div class="header-title">
+            📱 Family Package Manager
         </div>
 
-        <div class="input-group">
-          <label class="input-label" for="ref-input">Reference Number</label>
-          <div class="input-with-button">
-            <input type="tel" class="text-input" id="ref-input" placeholder="Enter or scan 14-digit..." maxlength="14" oninput="handleRefInput(this)" onfocus="this.select()">
-            <button id="input-scanner-btn" onclick="toggleScanner()" title="Scan QR" type="button" class="input-action-btn">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16V21H16"/><path d="M21 9V10"/><path d="M9 21V20"/><path d="M12 16V18"/><path d="M12 12V13"/><path d="M12 8V9"/><path d="M16 12V13"/><path d="M9 12V13"/><path d="M13 21V20"/><path d="M16 16V18"/><rect width="1" height="1" x="7" y="7"/><rect width="1" height="1" x="16" y="7"/><rect width="1" height="1" x="7" y="16"/></svg>
-            </button>
-          </div>
+        <div class="header-sub">
+            Manage Family Packages & Numbers Easily
         </div>
 
-        <div id="status-area" class="status-box status-idle"></div>
-
-        <!-- ====== SIMPLE SCANNER ====== -->
-        <div id="scanner-container">
-          <!-- Top Bar: Only Close + Flash Toggle -->
-          <div class="scanner-top-bar">
-            <button onclick="stopScanner()">✕ Close</button>
-            <button id="fs-toggle-flash-btn" onclick="toggleFlashlight()">💡 On</button>
-          </div>
-
-          <!-- Laser -->
-          <div class="scanner-laser-simple" id="scanner-laser-simple"></div>
-
-          <!-- Scanner Frame -->
-          <div class="scanner-frame-overlay">
-            <div class="scanner-box">
-              <div class="corner-tr"></div>
-              <div class="corner-bl"></div>
-            </div>
-          </div>
-
-          <!-- Hidden reader -->
-          <div id="reader" style="width:100%; height:100%;"></div>
+        <div class="header-shop">
+            🏪 Madina Mobile Center Narowal
         </div>
 
-        <div style="margin-bottom: 24px;">
-          <button class="btn btn-gray" onclick="resetCalculatorPage()">🔄 Clear & Reset</button>
-        </div>
-
-        <div class="table-wrapper">
-          <table class="data-table">
-            <thead><tr><th>Sr</th><th>Details</th><th>Amount</th><th>Charges</th><th>Total</th></tr></thead>
-            <tbody id="table-body">
-              <tr><td colspan="5" class="empty-row">No entries yet.</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="summary-card">
-          <div class="summary-row"><span class="summary-label">Total Bills</span><span class="summary-val" id="summary-base">PKR 0</span></div>
-          <div class="summary-row"><span class="summary-label">Total Charges</span><span class="summary-val" id="summary-charges">PKR 0</span></div>
-          <div class="discount-box">
-            <div class="summary-row" style="margin-bottom: 0;">
-              <span class="summary-label" style="color: #fca5a5;">🎁 Gift / Discount (-)</span>
-              <input type="tel" id="discount-input" placeholder="0" oninput="updateSummary()" style="width: 100px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 6px 10px; color: white; font-weight: 600; text-align: right; font-size: 15px;">
-            </div>
-          </div>
-          <div class="summary-row grand-total-highlight" style="margin-top: 12px;">
-            <span class="summary-label text-white" style="font-size: 16px;">Grand Total</span>
-            <span class="summary-val text-white" style="font-size: 18px;" id="summary-grand">PKR 0</span>
-          </div>
-        </div>
-
-        <div class="payment-section">
-          <div class="input-group" style="margin-bottom: 0;">
-            <label class="input-label" for="paid-amount">Customer Paid</label>
-            <input type="tel" class="text-input" id="paid-amount" placeholder="Enter cash..." oninput="updateCashReturn()">
-          </div>
-          <div class="return-box">
-            <div class="return-label">Return Balance</div>
-            <div class="return-value" id="refund-amount">PKR 0</div>
-          </div>
-        </div>
-      </div>
     </div>
 
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-    <script type="text/javascript">
-      let billingItems = [];
-      let html5QrCode = null;
-      let isScannerStopping = false;
-      let isFlashOn = true;
-      let audioCtx = null;
-      const FIXED_ZOOM = 4.0; // 400% Zoom
+</header>
 
-      // Audio
-      function initAudio() {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-      }
-      function playBeep() {
-        if (!audioCtx) return;
-        try {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.type = "square";
-          osc.frequency.value = 1800;
-          gain.gain.setValueAtTime(1, audioCtx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
-          osc.start(audioCtx.currentTime);
-          osc.stop(audioCtx.currentTime + 0.12);
-        } catch(e) { console.log(e); }
-      }
 
-      // Core Logic
-      function calculateCharges(amount) {
-        if (amount <= 4000) return 20; if (amount <= 8000) return 30;
-        if (amount <= 12000) return 50; if (amount <= 18000) return 80;
-        if (amount <= 25000) return 120; return Math.round(amount * 0.005);
-      }
+<div class="container">
 
-      function showStatus(text, type) {
-        const statusEl = document.getElementById("status-area");
-        if (!text) { statusEl.style.display = "none"; return; }
-        statusEl.style.display = "block";
-        statusEl.className = "status-box status-" + type;
-        statusEl.textContent = text;
-      }
+<!-- STATS -->
 
-      function getDiscount() {
-        const val = parseFloat(document.getElementById("discount-input").value);
-        return isNaN(val) ? 0 : val;
-      }
+<div class="stats">
 
-      function addBillItem(baseAmount, reference) {
-        const charges = calculateCharges(baseAmount);
-        billingItems.push({ id: billingItems.length + 1, baseAmount, charges, total: baseAmount + charges, reference });
-        renderTable(); updateSummary();
-      }
+    <div class="stat">
+        <b id="totalCustomers">0</b>
+        <span>Customers</span>
+    </div>
 
-      function renderTable() {
-        const tbody = document.getElementById("table-body");
-        tbody.innerHTML = "";
-        if (billingItems.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="empty-row">No entries yet.</td></tr>'; return;
+    <div class="stat">
+        <b id="totalMain">0</b>
+        <span>Main Numbers</span>
+    </div>
+
+    <div class="stat">
+        <b id="totalChildren">0</b>
+        <span>Child Numbers</span>
+    </div>
+
+</div>
+
+
+<!-- ADD / EDIT -->
+
+<div class="card">
+
+    <h2 id="formTitle">
+        ➕ Add Family Customer
+    </h2>
+
+    <div class="row">
+
+        <div>
+
+            <label>Customer Name</label>
+
+            <input id="customerName"
+                   type="text"
+                   placeholder="Enter customer name">
+
+        </div>
+
+
+        <div>
+
+            <label>Network</label>
+
+            <select id="network">
+
+                <option value="Jazz">🔴 Jazz</option>
+
+                <option value="Zong">🟢 Zong</option>
+
+                <option value="Telenor">🔵 Telenor</option>
+
+                <option value="Ufone">🟣 Ufone</option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <label>Package</label>
+
+    <select id="package"></select>
+
+
+    <label>Main Number</label>
+
+    <input id="mainNumber"
+           type="tel"
+           inputmode="numeric"
+           maxlength="11"
+           placeholder="03XXXXXXXXX">
+
+
+    <label>Package Expiry Date</label>
+
+    <input id="expiryDate"
+           type="date">
+
+
+    <!-- CHILD NUMBERS -->
+
+    <div class="child-head">
+
+        <h3>👨‍👩‍👧 Child Numbers</h3>
+
+        <button class="btn btn-secondary"
+                onclick="addChild()">
+
+            + Add Child
+
+        </button>
+
+    </div>
+
+    <div id="childrenContainer"></div>
+
+
+    <label>Notes</label>
+
+    <textarea id="notes"
+              rows="2"
+              placeholder="Optional notes..."></textarea>
+
+
+    <div class="buttons">
+
+        <button class="btn btn-primary"
+                onclick="saveCustomer()">
+
+            💾 Save Customer
+
+        </button>
+
+
+        <button class="btn btn-secondary"
+                onclick="clearForm()">
+
+            Clear
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- SEARCH -->
+
+<div class="card">
+
+    <h2>🔎 Search Customers</h2>
+
+    <div class="search">
+
+        <span class="search-icon">🔍</span>
+
+        <input id="searchInput"
+               type="text"
+               placeholder="Search name, network, package or number..."
+               oninput="renderCustomers()">
+
+    </div>
+
+</div>
+
+
+<!-- CUSTOMERS -->
+
+<div class="card">
+
+    <h2>👥 Saved Customers</h2>
+
+    <div id="customerList"></div>
+
+</div>
+
+
+<!-- BACKUP -->
+
+<div class="card">
+
+    <h2>💾 Backup & Restore</h2>
+
+    <p style="
+        font-size:13px;
+        color:#667085;
+        margin-bottom:12px;
+    ">
+        Keep a backup before changing phone or browser.
+    </p>
+
+    <div class="buttons">
+
+        <button class="btn btn-success"
+                onclick="exportData()">
+
+            ⬇ Export Backup
+
+        </button>
+
+
+        <button class="btn btn-secondary"
+                onclick="
+                document
+                .getElementById('importFile')
+                .click()
+                ">
+
+            ⬆ Import Backup
+
+        </button>
+
+    </div>
+
+    <input id="importFile"
+           type="file"
+           accept=".json"
+           class="hidden"
+           onchange="importData(event)">
+
+</div>
+
+
+<!-- PACKAGE SETTINGS -->
+
+<div class="card">
+
+    <h2>⚙ Package Settings</h2>
+
+    <p style="
+        font-size:13px;
+        color:#667085;
+        margin-bottom:12px;
+    ">
+        Customize package names such as MY5, MY3 etc.
+    </p>
+
+    <button class="btn btn-warning"
+            onclick="openPackageSettings()">
+
+        ⚙ Manage Packages
+
+    </button>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+    Madina Mobile Center Narowal<br>
+    Family Packages & Mobile Services
+
+</div>
+
+
+<!-- PACKAGE MODAL -->
+
+<div id="packageModal"
+     class="modal hidden">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>⚙ Package Settings</h2>
+
+            <button class="close"
+                    onclick="closePackageSettings()">
+
+                ×
+
+            </button>
+
+        </div>
+
+        <div id="packageSettingsList"></div>
+
+        <button class="btn btn-secondary"
+                style="
+                    width:100%;
+                    margin-top:8px;
+                "
+                onclick="addPackageSetting()">
+
+            + Add Package
+
+        </button>
+
+        <button class="btn btn-primary"
+                style="
+                    width:100%;
+                    margin-top:10px;
+                "
+                onclick="savePackageSettings()">
+
+            Save Packages
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const CUSTOMER_KEY =
+    "madina_family_package_customers";
+
+const PACKAGE_KEY =
+    "madina_family_package_names";
+
+
+let customers =
+    JSON.parse(
+        localStorage.getItem(
+            CUSTOMER_KEY
+        ) || "[]"
+    );
+
+
+let packages =
+    JSON.parse(
+        localStorage.getItem(
+            PACKAGE_KEY
+        ) ||
+        '["MY5","MY3"]'
+    );
+
+
+let editIndex = -1;
+
+
+/* =========================
+   PACKAGE
+========================= */
+
+function loadPackages(){
+
+    const select =
+        document.getElementById(
+            "package"
+        );
+
+    select.innerHTML = "";
+
+    packages.forEach(pkg => {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+        option.value = pkg;
+
+        option.textContent = pkg;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+
+/* =========================
+   CHILD
+========================= */
+
+function addChild(value=""){
+
+    const container =
+        document.getElementById(
+            "childrenContainer"
+        );
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+    row.className =
+        "child-row";
+
+
+    row.innerHTML = `
+
+        <input type="tel"
+               inputmode="numeric"
+               maxlength="11"
+               placeholder="03XXXXXXXXX"
+               value="${escapeHtml(value)}">
+
+        <button
+            class="remove-child"
+            onclick="
+                this.parentElement.remove()
+            ">
+
+            ×
+
+        </button>
+
+    `;
+
+
+    container.appendChild(row);
+
+}
+
+
+/* =========================
+   SAVE
+========================= */
+
+function saveCustomer(){
+
+    const name =
+        document.getElementById(
+            "customerName"
+        ).value.trim();
+
+
+    const network =
+        document.getElementById(
+            "network"
+        ).value;
+
+
+    const main =
+        document.getElementById(
+            "mainNumber"
+        ).value.trim();
+
+
+    const pkg =
+        document.getElementById(
+            "package"
+        ).value;
+
+
+    const expiry =
+        document.getElementById(
+            "expiryDate"
+        ).value;
+
+
+    const notes =
+        document.getElementById(
+            "notes"
+        ).value.trim();
+
+
+    if(!main){
+
+        alert(
+            "Please enter Main Number."
+        );
+
+        return;
+
+    }
+
+
+    if(!/^03\d{9}$/.test(main)){
+
+        alert(
+            "Main Number must be 11 digits and start with 03."
+        );
+
+        return;
+
+    }
+
+
+    if(!expiry){
+
+        alert(
+            "Please select Package Expiry Date."
+        );
+
+        return;
+
+    }
+
+
+    const childInputs =
+        document.querySelectorAll(
+            "#childrenContainer input"
+        );
+
+
+    const children = [];
+
+
+    for(
+        const input of childInputs
+    ){
+
+        const number =
+            input.value.trim();
+
+
+        if(number){
+
+            if(
+                /^03\d{9}$/.test(
+                    number
+                )
+            ){
+
+                children.push(
+                    number
+                );
+
+            }else{
+
+                alert(
+                    "Invalid child number: " +
+                    number
+                );
+
+                return;
+
+            }
+
         }
-        billingItems.forEach((item, index) => {
-          tbody.innerHTML += `<tr><td>${index + 1}</td><td>Ref: ${item.reference}</td><td>PKR ${item.baseAmount}</td><td>PKR ${item.charges}</td><td style="font-weight:bold; color:#a78bfa;">PKR ${item.total}</td></tr>`;
+
+    }
+
+
+    const record = {
+
+        name:name,
+
+        network:network,
+
+        main:main,
+
+        package:pkg,
+
+        expiry:expiry,
+
+        children:children,
+
+        notes:notes,
+
+        updated:
+            new Date().toISOString()
+
+    };
+
+
+    if(editIndex === -1){
+
+        customers.push(
+            record
+        );
+
+    }else{
+
+        customers[
+            editIndex
+        ] = record;
+
+        editIndex = -1;
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "➕ Add Family Customer";
+
+    }
+
+
+    saveCustomers();
+
+    clearForm();
+
+    renderCustomers();
+
+    alert(
+        "Customer saved successfully."
+    );
+
+}
+
+
+/* =========================
+   SAVE LOCAL
+========================= */
+
+function saveCustomers(){
+
+    localStorage.setItem(
+        CUSTOMER_KEY,
+        JSON.stringify(
+            customers
+        )
+    );
+
+}
+
+
+/* =========================
+   EDIT
+========================= */
+
+function editCustomer(index){
+
+    const c =
+        customers[index];
+
+
+    editIndex =
+        index;
+
+
+    document.getElementById(
+        "formTitle"
+    ).textContent =
+        "✏️ Edit Family Customer";
+
+
+    document.getElementById(
+        "customerName"
+    ).value =
+        c.name || "";
+
+
+    document.getElementById(
+        "network"
+    ).value =
+        c.network || "Jazz";
+
+
+    document.getElementById(
+        "mainNumber"
+    ).value =
+        c.main || "";
+
+
+    document.getElementById(
+        "package"
+    ).value =
+        c.package ||
+        packages[0];
+
+
+    document.getElementById(
+        "expiryDate"
+    ).value =
+        c.expiry || "";
+
+
+    document.getElementById(
+        "notes"
+    ).value =
+        c.notes || "";
+
+
+    const container =
+        document.getElementById(
+            "childrenContainer"
+        );
+
+
+    container.innerHTML = "";
+
+
+    (
+        c.children || []
+    ).forEach(
+        number =>
+            addChild(number)
+    );
+
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+function deleteCustomer(index){
+
+    if(
+        !confirm(
+            "Delete this customer permanently?"
+        )
+    ) return;
+
+
+    customers.splice(
+        index,
+        1
+    );
+
+
+    saveCustomers();
+
+    renderCustomers();
+
+}
+
+
+/* =========================
+   CLEAR
+========================= */
+
+function clearForm(){
+
+    editIndex = -1;
+
+
+    document.getElementById(
+        "formTitle"
+    ).textContent =
+        "➕ Add Family Customer";
+
+
+    document.getElementById(
+        "customerName"
+    ).value = "";
+
+
+    document.getElementById(
+        "network"
+    ).value =
+        "Jazz";
+
+
+    document.getElementById(
+        "mainNumber"
+    ).value = "";
+
+
+    document.getElementById(
+        "expiryDate"
+    ).value = "";
+
+
+    document.getElementById(
+        "notes"
+    ).value = "";
+
+
+    document.getElementById(
+        "childrenContainer"
+    ).innerHTML = "";
+
+
+    addChild();
+
+}
+
+
+/* =========================
+   EXPIRY
+========================= */
+
+function getExpiryData(
+    expiry
+){
+
+    if(!expiry){
+
+        return {
+            percent:0,
+            days:0,
+            status:"No Expiry Date"
+        };
+
+    }
+
+
+    const now =
+        new Date();
+
+
+    const today =
+        new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+        );
+
+
+    const end =
+        new Date(
+            expiry +
+            "T23:59:59"
+        );
+
+
+    const diff =
+        end.getTime() -
+        now.getTime();
+
+
+    let days =
+        Math.ceil(
+            diff /
+            (
+                1000 *
+                60 *
+                60 *
+                24
+            )
+        );
+
+
+    if(days < 0){
+
+        days = 0;
+
+    }
+
+
+    /*
+      30-day package reference
+    */
+
+    const packageDays =
+        30;
+
+
+    let percent =
+        (days /
+        packageDays) *
+        100;
+
+
+    percent =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                percent
+            )
+        );
+
+
+    let status;
+
+
+    if(diff <= 0){
+
+        status =
+            "Expired";
+
+    }
+    else if(days <= 3){
+
+        status =
+            days +
+            " day(s) left";
+
+    }
+    else{
+
+        status =
+            days +
+            " days left";
+
+    }
+
+
+    return {
+
+        percent:percent,
+
+        days:days,
+
+        status:status
+
+    };
+
+}
+
+
+/* =========================
+   EXPIRY COLOR
+========================= */
+
+function expiryColor(data){
+
+    if(
+        data.status ===
+        "Expired"
+    ){
+
+        return "#dc2626";
+
+    }
+
+
+    if(
+        data.days <= 3
+    ){
+
+        return "#dc2626";
+
+    }
+
+
+    if(
+        data.days <= 7
+    ){
+
+        return "#f59e0b";
+
+    }
+
+
+    return "#16a34a";
+
+}
+
+
+/* =========================
+   REMINDER
+========================= */
+
+function sendReminder(number, packageName, expiry){
+
+    const message =
+`Package Reminder
+
+Your ${packageName} package on ${number} will expire on ${formatDate(expiry)}.
+
+Please renew your package on time.
+
+Madina Mobile Center Narowal`;
+
+    const smsUrl =
+        "sms:" +
+        number +
+        "?body=" +
+        encodeURIComponent(message);
+
+    window.location.href = smsUrl;
+}
+/* =========================
+   DATE FORMAT
+========================= */
+
+function formatDate(date){
+
+    if(!date){
+
+        return "-";
+
+    }
+
+
+    const d =
+        new Date(
+            date + "T00:00:00"
+        );
+
+
+    return d.toLocaleDateString(
+        "en-GB",
+        {
+            day:"2-digit",
+            month:"short",
+            year:"numeric"
+        }
+    );
+
+}
+
+
+/* =========================
+   RENDER CUSTOMERS
+========================= */
+
+function renderCustomers(){
+
+    const list =
+        document.getElementById(
+            "customerList"
+        );
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    list.innerHTML = "";
+
+
+    const filtered =
+        customers
+        .map(
+            (c,index)=>
+                ({c,index})
+        )
+        .filter(item => {
+
+            const c =
+                item.c;
+
+
+            const text =
+                [
+
+                    c.name,
+
+                    c.network,
+
+                    c.main,
+
+                    c.package,
+
+                    c.expiry,
+
+                    c.notes,
+
+                    ...(c.children || [])
+
+                ]
+                .join(" ")
+                .toLowerCase();
+
+
+            return text.includes(
+                search
+            );
+
         });
-      }
 
-      function updateSummary() {
-        let totalBase = 0, totalCharges = 0, grandTotal = 0;
-        billingItems.forEach(item => { totalBase += item.baseAmount; totalCharges += item.charges; grandTotal += item.total; });
-        const discount = getDiscount();
-        const finalGrand = Math.max(0, grandTotal - discount);
-        document.getElementById("summary-base").textContent = "PKR " + totalBase.toLocaleString();
-        document.getElementById("summary-charges").textContent = "PKR " + totalCharges.toLocaleString();
-        document.getElementById("summary-grand").textContent = "PKR " + finalGrand.toLocaleString();
-        updateCashReturn(finalGrand);
-      }
 
-      function updateCashReturn(grandTotal) {
-        if(grandTotal === undefined) {
-          let total = billingItems.reduce((acc, item) => acc + item.total, 0);
-          grandTotal = Math.max(0, total - getDiscount());
+    if(
+        filtered.length === 0
+    ){
+
+        list.innerHTML = `
+
+            <div class="empty">
+
+                🔍 No customer records found.
+
+            </div>
+
+        `;
+
+
+        updateStats();
+
+        return;
+
+    }
+
+
+    filtered.forEach(
+        item => {
+
+            const c =
+                item.c;
+
+
+            const index =
+                item.index;
+
+
+            const expiry =
+                getExpiryData(
+                    c.expiry
+                );
+
+
+            const color =
+                expiryColor(
+                    expiry
+                );
+
+
+            let childrenHTML =
+                "";
+
+
+            if(
+                c.children &&
+                c.children.length
+            ){
+
+                childrenHTML =
+                    c.children
+                    .map(
+                        number => `
+
+                        <div class="child-item">
+
+                            <div class="child-number">
+
+                                📱 ${escapeHtml(
+                                    number
+                                )}
+
+                            </div>
+
+                            <button
+                                class="reminder-btn"
+                                onclick="
+                                    sendReminder(
+                                        '${escapeJs(number)}',
+                                        '${escapeJs(c.package)}',
+                                        '${escapeJs(c.expiry)}'
+                                    )
+                                ">
+
+                                🔔 Reminder
+
+                            </button>
+
+                        </div>
+
+                    `
+                    )
+                    .join("");
+
+            }
+            else{
+
+                childrenHTML = `
+
+                    <div style="
+                        font-size:13px;
+                        color:#667085;
+                        margin-top:10px;
+                    ">
+
+                        No child numbers added.
+
+                    </div>
+
+                `;
+
+            }
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "customer";
+
+
+            card.innerHTML = `
+
+                <div class="customer-top">
+
+                    <div>
+
+                        <div class="customer-name">
+
+                            ${escapeHtml(
+                                c.name ||
+                                "Unnamed Customer"
+                            )}
+
+                        </div>
+
+
+                        <div class="main-number">
+
+                            Main:
+                            ${escapeHtml(
+                                c.main
+                            )}
+
+                        </div>
+
+
+                        <span class="
+                            network-badge
+                            network-${escapeHtml(
+                                c.network ||
+                                "Jazz"
+                            )}
+                        ">
+
+                            ${escapeHtml(
+                                c.network ||
+                                "Jazz"
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="package">
+
+                        ${escapeHtml(
+                            c.package
+                        )}
+
+                    </div>
+
+                </div>
+
+
+                <!-- EXPIRY -->
+
+                <div class="expiry-box">
+
+                    <div class="expiry-info">
+
+                        <span>
+
+                            📅 Expiry:
+                            <b class="expiry-date">
+
+                                ${escapeHtml(
+                                    formatDate(
+                                        c.expiry
+                                    )
+                                )}
+
+                            </b>
+
+                        </span>
+
+
+                        <span
+                            class="expiry-status"
+                            style="
+                                color:${color}
+                            ">
+
+                            ${expiry.status}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="expiry-track">
+
+                        <div
+                            class="expiry-line"
+                            data-expiry="${escapeHtml(
+                                c.expiry || ""
+                            )}"
+                            style="
+                                width:${expiry.percent}%;
+                                background:${color};
+                            ">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAIN REMINDER -->
+
+                <button
+                    class="reminder-btn main-reminder"
+                    onclick="
+                        sendReminder(
+                            '${escapeJs(c.main)}',
+                            '${escapeJs(c.package)}',
+                            '${escapeJs(c.expiry)}'
+                        )
+                    ">
+
+                    🔔 Reminder — ${escapeHtml(
+                        c.main
+                    )}
+
+                </button>
+
+
+                <!-- CHILD NUMBERS -->
+
+                <div class="child-list">
+
+                    ${childrenHTML}
+
+                </div>
+
+
+                ${
+                    c.notes
+
+                    ?
+
+                    `<div style="
+                        font-size:12px;
+                        color:#667085;
+                        margin-top:10px;
+                    ">
+
+                        📝 ${escapeHtml(
+                            c.notes
+                        )}
+
+                    </div>`
+
+                    :
+
+                    ""
+
+                }
+
+
+                <div class="customer-actions">
+
+                    <button
+                        style="
+                            background:#e7f0ff;
+                            color:#0757c9
+                        "
+                        onclick="
+                            editCustomer(${index})
+                        ">
+
+                        ✏️ Edit
+
+                    </button>
+
+
+                    <button
+                        style="
+                            background:#fff3cd;
+                            color:#b45309
+                        "
+                        onclick="
+                            renewCustomer(${index})
+                        ">
+
+                        🔄 Renew
+
+                    </button>
+
+
+                    <button
+                        style="
+                            background:#fee4e2;
+                            color:#d92d20
+                        "
+                        onclick="
+                            deleteCustomer(${index})
+                        ">
+
+                        🗑 Delete
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            list.appendChild(
+                card
+            );
+
         }
-        const paidVal = parseFloat(document.getElementById("paid-amount").value);
-        const refundEl = document.getElementById("refund-amount");
-        if (isNaN(paidVal) || paidVal === 0) { refundEl.textContent = "PKR 0"; refundEl.style.color = "#f87171"; return; }
-        const balance = paidVal - grandTotal;
-        refundEl.textContent = balance >= 0 ? `PKR ${balance.toLocaleString()} (Change)` : `PKR ${Math.abs(balance).toLocaleString()} (Short)`;
-        refundEl.style.color = balance >= 0 ? "#4ade80" : "#f87171";
-      }
+    );
 
-      // API
-      async function fetchBillFromAPI(referenceNumber) {
-        if (billingItems.some(item => item.reference === referenceNumber)) {
-          showStatus("Already added!", "error"); return;
+
+    updateStats();
+
+}
+
+
+/* =========================
+   RENEW
+========================= */
+
+function renewCustomer(index){
+
+    const c =
+        customers[index];
+
+
+    editCustomer(index);
+
+
+    setTimeout(
+        () => {
+
+            const newDate =
+                prompt(
+                    "Enter new expiry date (YYYY-MM-DD):",
+                    c.expiry || ""
+                );
+
+
+            if(
+                newDate &&
+                /^\d{4}-\d{2}-\d{2}$/
+                    .test(newDate)
+            ){
+
+                customers[index].expiry =
+                    newDate;
+
+
+                saveCustomers();
+
+                renderCustomers();
+
+                alert(
+                    "Package renewed successfully."
+                );
+
+            }
+
+        },
+        100
+    );
+
+}
+
+
+/* =========================
+   LIVE EXPIRY UPDATE
+========================= */
+
+function updateExpiryLines(){
+
+    document
+    .querySelectorAll(
+        ".expiry-line"
+    )
+    .forEach(
+        line => {
+
+            const expiry =
+                line.dataset.expiry;
+
+
+            if(!expiry)
+                return;
+
+
+            const data =
+                getExpiryData(
+                    expiry
+                );
+
+
+            const color =
+                expiryColor(
+                    data
+                );
+
+
+            line.style.width =
+                data.percent + "%";
+
+
+            line.style.background =
+                color;
+
+
+            const box =
+                line.closest(
+                    ".expiry-box"
+                );
+
+
+            if(box){
+
+                const status =
+                    box.querySelector(
+                        ".expiry-status"
+                    );
+
+
+                if(status){
+
+                    status.textContent =
+                        data.status;
+
+
+                    status.style.color =
+                        color;
+
+                }
+
+            }
+
         }
-        document.getElementById("online-loading-bar").style.display = "block";
-        try {
-          const res = await fetch("https://ccms.pitc.com.pk/api/details/bill?reference=" + referenceNumber);
-          const data = await res.json();
-          document.getElementById("online-loading-bar").style.display = "none";
-          let amnt = null;
-          if (data.bill && data.bill.basicInfo && data.bill.basicInfo.currAmntDue) amnt = parseFloat(String(data.bill.basicInfo.currAmntDue).replace(/[^0-9.]/g, ""));
-          if (amnt > 0) {
-            addBillItem(amnt, referenceNumber);
-            showStatus("Fetched: PKR " + amnt, "success");
-          } else throw new Error();
-        } catch (e) {
-          document.getElementById("online-loading-bar").style.display = "none";
-          showStatus("API issue. Manual entry allowed.", "error");
+    );
+
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats(){
+
+    let childCount = 0;
+
+
+    customers.forEach(
+        c => {
+
+            childCount +=
+                (
+                    c.children ||
+                    []
+                ).length;
+
         }
-      }
+    );
 
-      function handleRefInput(input) {
-        const cleanVal = input.value.replace(/[^0-9]/g, "");
-        if (input.value !== cleanVal) input.value = cleanVal;
-        if (cleanVal.length === 14) { input.value = ""; input.blur(); fetchBillFromAPI(cleanVal); }
-      }
 
-      function parse14DigitReference(txt) {
-        if (!txt) return "";
-        const m = txt.match(/\d{14}/);
-        return m ? m[0] : txt.replace(/[^0-9]/g, "").substring(0, 14);
-      }
+    document.getElementById(
+        "totalCustomers"
+    ).textContent =
+        customers.length;
 
-      // ----- SCANNER ENGINE (Low Res, 4x Zoom, Auto Flash) -----
-      async function applyFixedZoomAndFlash() {
-        const videoElem = document.querySelector('#reader video');
-        if (!videoElem || !videoElem.srcObject) return;
-        const track = videoElem.srcObject.getVideoTracks()[0];
-        if (!track) return;
 
-        // 1. Apply 4x Zoom
-        try {
-          const caps = track.getCapabilities();
-          if (caps.zoom) {
-            let targetZoom = Math.min(caps.zoom.max, Math.max(caps.zoom.min, FIXED_ZOOM));
-            await track.applyConstraints({ advanced: [{ zoom: targetZoom }] });
-            console.log("Zoom set to 4.0x");
-          }
-        } catch(e) { console.log("Zoom failed", e); }
+    document.getElementById(
+        "totalMain"
+    ).textContent =
+        customers.length;
 
-        // 2. Force Flash ON
-        try {
-          if (track.getCapabilities && track.getCapabilities().torch) {
-            await track.applyConstraints({ advanced: [{ torch: true }] });
-            isFlashOn = true;
-            document.getElementById("fs-toggle-flash-btn").innerHTML = "💡 On";
-            console.log("Flash forced ON");
-          }
-        } catch(e) { console.log("Flash failed", e); }
-      }
 
-      async function openScanner() {
-        initAudio();
-        const scannerDiv = document.getElementById("scanner-container");
-        scannerDiv.style.display = "flex";
-        scannerDiv.classList.add("fullscreen-mode");
-        document.getElementById("scanner-laser-simple").style.display = "block";
+    document.getElementById(
+        "totalChildren"
+    ).textContent =
+        childCount;
 
-        if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
+}
 
-        // EXTREMELY LOW RESOLUTION (VGA) to prevent hang
-        const config = {
-          fps: 10,
-          qrbox: { width: 200, height: 200 },
-          videoConstraints: {
-            facingMode: "environment",
-            width: { ideal: 480 },
-            height: { ideal: 640 },
-            focusMode: "continuous"
-          }
+
+/* =========================
+   EXPORT
+========================= */
+
+function exportData(){
+
+    const backup = {
+
+        app:
+            "Madina Mobile Center Narowal",
+
+        version:3,
+
+        date:
+            new Date()
+            .toISOString(),
+
+        customers:
+            customers,
+
+        packages:
+            packages
+
+    };
+
+
+    const blob =
+        new Blob(
+            [
+                JSON.stringify(
+                    backup,
+                    null,
+                    2
+                )
+            ],
+            {
+                type:
+                    "application/json"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const a =
+        document.createElement(
+            "a"
+        );
+
+
+    a.href =
+        url;
+
+
+    a.download =
+        "madina-family-package-backup-" +
+        new Date()
+        .toISOString()
+        .slice(0,10) +
+        ".json";
+
+
+    a.click();
+
+
+    URL.revokeObjectURL(
+        url
+    );
+
+}
+
+
+/* =========================
+   IMPORT
+========================= */
+
+function importData(event){
+
+    const file =
+        event.target.files[0];
+
+
+    if(!file)
+        return;
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function(e){
+
+            try{
+
+                const backup =
+                    JSON.parse(
+                        e.target.result
+                    );
+
+
+                if(
+                    !Array.isArray(
+                        backup.customers
+                    )
+                ){
+
+                    alert(
+                        "Invalid backup file."
+                    );
+
+                    return;
+
+                }
+
+
+                if(!confirm(
+                    "Import backup? Existing data will be replaced."
+                ))
+                    return;
+
+
+                customers =
+                    backup.customers;
+
+
+                if(
+                    Array.isArray(
+                        backup.packages
+                    )
+                ){
+
+                    packages =
+                        backup.packages;
+
+                }
+
+
+                localStorage.setItem(
+                    CUSTOMER_KEY,
+                    JSON.stringify(
+                        customers
+                    )
+                );
+
+
+                localStorage.setItem(
+                    PACKAGE_KEY,
+                    JSON.stringify(
+                        packages
+                    )
+                );
+
+
+                loadPackages();
+
+                renderCustomers();
+
+
+                alert(
+                    "Backup imported successfully."
+                );
+
+
+            }
+            catch(error){
+
+                alert(
+                    "Could not read backup file."
+                );
+
+            }
+
         };
 
-        const onScanSuccess = async (decodedText) => {
-          const cleanNumber = parse14DigitReference(decodedText);
-          if (cleanNumber.length === 14) {
-            playBeep();
-            if (billingItems.some(item => item.reference === cleanNumber)) {
-              showStatus("Already Scanned!", "error"); return;
+
+    reader.readAsText(
+        file
+    );
+
+
+    event.target.value = "";
+
+}
+
+
+/* =========================
+   PACKAGE SETTINGS
+========================= */
+
+function openPackageSettings(){
+
+    document
+    .getElementById(
+        "packageModal"
+    )
+    .classList
+    .remove("hidden");
+
+
+    renderPackageSettings();
+
+}
+
+
+function closePackageSettings(){
+
+    document
+    .getElementById(
+        "packageModal"
+    )
+    .classList
+    .add("hidden");
+
+}
+
+
+function renderPackageSettings(){
+
+    const container =
+        document.getElementById(
+            "packageSettingsList"
+        );
+
+
+    container.innerHTML = "";
+
+
+    packages.forEach(
+        pkg => {
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "package-item";
+
+
+            row.innerHTML = `
+
+                <input
+                    type="text"
+                    value="${escapeHtml(
+                        pkg
+                    )}">
+
+                <button
+                    class="remove-child"
+                    onclick="
+                        this.parentElement
+                        .remove()
+                    ">
+
+                    ×
+
+                </button>
+
+            `;
+
+
+            container.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+function addPackageSetting(){
+
+    const container =
+        document.getElementById(
+            "packageSettingsList"
+        );
+
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+
+    row.className =
+        "package-item";
+
+
+    row.innerHTML = `
+
+        <input
+            type="text"
+            placeholder="Package name">
+
+        <button
+            class="remove-child"
+            onclick="
+                this.parentElement.remove()
+            ">
+
+            ×
+
+        </button>
+
+    `;
+
+
+    container.appendChild(
+        row
+    );
+
+}
+
+
+function savePackageSettings(){
+
+    const inputs =
+        document.querySelectorAll(
+            "#packageSettingsList input"
+        );
+
+
+    const newPackages = [];
+
+
+    inputs.forEach(
+        input => {
+
+            const value =
+                input.value.trim();
+
+
+            if(
+                value &&
+                !newPackages.includes(
+                    value
+                )
+            ){
+
+                newPackages.push(
+                    value
+                );
+
             }
-            await stopScanner();
-            document.getElementById("ref-input").value = cleanNumber;
-            fetchBillFromAPI(cleanNumber);
-          }
-        };
 
-        try {
-          await html5QrCode.start({ facingMode: "environment" }, config, onScanSuccess, ()=>{});
-          // Apply 4x zoom & flash after camera starts
-          setTimeout(() => { applyFixedZoomAndFlash(); }, 600);
-          // Keep reapplying every 3 seconds to ensure flash & zoom stay on
-          const interval = setInterval(() => {
-            if (document.getElementById("scanner-container").style.display !== "flex") {
-              clearInterval(interval);
-              return;
-            }
-            applyFixedZoomAndFlash();
-          }, 3000);
-        } catch (err) {
-          showStatus("Camera failed.", "error");
-          await stopScanner();
         }
-      }
+    );
 
-      async function stopScanner() {
-        if (isScannerStopping) return;
-        isScannerStopping = true;
-        const scannerDiv = document.getElementById("scanner-container");
-        scannerDiv.style.display = "none";
-        scannerDiv.classList.remove("fullscreen-mode");
-        document.getElementById("scanner-laser-simple").style.display = "none";
 
-        try {
-          const videoElem = document.querySelector('#reader video');
-          if (videoElem && videoElem.srcObject) videoElem.srcObject.getTracks().forEach(t => t.stop());
-        } catch(e) {}
+    if(
+        newPackages.length === 0
+    ){
 
-        if (html5QrCode && html5QrCode.isRunning()) {
-          try { await html5QrCode.stop(); } catch(e) {}
-        }
-        isFlashOn = false;
-        document.getElementById("fs-toggle-flash-btn").innerHTML = "💡 On";
-        isScannerStopping = false;
-      }
+        alert(
+            "Please keep at least one package."
+        );
 
-      async function toggleScanner() {
-        const scannerContainer = document.getElementById("scanner-container");
-        if (scannerContainer.style.display === "flex") await stopScanner();
-        else await openScanner();
-      }
+        return;
 
-      async function toggleFlashlight() {
-        const videoElem = document.querySelector('#reader video');
-        if (videoElem && videoElem.srcObject) {
-          const track = videoElem.srcObject.getVideoTracks()[0];
-          if (track && track.getCapabilities && track.getCapabilities().torch) {
-            isFlashOn = !isFlashOn;
-            await track.applyConstraints({ advanced: [{ torch: isFlashOn }] });
-            document.getElementById("fs-toggle-flash-btn").innerHTML = isFlashOn ? "💡 On" : "💡 Off";
-          }
-        }
-      }
+    }
 
-      function resetCalculatorPage() {
-        stopScanner();
-        billingItems = [];
-        document.getElementById("ref-input").value = "";
-        document.getElementById("paid-amount").value = "";
-        document.getElementById("discount-input").value = "";
-        renderTable(); updateSummary(); showStatus("", "idle");
-      }
 
-      window.onload = function() {
-        renderTable();
-        updateSummary();
-      };
-    </script>
-  </body>
+    packages =
+        newPackages;
+
+
+    localStorage.setItem(
+        PACKAGE_KEY,
+        JSON.stringify(
+            packages
+        )
+    );
+
+
+    loadPackages();
+
+    closePackageSettings();
+
+
+    alert(
+        "Package settings saved."
+    );
+
+}
+
+
+/* =========================
+   ESCAPE
+========================= */
+
+function escapeHtml(value){
+
+    return String(
+        value || ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+function escapeJs(value){
+
+    return String(
+        value || ""
+    )
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
+    .replace(
+        /'/g,
+        "\\'"
+    )
+    .replace(
+        /\n/g,
+        "\\n"
+    )
+    .replace(
+        /\r/g,
+        "\\r"
+    );
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+loadPackages();
+
+addChild();
+
+renderCustomers();
+
+
+/* Refresh expiry status */
+
+setInterval(
+    updateExpiryLines,
+    60000
+);
+
+</script>
+
+</body>
 </html>
